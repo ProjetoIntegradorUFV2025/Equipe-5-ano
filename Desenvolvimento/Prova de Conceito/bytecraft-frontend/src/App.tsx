@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Menu from "./pages/Menu/Menu";
+import Nivel from "./pages/Nivel/Nivel";
 import backgroundMusic from "./assets/sounds/backgroundMusic.mp3";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Menu />} />
+        <Route path="/nivel" element={<Nivel />} />
       </Routes>
     </Router>
   );

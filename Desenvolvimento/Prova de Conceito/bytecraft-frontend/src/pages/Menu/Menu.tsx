@@ -9,7 +9,7 @@ const Menu: React.FC = () => {
   return (
     <div className="menu-container">
       <div className="button-menu-group">
-        <button className="menu-button-aluno" onClick={() => navigate("/")}>
+        <button className="menu-button-aluno" onClick={() => navigate("/nivel")}>
           ALUNO
         </button>
         <button className="menu-button-professor" onClick={() => navigate("/")}>
