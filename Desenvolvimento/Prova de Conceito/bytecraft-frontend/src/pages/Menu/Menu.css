@@ -1,0 +1,67 @@
+.menu-container {
+  background-image: url("../../assets/images/background.png");
+  background-size: cover;
+  background-repeat: round;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.button-menu-group {
+  display: grid;
+  gap: 4vh;
+  margin-top: 50vh;
+  justify-items: anchor-center;
+  padding: 0.5vw;
+}
+
+.menu-button-aluno {
+  width: 80vw;
+  max-width: 377px;
+  height: 20vh;
+  max-height: 156px;
+  border-radius: 2vh;
+  border: none;
+  background-color: #00BF63;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: sans-serif;
+  font-size: 6vh;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: #038b49 0px -1.5vh 0px inset;
+}
+
+.menu-button-aluno:hover {
+  background-color: #02a054;
+}
+
+.menu-button-professor {
+  width: 80vw;
+  max-width: 377px;
+  height: 20vh;
+  max-height: 156px;
+  border-radius: 2vh;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0097B2;
+  color: white;
+  font-family: sans-serif;
+  font-size: 6vh;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: #026374 0px -1.5vh 0px inset;
+}
+
+.menu-button-professor:hover {
+  background-color: #03788d;
+}
