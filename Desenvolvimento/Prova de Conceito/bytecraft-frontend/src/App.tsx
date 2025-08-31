@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
 import Menu from "./pages/Menu/Menu";
 import Nivel from "./pages/Nivel/Nivel";
 import backgroundMusic from "./assets/sounds/backgroundMusic.mp3";

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate} from "react-router-dom"
+import { useNavigate} from "react-router"
 import botaoVoltar from "../../assets/images/botao_voltar.png"
 import "./Nivel.css";
 
