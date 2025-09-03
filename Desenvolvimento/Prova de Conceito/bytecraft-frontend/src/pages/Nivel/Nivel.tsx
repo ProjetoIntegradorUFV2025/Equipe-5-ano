@@ -15,13 +15,13 @@ const Nivel: React.FC = () => {
         onClick={() => navigate("/")}
       />
       <div className="button-nivel-group">
-        <button className="menu-button-facil" onClick={() => {navigate("/"); localStorage.setItem("dificuldade", String("fácil"))}}>
+        <button className="menu-button-facil" onClick={() => {navigate("/jogo"); localStorage.setItem("dificuldade", String("fácil"))}}>
           FÁCIL
         </button>
-        <button className="menu-button-medio" onClick={() => {navigate("/"); localStorage.setItem("dificuldade", String("médio"))}}>
+        <button className="menu-button-medio" onClick={() => {navigate("/jogo"); localStorage.setItem("dificuldade", String("médio"))}}>
           MÉDIO
         </button>
-        <button className="menu-button-dificil" onClick={() => {navigate("/"); localStorage.setItem("dificuldade", String("difícil"))}}>
+        <button className="menu-button-dificil" onClick={() => {navigate("/jogo"); localStorage.setItem("dificuldade", String("difícil"))}}>
           DIFÍCIL
         </button>
       </div>

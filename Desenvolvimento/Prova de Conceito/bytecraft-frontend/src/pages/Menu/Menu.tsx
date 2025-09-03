@@ -12,7 +12,7 @@ const Menu: React.FC = () => {
         <button className="menu-button-aluno" onClick={() => navigate("/nivel")}>
           ALUNO
         </button>
-        <button className="menu-button-professor" onClick={() => navigate("/")}>
+        <button className="menu-button-professor" onClick={() => navigate("/login-professor")}>
           PROFESSOR
         </button>
       </div>

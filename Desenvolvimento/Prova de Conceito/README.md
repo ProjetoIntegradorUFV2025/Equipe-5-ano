@@ -12,17 +12,18 @@ A escolha por essas tecnologias visa proporcionar uma estrutura de desenvolvimen
 * Banco de dados: MySQL  
 * Biblioteca de Acesso a Dados: JDBC API
 
-O Spring Boot foi escolhido por sua robustez, facilidade de configuração e forte integração com o ecossistema Spring, especialmente na criação de APIs RESTful. Já a JDBC API foi adotada para permitir a execução direta de comandos SQL, garantindo maior aproveitamento dos scripts desenvolvidos pelos integrantes da equipe de banco de dados, especialmente os desenvolvedores júnior.
+O Spring Boot foi escolhido por sua robustez, facilidade de configuração e forte integração com o ecossistema Spring, especialmente na criação de APIs RESTful. A partir dessa tecnologia, será desenvolvida a API que atenderá às requisições do frontend. Já a JDBC API foi adotada para permitir a execução direta de comandos SQL, aproveitando ao máximo os scripts criados pela equipe de banco de dados, em especial pelos desenvolvedores júnior.
 
 # **2.2 Frontend**
 
 * Framework: React  
 * Empacotador: Vite  
 * Linguagens: TypeScript, HTML, CSS  
-* Biblioteca adicional: React DnD
+* Biblioteca adicional: React DnD e Axios
 
 O React foi selecionado por sua modularidade, ampla comunidade, documentação acessível e excelente suporte para interações ricas, como a funcionalidade de drag-and-drop, essencial para a mecânica do jogo. O Vite foi escolhido por oferecer um ambiente de desenvolvimento moderno, com carregamento rápido e melhor desempenho.  
 A biblioteca React DnD será usada para implementar o sistema de movimentação e encaixe das peças, proporcionando uma experiência de usuário interativa e intuitiva.
+Já a biblioteca Axios será empregada para a realização das requisições HTTP ao backend.
 
 # **3\. Estrutura da Aplicação**
 
@@ -62,7 +63,7 @@ Criação do projeto:
 
 Requisitos:
 
-* Node.js 18 ou superior
+* Node.js 20.19 ou superior
 
 Passos para criação do projeto:
 
@@ -82,6 +83,12 @@ Instalação do React DnD:
 
 ```shell
 npm install react-dnd react-dnd-html5-backend
+```
+
+Instalação do Axios:
+
+```shell
+npm install axios
 ```
 
 # **5\. Considerações Finais**
