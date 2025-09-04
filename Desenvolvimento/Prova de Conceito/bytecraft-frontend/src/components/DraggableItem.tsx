@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDrag } from "react-dnd";
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
 
 const DraggableItem: React.FC<Props> = ({ item, onColorChange, placed }) => {
   const [showColors, setShowColors] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "COMPONENT",
@@ -24,10 +25,16 @@ const DraggableItem: React.FC<Props> = ({ item, onColorChange, placed }) => {
     }),
   }), [placed, item.image]);
 
+  useEffect(() => {
+    if (ref.current) {
+      drag(ref.current);
+    }
+  }, [drag]);
+
   return (
     <div>
       <div
-        ref={drag}
+        ref={ref}
         onClick={() => {
           if (!placed) setShowColors(!showColors);
         }}

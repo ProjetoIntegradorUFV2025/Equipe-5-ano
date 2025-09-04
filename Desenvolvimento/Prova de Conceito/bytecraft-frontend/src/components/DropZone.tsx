@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { useDrop } from "react-dnd";
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
 }
 
 const DropZone: React.FC<Props> = ({ id, image, onDrop, placed }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: "COMPONENT",
     drop: (item: { id: string, image: string}) => onDrop(item.id, id, item.image),
@@ -19,6 +21,12 @@ const DropZone: React.FC<Props> = ({ id, image, onDrop, placed }) => {
     }),
   }));
 
+  useEffect(() => {
+    if (ref.current) {
+      drop(ref.current);
+    }
+  }, [drop]);
+
   const getBackgroundColor = () => {
     if (placed) return "lightgreen";
     if (isOver && canDrop) return "lightyellow";
@@ -27,7 +35,7 @@ const DropZone: React.FC<Props> = ({ id, image, onDrop, placed }) => {
 
   return (
     <div
-      ref={drop}
+      ref={ref}
       style={{
         width: 100,
         height: 100,
