@@ -6,7 +6,7 @@ package com.mycompany.helloworld;
 
 /**
  *
- * @author neryb
+ * @author larageovana
  */
 public class HelloWorld {
 
