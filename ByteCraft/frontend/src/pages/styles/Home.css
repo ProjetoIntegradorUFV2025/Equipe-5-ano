@@ -1,0 +1,154 @@
+/* src/pages/styles/Home.css */
+
+/* ===== Container principal ===== */
+.home-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Background com gradiente suave e imagem responsiva */
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/background_home_desktop.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* ===== Grupo de botões ===== */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  margin-top: 0;
+  padding-bottom: 5vh;
+  
+  /* ALTERE ESTE VALOR PARA AJUSTAR A POSIÇÃO VERTICAL DOS BOTÕES */
+  /* Valores maiores = botões mais para baixo */
+  transform: translateY(80px); /* ← Altere este valor (ex: 80px, 100px, 120px) */
+}
+
+/* ===== Estilo base para botões ===== */
+.button-group button {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: white;
+  padding: 2.2vh 3.5vw; /* AUMENTO NO PADDING */
+  border-radius: 16px; /* BORDAS MAIS ARREDONDADAS */
+  font-size: clamp(1.3rem, 5vw, 1.8rem); /* FONTE MAIOR */
+  font-weight: bold;
+  border-bottom-width: 6px; /* BORDA INFERIOR MAIS ESPESSA */
+  min-width: 280px; /* LARGURA MÍNIMA MAIOR */
+  text-align: center;
+  width: 70vw; /* LARGURA MAIOR */
+  max-width: 350px; /* LARGURA MÁXIMA MAIOR */
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* SOMBRA SUAVE */
+}
+
+/* ===== Botão Professor (verde) ===== */
+.btn-professor {
+  background-color: #22c55e;
+  border: 3px solid #16a34a; /* BORDA MAIS ESPESSA */
+  border-bottom-color: #15803d;
+}
+
+.btn-professor:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
+}
+
+.btn-professor:active {
+  filter: brightness(90%);
+  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Botão Aluno (azul) ===== */
+.btn-aluno {
+  background-color: #3b82f6;
+  border: 3px solid #2563eb; /* BORDA MAIS ESPESSA */
+  border-bottom-color: #1d4ed8;
+}
+
+.btn-aluno:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
+}
+
+.btn-aluno:active {
+  filter: brightness(90%);
+  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .button-group {
+    gap: 1.5rem; /* ESPAÇAMENTO MAIOR ENTRE BOTÕES */
+    padding-bottom: 10vh;
+    
+    /* AJUSTE PARA DISPOSITIVOS MÓVEIS */
+    transform: translateY(60px); /* ← Altere este valor para mobile */
+  }
+
+  .button-group button {
+    padding: 2vh 4vw;
+    min-width: 250px;
+    width: 75vw;
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+  
+  /* Ajuste de background para mobile */
+  .home-container::before {
+    background-image: url(/images/background_home_desktop.png);
+  }
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    gap: 1.2rem;
+    padding-bottom: 15vh;
+    
+    /* AJUSTE PARA TELAS PEQUENAS */
+    transform: translateY(40px); /* ← Altere este valor para telas pequenas */
+  }
+  
+  .button-group button {
+    font-size: clamp(1.1rem, 5vw, 1.4rem);
+    padding: 1.8vh 4vw;
+    min-width: 220px;
+    width: 80vw;
+    border-radius: 14px;
+  }
+}
+
+/* Prevenir scroll em todos os dispositivos */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}

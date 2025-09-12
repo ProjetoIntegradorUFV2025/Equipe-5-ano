@@ -1,0 +1,245 @@
+/* src/pages/styles/Niveis.css */
+
+/* ===== Container principal ===== */
+.niveis-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Background responsivo */
+.niveis-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/background_nivel_desktop.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* ===== Botão Voltar ===== */
+.btn-voltar {
+  padding: 12px 18px; /* TAMANHO AUMENTADO */
+  text-transform: uppercase;
+  border-radius: 10px; /* BORDAS MAIS ARREDONDADAS */
+  font-size: clamp(0.9rem, 3.5vw, 1.2rem); /* FONTE MAIOR */
+  font-weight: 600; /* FONTE MAIS NEGRITA */
+  color: #ff000080;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 2px solid #ff000080; /* BORDA MAIS ESPESSA */
+  transition: 0.5s ease;
+  user-select: none;
+  position: absolute;
+  top: 20px; /* MAIS ESPAÇO NO TOPO */
+  left: 20px; /* MAIS ESPAÇO NA ESQUERDA */
+  z-index: 10;
+}
+
+.btn-voltar:hover,
+.btn-voltar:focus {
+  color: #ffffff;
+  background: #ff0000;
+  border: 2px solid #ff0000;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 8px #ff0000, 0 0 25px #ff0000, 0 0 60px #ff0000,
+    0 0 120px #ff0000;
+}
+
+/* ===== Títulos ===== */
+.niveis-container h2 {
+  font-size: clamp(1.8rem, 6vw, 2.5rem); /* FONTE MAIOR */
+  color: #333;
+  margin: 0 0 15px 0; /* MAIOR ESPAÇAMENTO */
+  text-align: center;
+  padding: 0 15px;
+}
+
+.niveis-container h3 {
+  font-size: clamp(1.4rem, 5vw, 2rem); /* FONTE MAIOR */
+  color: #555;
+  margin: 0 0 25px 0; /* MAIOR ESPAÇAMENTO */
+  text-align: center;
+  padding: 0 15px;
+}
+
+/* ===== Grupo de botões ===== */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* MAIOR ESPAÇAMENTO ENTRE BOTÕES */
+  align-items: center;
+  width: 90%;
+  max-width: 450px; /* LARGURA MÁXIMA MAIOR */
+  padding: 0 0 25px 0;
+  
+  /* ALTERE ESTE VALOR PARA AJUSTAR A POSIÇÃO VERTICAL DOS BOTÕES */
+  /* Valores maiores = botões mais para baixo */
+  transform: translateY(80px); /* ← Altere este valor (ex: 80px, 100px, 120px) */
+}
+
+/* ===== Estilo base para botões ===== */
+.button-group button {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: white;
+  padding: 2.2vh 3.5vw; /* AUMENTO NO PADDING */
+  border-radius: 16px; /* BORDAS MAIS ARREDONDADAS */
+  font-size: clamp(1.3rem, 5vw, 1.8rem); /* FONTE MAIOR */
+  font-weight: bold;
+  border-bottom-width: 6px; /* BORDA INFERIOR MAIS ESPESSA */
+  width: 100%;
+  max-width: 300px; /* LARGURA MÁXIMA MAIOR */
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* SOMBRA SUAVE */
+}
+
+/* ===== Botões de níveis ===== */
+/* CORES PARA DIFERENTES FORMAS DE ESCRITA DO NÍVEL FÁCIL */
+.btn-facil, .btn-facil, .btn-Fácil, .btn-FACIL {
+  background-color: #22c55e;
+  border: 3px solid #16a34a; /* BORDA MAIS ESPESSA */
+  border-bottom-color: #15803d;
+}
+
+.btn-facil:hover, .btn-facil:hover, .btn-Fácil:hover, .btn-FACIL:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
+}
+
+.btn-facil:active, .btn-facil:active, .btn-Fácil:active, .btn-FACIL:active {
+  filter: brightness(90%);
+  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* CORES PARA DIFERENTES FORMAS DE ESCRITA DO NÍVEL MÉDIO */
+.btn-medio, .btn-médio, .btn-Medio, .btn-Médio, .btn-MEDIO {
+  background-color: #3b82f6;
+  border: 3px solid #2563eb; /* BORDA MAIS ESPESSA */
+  border-bottom-color: #1d4ed8;
+}
+
+.btn-medio:hover, .btn-médio:hover, .btn-Medio:hover, .btn-Médio:hover, .btn-MEDIO:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
+}
+
+.btn-medio:active, .btn-médio:active, .btn-Medio:active, .btn-Médio:active, .btn-MEDIO:active {
+  filter: brightness(90%);
+  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* CORES PARA DIFERENTES FORMAS DE ESCRITA DO NÍVEL DIFÍCIL */
+.btn-dificil, .btn-difícil, .btn-Dificil, .btn-Difícil, .btn-DIFICIL {
+  background-color: #ef4444;
+  border: 3px solid #dc2626; /* BORDA MAIS ESPESSA */
+  border-bottom-color: #b91c1c;
+}
+
+.btn-dificil:hover, .btn-difícil:hover, .btn-Dificil:hover, .btn-Difícil:hover, .btn-DIFICIL:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
+}
+
+.btn-dificil:active, .btn-difícil:active, .btn-Dificil:active, .btn-Difícil:active, .btn-DIFICIL:active {
+  filter: brightness(90%);
+  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .niveis-container {
+    padding: 25px;
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+
+  .button-group {
+    width: 95%;
+    gap: 18px;
+    
+    /* AJUSTE PARA DISPOSITIVOS MÓVEIS */
+    transform: translateY(60px); /* ← Altere este valor para mobile */
+  }
+
+  .button-group button {
+    padding: 2vh 4vw;
+    max-width: 280px;
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+  
+  .btn-voltar {
+    top: 15px;
+    left: 15px;
+    padding: 10px 15px;
+  }
+  
+  /* Ajuste de background para mobile */
+  .niveis-container::before {
+    background-image: url(/images/background_nivel_mobile.png);
+  }
+}
+
+@media (max-width: 480px) {
+  .niveis-container {
+    padding: 20px;
+    padding-top: 70px;
+  }
+  
+  .button-group {
+    gap: 15px;
+    
+    /* AJUSTE PARA TELAS PEQUENAS */
+    transform: translateY(40px); /* ← Altere este valor para telas pequenas */
+  }
+  
+  .button-group button {
+    font-size: clamp(1.1rem, 5vw, 1.4rem);
+    padding: 1.8vh 4vw;
+    max-width: 250px;
+    border-radius: 14px;
+  }
+  
+  .btn-voltar {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    padding: 8px 12px;
+  }
+  
+  .niveis-container h2 {
+    margin-bottom: 12px;
+    font-size: clamp(1.6rem, 6vw, 2rem);
+  }
+  
+  .niveis-container h3 {
+    margin-bottom: 20px;
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+}

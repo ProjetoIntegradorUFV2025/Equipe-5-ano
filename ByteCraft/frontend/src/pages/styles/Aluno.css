@@ -1,0 +1,226 @@
+/* src/pages/styles/Aluno.css */
+
+.aluno-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Background responsivo */
+.aluno-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/background_aluno.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+.aluno-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Reduzido para acomodar o novo campo */
+  width: 90%;
+  max-width: 450px;
+  padding-bottom: 50px;
+  
+  /* ALTERE ESTE VALOR PARA AJUSTAR A POSIÇÃO VERTICAL DO CONTEÚDO */
+  /* Valores maiores = conteúdo mais para baixo */
+  transform: translateY(80px); /* ← Altere este valor (ex: 80px, 100px, 120px) */
+}
+
+.aluno-content h2 {
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0 15px;
+  margin-bottom: 10px; /* Adicionado espaçamento abaixo do título */
+}
+
+/* Estilos para os inputs - mantendo consistência */
+.apelido-input, .turma-input {
+  padding: 16px 20px;
+  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+  border-radius: 12px;
+  border: 3px solid #3b82f6;
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Efeito de foco para os inputs */
+.apelido-input:focus, .turma-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Estilo específico para o input de turma */
+.turma-input {
+  border-color: #8b5cf6; /* Cor diferente para diferenciar */
+}
+
+.turma-input:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.3);
+}
+
+.btn-comecar {
+  background-color: #3b82f6;
+  border: 3px solid #2563eb;
+  border-bottom-color: #1d4ed8;
+  color: white;
+  padding: 16px 25px;
+  border-radius: 16px;
+  font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  max-width: 220px;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 10px; /* Espaçamento acima do botão */
+}
+
+.btn-comecar:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px);
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.btn-comecar:active {
+  filter: brightness(90%);
+  transform: translateY(3px);
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Botão Voltar */
+.btn-voltar {
+  padding: 12px 18px;
+  text-transform: uppercase;
+  border-radius: 10px;
+  font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+  font-weight: 600;
+  color: #ff000080;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 2px solid #ff000080;
+  transition: 0.5s ease;
+  user-select: none;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.btn-voltar:hover,
+.btn-voltar:focus {
+  color: #ffffff;
+  background: #ff0000;
+  border: 2px solid #ff0000;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 8px #ff0000, 0 0 25px #ff0000, 0 0 60px #ff0000,
+    0 0 120px #ff0000;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .aluno-container {
+    padding: 20px;
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+  
+  .aluno-content {
+    gap: 18px; /* Reduzido para mobile */
+    padding-bottom: 30px;
+    
+    /* AJUSTE PARA DISPOSITIVOS MÓVEIS */
+    transform: translateY(60px); /* ← Altere este valor para mobile */
+  }
+  
+  .apelido-input, .turma-input {
+    padding: 14px 18px;
+    max-width: 280px;
+    font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  }
+  
+  .btn-comecar {
+    padding: 14px 20px;
+    max-width: 200px;
+    font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  }
+  
+  .btn-voltar {
+    top: 15px;
+    left: 15px;
+    padding: 10px 15px;
+  }
+  
+  /* Ajuste de background para mobile */
+  .aluno-container::before {
+    background-image: url(/images/background_aluno.png);
+  }
+}
+
+@media (max-width: 480px) {
+  .aluno-container {
+    padding: 15px;
+    padding-top: 70px;
+  }
+  
+  .aluno-content {
+    gap: 16px;
+    
+    /* AJUSTE PARA TELAS PEQUENAS */
+    transform: translateY(40px); /* ← Altere este valor para telas pequenas */
+  }
+  
+  .apelido-input, .turma-input {
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
+    padding: 12px 16px;
+    max-width: 250px;
+    border-radius: 10px;
+  }
+  
+  .btn-comecar {
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
+    padding: 12px 18px;
+    max-width: 180px;
+    border-radius: 14px;
+  }
+  
+  .btn-voltar {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    padding: 8px 12px;
+  }
+  
+  .aluno-content h2 {
+    font-size: clamp(1.6rem, 6vw, 2rem);
+  }
+}

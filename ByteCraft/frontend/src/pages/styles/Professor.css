@@ -1,0 +1,227 @@
+/* src/pages/styles/Professor.css */
+
+/* ===== Container principal ===== */
+.professor-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Background responsivo */
+.professor-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/background_professor.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+.professor-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  width: 90%;
+  max-width: 500px;
+  padding-bottom: 50px;
+  
+  /* ALTERE ESTE VALOR PARA AJUSTAR A POSIÇÃO VERTICAL DO CONTEÚDO */
+  /* Valores maiores = conteúdo mais para baixo */
+  transform: translateY(80px); /* ← Altere este valor (ex: 80px, 100px, 120px) */
+}
+
+.professor-content h2 {
+  font-size: clamp(2rem, 7vw, 3rem); /* FONTE MAIOR PARA DESTAQUE */
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.professor-content p {
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  color: #555;
+  text-align: center;
+  margin: 0;
+  padding: 0 15px;
+  max-width: 400px;
+}
+
+.professor-options {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 350px;
+  margin-top: 20px;
+}
+
+/* Botão Voltar */
+.btn-voltar {
+  padding: 12px 18px; /* TAMANHO AUMENTADO */
+  text-transform: uppercase;
+  border-radius: 10px; /* BORDAS MAIS ARREDONDADAS */
+  font-size: clamp(0.9rem, 3.5vw, 1.2rem); /* FONTE MAIOR */
+  font-weight: 600; /* FONTE MAIS NEGRITA */
+  color: #ff000080;
+  text-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: transparent;
+  border: 2px solid #ff000080; /* BORDA MAIS ESPESSA */
+  transition: 0.5s ease;
+  user-select: none;
+  position: absolute;
+  top: 20px; /* MAIS ESPAÇO NO TOPO */
+  left: 20px; /* MAIS ESPAÇO NA ESQUERDA */
+  z-index: 10;
+}
+
+.btn-voltar:hover,
+.btn-voltar:focus {
+  color: #ffffff;
+  background: #ff0000;
+  border: 2px solid #ff0000;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+  box-shadow: 0 0 8px #ff0000, 0 0 25px #ff0000, 0 0 60px #ff0000,
+    0 0 120px #ff0000;
+}
+
+/* ===== Estilo base para futuros botões de opções ===== */
+.professor-options button {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: white;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+  font-weight: bold;
+  border-bottom-width: 6px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid transparent;
+}
+
+/* Exemplo de estilos para futuros botões */
+.btn-option-primary {
+  background-color: #8b5cf6;
+  border-color: #7c3aed;
+  border-bottom-color: #6d28d9;
+}
+
+.btn-option-secondary {
+  background-color: #0ea5e9;
+  border-color: #0284c7;
+  border-bottom-color: #0369a1;
+}
+
+.btn-option-tertiary {
+  background-color: #10b981;
+  border-color: #059669;
+  border-bottom-color: #047857;
+}
+
+.professor-options button:hover {
+  filter: brightness(110%);
+  transform: translateY(-2px);
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.professor-options button:active {
+  filter: brightness(90%);
+  transform: translateY(3px);
+  border-bottom-width: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .professor-container {
+    padding: 20px;
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+  
+  .professor-content {
+    gap: 20px;
+    padding-bottom: 30px;
+    
+    /* AJUSTE PARA DISPOSITIVOS MÓVEIS */
+    transform: translateY(60px); /* ← Altere este valor para mobile */
+  }
+  
+  .professor-content h2 {
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
+  }
+  
+  .professor-content p {
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+  }
+  
+  .btn-voltar {
+    top: 15px;
+    left: 15px;
+    padding: 10px 15px;
+  }
+  
+  /* Ajuste de background para mobile */
+  .professor-container::before {
+    background-image: url(/images/background_professor.png);
+  }
+}
+
+@media (max-width: 480px) {
+  .professor-container {
+    padding: 15px;
+    padding-top: 70px;
+  }
+  
+  .professor-content {
+    gap: 18px;
+    
+    /* AJUSTE PARA TELAS PEQUENAS */
+    transform: translateY(40px); /* ← Altere este valor para telas pequenas */
+  }
+  
+  .professor-content h2 {
+    font-size: clamp(1.6rem, 7vw, 2rem);
+  }
+  
+  .professor-content p {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+  }
+  
+  .btn-voltar {
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    padding: 8px 12px;
+  }
+  
+  .professor-options {
+    gap: 15px;
+    max-width: 300px;
+  }
+  
+  .professor-options button {
+    padding: 14px 18px;
+    font-size: clamp(1.1rem, 4.5vw, 1.3rem);
+    border-radius: 14px;
+  }
+}
