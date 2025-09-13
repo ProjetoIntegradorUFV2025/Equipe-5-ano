@@ -9,11 +9,10 @@ const Fases: React.FC = () => {
   };
 
   return (
-    <div className="fases-container">
-      <button className="btn-voltar" onClick={handleVoltar}>
-        Voltar
+    <div className="fases-isolated-container">
+      <button className="fases-btn-voltar" onClick={handleVoltar}>
+        <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
       </button>
-
       <div className="fases-content">
         {/* Conteúdo das fases será adicionado aqui */}
       </div>

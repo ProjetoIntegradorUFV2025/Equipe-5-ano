@@ -9,11 +9,10 @@ const Professor: React.FC = () => {
   };
 
   return (
-    <div className="professor-container">
-      <button className="btn-voltar" onClick={handleVoltar}>
-        Voltar
+    <div className="professor-isolated-container">
+      <button className="professor-btn-voltar" onClick={handleVoltar}>
+        <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
       </button>
-
       <div className="professor-content">
         <div className="professor-options">
           {/* Opções serão adicionadas aqui posteriormente */}

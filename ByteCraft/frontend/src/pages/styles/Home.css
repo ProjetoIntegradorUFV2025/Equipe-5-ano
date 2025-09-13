@@ -1,154 +1,218 @@
-/* src/pages/styles/Home.css */
-
-/* ===== Container principal ===== */
-.home-container {
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
+/* ===== ESTILOS ISOLADOS PARA A PÁGINA HOME ===== */
+/* Reset completo para evitar conflitos com estilos globais */
+.home-isolated-container,
+.home-isolated-container *,
+.home-isolated-container *::before,
+.home-isolated-container *::after {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  list-style: none !important;
 }
 
-/* Background com gradiente suave e imagem responsiva */
-.home-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(/images/background_home_desktop.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* ===== CONTAINER PRINCIPAL ===== */
+.home-isolated-container {
+  height: 100vh !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  position: relative !important;
+  padding-bottom: 100px !important;
+  isolation: isolate !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
-/* ===== Grupo de botões ===== */
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  align-items: center;
-  margin-top: 0;
-  padding-bottom: 5vh;
-  
-  /* ALTERE ESTE VALOR PARA AJUSTAR A POSIÇÃO VERTICAL DOS BOTÕES */
-  /* Valores maiores = botões mais para baixo */
-  transform: translateY(80px); /* ← Altere este valor (ex: 80px, 100px, 120px) */
+.home-isolated-container::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  background-image: url('src/assets/backgrounds/background_home.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: -1 !important;
 }
 
-/* ===== Estilo base para botões ===== */
-.button-group button {
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  color: white;
-  padding: 2.2vh 3.5vw; /* AUMENTO NO PADDING */
-  border-radius: 16px; /* BORDAS MAIS ARREDONDADAS */
-  font-size: clamp(1.3rem, 5vw, 1.8rem); /* FONTE MAIOR */
-  font-weight: bold;
-  border-bottom-width: 6px; /* BORDA INFERIOR MAIS ESPESSA */
-  min-width: 280px; /* LARGURA MÍNIMA MAIOR */
-  text-align: center;
-  width: 70vw; /* LARGURA MAIOR */
-  max-width: 350px; /* LARGURA MÁXIMA MAIOR */
-  box-sizing: border-box;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* SOMBRA SUAVE */
+/* ===== GRUPO DE BOTÕES ===== */
+.home-button-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.2rem !important;
+  align-items: center !important;
+  padding-bottom: 4vh !important;
 }
 
-/* ===== Botão Professor (verde) ===== */
-.btn-professor {
-  background-color: #22c55e;
-  border: 3px solid #16a34a; /* BORDA MAIS ESPESSA */
-  border-bottom-color: #15803d;
+/* ===== BOTÕES ===== */
+.home-button-group button {
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out !important;
+  color: white !important;
+  padding: 1.5vh 3.5vw !important;
+  border-radius: 18px !important;
+  font-size: clamp(1.4rem, 5vw, 2rem) !important;
+  font-weight: 700 !important;
+  min-width: 150px !important;
+  text-align: center !important;
+  width: 70vw !important;
+  max-width: 350px !important;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25) !important;
+  border-style: solid !important;
+  border-bottom-width: 8px !important;
 }
 
-.btn-professor:hover {
-  filter: brightness(110%);
-  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
-  border-bottom-width: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
+/* ===== BOTÃO PROFESSOR ===== */
+.home-btn-professor {
+  background-color: #22c55e !important;
+  border-color: #16a34a !important;
+  border-bottom-color: #14532d !important;
+  border-width: 4px !important;
+}
+.home-btn-professor:hover {
+  filter: brightness(110%) !important;
+  transform: translateY(-4px) !important;
+  border-bottom-width: 12px !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+.home-btn-professor:active {
+  filter: brightness(90%) !important;
+  transform: translateY(4px) !important;
+  border-bottom-width: 6px !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
-.btn-professor:active {
-  filter: brightness(90%);
-  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
-  border-bottom-width: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+/* ===== BOTÃO ALUNO ===== */
+.home-btn-aluno {
+  background-color: #3b82f6 !important;
+  border-color: #2563eb !important;
+  border-bottom-color: #1e40af !important;
+  border-width: 4px !important;
+}
+.home-btn-aluno:hover {
+  filter: brightness(110%) !important;
+  transform: translateY(-4px) !important;
+  border-bottom-width: 12px !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4) !important;
+}
+.home-btn-aluno:active {
+  filter: brightness(90%) !important;
+  transform: translateY(4px) !important;
+  border-bottom-width: 6px !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* ===== Botão Aluno (azul) ===== */
-.btn-aluno {
-  background-color: #3b82f6;
-  border: 3px solid #2563eb; /* BORDA MAIS ESPESSA */
-  border-bottom-color: #1d4ed8;
+/* ============================= */
+/* ===== DESKTOP (>=769px) ===== */
+/* ============================= */
+@media (min-width: 769px) {
+  .home-button-group button {
+    padding: 2vh 4.5vw !important;
+    font-size: clamp(1.8rem, 5vw, 2.5rem) !important;
+    min-width: 350px !important;
+    max-width: 450px !important;
+    border-bottom-width: 12px !important;
+  }
+  .home-btn-professor:hover,
+  .home-btn-aluno:hover {
+    transform: translateY(-6px) !important;
+    border-bottom-width: 14px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5) !important;
+  }
 }
 
-.btn-aluno:hover {
-  filter: brightness(110%);
-  transform: translateY(-2px); /* EFEITO HOVER MAIS PRONUNCIADO */
-  border-bottom-width: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* SOMBRA MAIOR NO HOVER */
-}
-
-.btn-aluno:active {
-  filter: brightness(90%);
-  transform: translateY(3px); /* EFEITO DE PRESSÃO MAIS PRONUNCIADO */
-  border-bottom-width: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* ===== Responsividade ===== */
+/* ========================== */
+/* ===== MOBILE RETRATO ===== */
+/* ========================== */
 @media (max-width: 768px) {
-  .button-group {
-    gap: 1.5rem; /* ESPAÇAMENTO MAIOR ENTRE BOTÕES */
-    padding-bottom: 10vh;
-    
-    /* AJUSTE PARA DISPOSITIVOS MÓVEIS */
-    transform: translateY(60px); /* ← Altere este valor para mobile */
+  .home-isolated-container {
+    justify-content: flex-start !important; /* libera espaço em cima */
+    padding-top: 0 !important;
+    padding-bottom: 20px !important;
   }
-
-  .button-group button {
-    padding: 2vh 4vw;
-    min-width: 250px;
-    width: 75vw;
-    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  .home-button-group {
+    gap: 1.5rem !important;
+    padding-bottom: 4vh !important;
+    margin-top: 22vh !important; /* empurra os botões para baixo */
   }
-  
-  /* Ajuste de background para mobile */
-  .home-container::before {
-    background-image: url(/images/background_home_desktop.png);
+  .home-button-group button {
+    padding: 2.2vh 6vw !important; /* botões maiores */
+    min-width: 280px !important;
+    width: 85vw !important;
+    font-size: clamp(1.5rem, 5.5vw, 1.9rem) !important;
+    border-bottom-width: 9px !important;
+    border-radius: 20px !important;
   }
 }
 
+/* ========================== */
+/* ===== MOBILE PEQUENO ===== */
+/* ========================== */
 @media (max-width: 480px) {
-  .button-group {
-    gap: 1.2rem;
-    padding-bottom: 15vh;
-    
-    /* AJUSTE PARA TELAS PEQUENAS */
-    transform: translateY(40px); /* ← Altere este valor para telas pequenas */
+  .home-isolated-container {
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+    padding-bottom: 15px !important;
   }
-  
-  .button-group button {
-    font-size: clamp(1.1rem, 5vw, 1.4rem);
-    padding: 1.8vh 4vw;
-    min-width: 220px;
-    width: 80vw;
-    border-radius: 14px;
+  .home-button-group {
+    gap: 1.2rem !important;
+    padding-bottom: 6vh !important;
+    margin-top: 18vh !important; /* empurra para baixo */
+  }
+  .home-button-group button {
+    font-size: clamp(1.4rem, 5.5vw, 1.7rem) !important;
+    padding: 2vh 5vw !important;
+    min-width: 250px !important;
+    width: 90vw !important;
+    border-radius: 18px !important;
+    border-bottom-width: 7px !important;
   }
 }
 
-/* Prevenir scroll em todos os dispositivos */
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
+/* ============================= */
+/* ===== MOBILE DEITADO ======== */
+/* ============================= */
+@media (orientation: landscape) and (max-width: 900px),
+       (max-height: 500px) {
+  .home-isolated-container {
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+  }
+  .home-button-group {
+    gap: 1rem !important;
+    padding-bottom: 3vh !important;
+    margin-top: 12vh !important; /* empurra para baixo */
+  }
+  .home-button-group button {
+    padding: 1.4vh 4vw !important;
+    font-size: 1.2rem !important;
+    min-width: 220px !important;
+    max-width: 280px !important;
+    border-radius: 16px !important;
+  }
+
+@media (max-width: 768px) {
+  .home-isolated-container { position: relative !important; }
+  .home-button-group {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translate(-50%, 0) !important;
+    top: 40vh !important; /* ajuste esse valor até ficar certo */
+    width: 85vw !important;
+    max-width: 320px !important;
+  }
 }
+
+}
+

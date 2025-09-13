@@ -13,12 +13,12 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="home-container">
-      <div className="button-group">
-        <button className="btn-professor" onClick={handleProfessor}>
+    <div className="home-isolated-container">
+      <div className="home-button-group">
+        <button className="home-btn-professor" onClick={handleProfessor}>
           Professor
         </button>
-        <button className="btn-aluno" onClick={handleAluno}>
+        <button className="home-btn-aluno" onClick={handleAluno}>
           Aluno
         </button>
       </div>

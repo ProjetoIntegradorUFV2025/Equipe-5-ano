@@ -32,6 +32,10 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
     fetchNiveis();
   }, []);
 
+  const handleVoltar = () => {
+    navigate("/aluno");
+  };
+
   const selecionarNivel = async (nivel: string) => {
     try {
       if (!aluno?.apelido) {
@@ -43,7 +47,6 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
       setLoading(true);
       const atualizado = await registrarNivel(aluno.apelido, nivel);
       
-      // Atualiza o aluno localmente com o novo nível
       const alunoAtualizado = { ...aluno, nivel: atualizado.nivel };
       
       navigate("/fases", { 
@@ -62,31 +65,34 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
 
   const getClasseBotao = (nivel: string): string => {
     if (nivel.includes("facil")) {
-      return "btn-facil";
+      return "niveis-btn-facil";
     } else if (nivel.includes("medio")) {
-      return "btn-medio";
+      return "niveis-btn-medio";
     } else if (nivel.includes("dificil")) {
-      return "btn-dificil";
+      return "niveis-btn-dificil";
     }
     
     return "";
   };
 
   const formatarNivel = (nivel: string): string => {
+    if (nivel.toLowerCase() === "facil") {
+      return "FÁCIL";
+    } else if (nivel.toLowerCase() === "medio") {
+      return "MÉDIO";
+    } else if (nivel.toLowerCase() === "dificil") {
+      return "DIFÍCIL";
+    }
     return nivel.charAt(0).toUpperCase() + nivel.slice(1);
-  };
-
-  const handleVoltar = () => {
-    navigate("/aluno");
   };
 
   if (loading) {
     return (
-      <div className="niveis-container">
-        <button className="btn-voltar" onClick={handleVoltar} disabled={loading}>
-          Voltar
+      <div className="niveis-isolated-container">
+        <button className="niveis-btn-voltar" onClick={handleVoltar}>
+          <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
         </button>
-        <div className="button-group">
+        <div className="niveis-button-group">
           <p>Carregando níveis...</p>
         </div>
       </div>
@@ -95,11 +101,11 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
 
   if (error) {
     return (
-      <div className="niveis-container">
-        <button className="btn-voltar" onClick={handleVoltar}>
-          Voltar
+      <div className="niveis-isolated-container">
+        <button className="niveis-btn-voltar" onClick={handleVoltar}>
+          <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
         </button>
-        <div className="button-group">
+        <div className="niveis-button-group">
           <p style={{ color: 'red' }}>Erro: {error}</p>
           <button onClick={() => window.location.reload()}>
             Tentar Novamente
@@ -110,24 +116,11 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   }
 
   return (
-    <div className="niveis-container">
-      <button className="btn-voltar" onClick={handleVoltar}>
-        Voltar
+    <div className="niveis-isolated-container">
+      <button className="niveis-btn-voltar" onClick={handleVoltar}>
+        <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
       </button>
-
-      <div className="button-group">
-        {aluno && (
-          <div style={{ 
-            textAlign: 'center', 
-            marginBottom: '20px',
-            color: '#555',
-            fontSize: '1.2rem'
-          }}>
-            Olá, <strong>{aluno.apelido}</strong>!
-            {aluno.turma && ` - Turma: ${aluno.turma}`}
-          </div>
-        )}
-        
+      <div className="niveis-button-group">
         {niveis.length > 0 ? (
           niveis.map((nivel) => (
             <button

@@ -1,229 +1,166 @@
-/* src/pages/styles/Fases.css */
-
-/* ===== Container principal ===== */
-.fases-container {
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 25px;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
+/* ===== ESTILOS ISOLADOS PARA A PÁGINA FASES ===== */
+/* Reset completo para evitar conflitos com estilos globais */
+.fases-isolated-container,
+.fases-isolated-container *,
+.fases-isolated-container *::before,
+.fases-isolated-container *::after {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  list-style: none !important;
 }
 
-/* Background responsivo */
-.fases-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(/images/background_modo.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* ===== CONTAINER GERAL ===== */
+.fases-isolated-container {
+  height: 100vh !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 20px !important;
+  isolation: isolate !important;
 }
 
+.fases-isolated-container::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-image: url(src/assets/backgrounds/background_fases.png) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  z-index: -1 !important;
+}
+
+/* ===== BOTÃO VOLTAR ===== */
+.fases-btn-voltar {
+  position: absolute !important;
+  top: 20px !important;
+  left: 20px !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  z-index: 10 !important;
+}
+
+.fases-btn-voltar img {
+  width: 50px !important;
+  height: 50px !important;
+  object-fit: contain !important;
+  transition: transform 0.2s ease !important;
+}
+
+.fases-btn-voltar:hover img {
+  transform: scale(1.1) !important;
+}
+
+.fases-btn-voltar:active img {
+  transform: scale(0.95) !important;
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
 .fases-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
-  width: 90%;
-  max-width: 500px;
-  padding-bottom: 50px;
-  
-  /* ALTERE ESTE VALOR PARA AJUSTAR A POSIÇÃO VERTICAL DO CONTEÚDO */
-  /* Valores maiores = conteúdo mais para baixo */
-  transform: translateY(80px); /* ← Altere este valor (ex: 80px, 100px, 120px) */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 25px !important;
+  width: 90% !important;
+  max-width: 500px !important;
+  padding-bottom: 50px !important;
+  transform: translateY(80px) !important;
 }
 
 .fases-content h2 {
-  font-size: clamp(2rem, 7vw, 3rem);
-  color: #333;
-  text-align: center;
-  margin: 0;
-  padding: 0 15px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: clamp(2rem, 7vw, 3rem) !important;
+  color: #333 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 15px !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
 .fases-content p {
-  font-size: clamp(1.2rem, 4vw, 1.6rem);
-  color: #555;
-  text-align: center;
-  margin: 0;
-  padding: 0 15px;
-  max-width: 400px;
+  font-size: clamp(1.2rem, 4vw, 1.6rem) !important;
+  color: #555 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 15px !important;
+  max-width: 400px !important;
 }
 
-.fases-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 350px;
-  margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.fases-list p {
-  font-size: clamp(1.1rem, 4vw, 1.4rem);
-  color: #666;
-  font-style: italic;
-}
-
-/* Botão Voltar */
-.btn-voltar {
-  padding: 12px 18px;
-  text-transform: uppercase;
-  border-radius: 10px;
-  font-size: clamp(0.9rem, 3.5vw, 1.2rem);
-  font-weight: 600;
-  color: #ff000080;
-  text-shadow: none;
-  background: transparent;
-  cursor: pointer;
-  box-shadow: transparent;
-  border: 2px solid #ff000080;
-  transition: 0.5s ease;
-  user-select: none;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
-}
-
-.btn-voltar:hover,
-.btn-voltar:focus {
-  color: #ffffff;
-  background: #ff0000;
-  border: 2px solid #ff0000;
-  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
-  box-shadow: 0 0 8px #ff0000, 0 0 25px #ff0000, 0 0 60px #ff0000,
-    0 0 120px #ff0000;
-}
-
-/* ===== Estilo base para futuros botões de fases ===== */
-.fase-button {
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  color: white;
-  padding: 16px 20px;
-  border-radius: 16px;
-  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
-  font-weight: bold;
-  border-bottom-width: 6px;
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border: 3px solid transparent;
-}
-
-/* Exemplo de estilos para futuros botões de fases */
-.fase-button:hover {
-  filter: brightness(110%);
-  transform: translateY(-2px);
-  border-bottom-width: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-}
-
-.fase-button:active {
-  filter: brightness(90%);
-  transform: translateY(3px);
-  border-bottom-width: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* ===== Responsividade ===== */
+/* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
-  .fases-container {
-    padding: 20px;
-    justify-content: flex-start;
-    padding-top: 80px;
+  .fases-isolated-container {
+    padding: 15px !important;
+    justify-content: flex-start !important;
+    padding-top: 80px !important;
+  }
+  
+  .fases-btn-voltar {
+    top: 15px !important;
+    left: 15px !important;
+  }
+  
+  .fases-btn-voltar img {
+    width: 45px !important;
+    height: 45px !important;
   }
   
   .fases-content {
-    gap: 20px;
-    padding-bottom: 30px;
-    
-    /* AJUSTE PARA DISPOSITIVOS MÓVEIS */
-    transform: translateY(60px); /* ← Altere este valor para mobile */
+    gap: 20px !important;
+    padding-bottom: 30px !important;
+    transform: translateY(60px) !important;
   }
   
   .fases-content h2 {
-    font-size: clamp(1.8rem, 7vw, 2.5rem);
+    font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
   }
   
   .fases-content p {
-    font-size: clamp(1.1rem, 4vw, 1.4rem);
-  }
-  
-  .btn-voltar {
-    top: 15px;
-    left: 15px;
-    padding: 10px 15px;
-  }
-  
-  .fases-list {
-    padding: 15px;
-    max-width: 300px;
-  }
-  
-  /* Ajuste de background para mobile */
-  .fases-container::before {
-    background-image: url(/images/background_modo.png);
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
   }
 }
 
 @media (max-width: 480px) {
-  .fases-container {
-    padding: 15px;
-    padding-top: 70px;
+  .fases-isolated-container {
+    padding: 12px !important;
+    padding-top: 70px !important;
+  }
+  
+  .fases-btn-voltar {
+    top: 12px !important;
+    left: 12px !important;
+  }
+  
+  .fases-btn-voltar img {
+    width: 40px !important;
+    height: 40px !important;
   }
   
   .fases-content {
-    gap: 18px;
-    
-    /* AJUSTE PARA TELAS PEQUENAS */
-    transform: translateY(40px); /* ← Altere este valor para telas pequenas */
+    gap: 18px !important;
+    transform: translateY(40px) !important;
   }
   
   .fases-content h2 {
-    font-size: clamp(1.6rem, 7vw, 2rem);
+    font-size: clamp(1.6rem, 7vw, 2rem) !important;
   }
   
   .fases-content p {
-    font-size: clamp(1rem, 4vw, 1.2rem);
-  }
-  
-  .btn-voltar {
-    font-size: clamp(0.8rem, 3.5vw, 1rem);
-    padding: 8px 12px;
-  }
-  
-  .fases-list {
-    gap: 15px;
-    max-width: 280px;
-    padding: 12px;
-  }
-  
-  .fases-list p {
-    font-size: clamp(1rem, 4vw, 1.1rem);
-  }
-  
-  .fase-button {
-    padding: 14px 18px;
-    font-size: clamp(1.1rem, 4.5vw, 1.3rem);
-    border-radius: 14px;
+    font-size: clamp(1rem, 4vw, 1.2rem) !important;
   }
 }

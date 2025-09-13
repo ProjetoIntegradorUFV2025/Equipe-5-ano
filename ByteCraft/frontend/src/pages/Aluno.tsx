@@ -14,16 +14,15 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
   const [turma, setTurma] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleVoltar = () => {
+    navigate("/");
+  };
+
   const handleComecar = async () => {
     try {
       setLoading(true);
-      const apelidoParaEnviar = apelido.trim();
+      const apelidoParaEnviar = apelido.trim() || "Anônimo";
       
-      if (!apelidoParaEnviar) {
-        alert("Apelido é obrigatório");
-        return;
-      }
-
       const alunoData = await loginAluno(apelidoParaEnviar, turma.trim() || undefined);
       
       setAluno({
@@ -47,23 +46,20 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
   };
 
   return (
-    <div className="aluno-container">
-      <button className="btn-voltar" onClick={() => navigate("/")} disabled={loading}>
-        Voltar
+    <div className="aluno-isolated-container">
+      <button className="aluno-btn-voltar" onClick={handleVoltar}>
+        <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
       </button>
-
       <div className="aluno-content">
-        <h2>Digite seus dados</h2>
         
         <input
           type="text"
-          placeholder="Seu apelido *"
+          placeholder="Seu apelido (opcional)..."
           value={apelido}
           onChange={(e) => setApelido(e.target.value)}
-          className="apelido-input"
+          className="aluno-apelido-input"
           onKeyPress={handleKeyPress}
           disabled={loading}
-          required
         />
         
         <input
@@ -71,15 +67,15 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
           placeholder="Sua turma (opcional)..."
           value={turma}
           onChange={(e) => setTurma(e.target.value)}
-          className="turma-input"
+          className="aluno-turma-input"
           onKeyPress={handleKeyPress}
           disabled={loading}
         />
         
         <button 
-          className="btn-comecar" 
+          className="aluno-btn-comecar" 
           onClick={handleComecar}
-          disabled={loading || !apelido.trim()}
+          disabled={loading}
         >
           {loading ? 'Carregando...' : 'Começar'}
         </button>
