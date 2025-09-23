@@ -1,80 +1,97 @@
 package com.bytecraft.controller;
 
+import com.bytecraft.DTO.AlunoDTO;
 import com.bytecraft.enums.NivelDificuldadeEnum;
 import com.bytecraft.model.Aluno;
-import com.bytecraft.repository.AlunoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bytecraft.service.AlunoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/alunos")
+@RequiredArgsConstructor
 public class AlunoController {
 
-    private final AlunoRepository alunoRepository;
+    private final AlunoService alunoService;
 
-    @Autowired
-    public AlunoController(AlunoRepository alunoRepository) {
-        this.alunoRepository = alunoRepository;
-    }
-
+    // Login ou registro
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> payload) {
+        Map<String, Object> resposta = new HashMap<>();
         try {
             String apelido = payload.get("apelido");
+            String codigoSalaStr = payload.get("codigoSala");
+
             if (apelido == null || apelido.isBlank()) {
-                return ResponseEntity.badRequest().body("Apelido é obrigatório");
+                resposta.put("erro", "Apelido é obrigatório");
+                return ResponseEntity.badRequest().body(resposta);
+            }
+            if (codigoSalaStr == null || codigoSalaStr.isBlank()) {
+                resposta.put("erro", "Código da sala é obrigatório");
+                return ResponseEntity.badRequest().body(resposta);
             }
 
-            Aluno aluno = alunoRepository.findById(apelido)
-                    .orElseGet(() -> {
-                        Aluno novo = new Aluno();
-                        novo.setApelido(apelido);
-                        return alunoRepository.save(novo);
-                    });
+            Byte codigoSala = Byte.parseByte(codigoSalaStr);
+            Aluno aluno = alunoService.vincularAlunoASala(apelido, codigoSala);
 
-            return ResponseEntity.ok(aluno);
+            resposta.put("apelido", aluno.getApelido());
+            // verifica se nivel é nulo antes de chamar .name()
+            resposta.put("nivel", aluno.getNivel() != null ? aluno.getNivel().name() : null);
+            resposta.put("sala", Map.of(
+                    "id", aluno.getSala().getId(),
+                    "nomeTurma", aluno.getSala().getNomeTurma(),
+                    "codigo", aluno.getSala().getCodigoUnico()
+            ));
+
+            return ResponseEntity.ok(resposta);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro no login: " + e.getMessage());
+            resposta.put("erro", "Erro no login: " + e.getMessage());
+            return ResponseEntity.badRequest().body(resposta);
         }
     }
-
-    // <<< Novo endpoint para retornar níveis
+    // Retorna níveis disponíveis
     @GetMapping("/niveis")
-    public ResponseEntity<?> getNiveis() {
-        return ResponseEntity.ok(List.of(
-            NivelDificuldadeEnum.FACIL,
-            NivelDificuldadeEnum.MEDIO,
-            NivelDificuldadeEnum.DIFICIL
-        ));
+    public ResponseEntity<List<String>> getNiveis() {
+        List<String> niveis = List.of(
+                NivelDificuldadeEnum.FACIL.name(),
+                NivelDificuldadeEnum.MEDIO.name(),
+                NivelDificuldadeEnum.DIFICIL.name()
+        );
+        return ResponseEntity.ok(niveis);
     }
 
-    // Atualizar nível do aluno
+    // Atualiza nível do aluno
     @PostMapping("/{apelido}/registrarNivel")
-    public ResponseEntity<?> registrarNivel(@PathVariable String apelido, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<?> registrarNivel(@PathVariable String apelido,
+                                            @RequestBody Map<String, String> payload) {
         try {
+            String codigoSalaStr = payload.get("codigoSala");
             String nivelStr = payload.get("nivel");
-            if (nivelStr == null || nivelStr.isBlank()) {
-                return ResponseEntity.badRequest().body("Nível é obrigatório");
-            }
 
-            NivelDificuldadeEnum nivel = NivelDificuldadeEnum.valueOf(nivelStr.toUpperCase());
+            if (codigoSalaStr == null || codigoSalaStr.isBlank())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Código da sala é obrigatório"));
+            if (nivelStr == null || nivelStr.isBlank())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Nível é obrigatório"));
 
-            Aluno aluno = alunoRepository.findById(apelido)
-                    .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+            Byte codigoSala = Byte.parseByte(codigoSalaStr);
+            Aluno aluno = alunoService.findAluno(apelido, codigoSala);
 
-            aluno.setNivel(nivel);
-            alunoRepository.save(aluno);
+            // Atualiza nível
+            aluno.setNivel(NivelDificuldadeEnum.valueOf(nivelStr.toUpperCase()));
+            alunoService.registraNivel(aluno);
 
-            return ResponseEntity.ok(aluno);
+            // Retorna DTO
+            AlunoDTO alunoDTO = alunoService.toDTO(aluno);
+            return ResponseEntity.ok(alunoDTO);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao atualizar nível: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }
-
 }
