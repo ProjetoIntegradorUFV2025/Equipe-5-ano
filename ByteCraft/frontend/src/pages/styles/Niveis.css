@@ -52,6 +52,39 @@ html, body {
   z-index: -1;
 }
 
+/* ===== MENSAGEM DE ORIENTAÇÃO VERTICAL ===== */
+.niveis-portrait-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.niveis-portrait-message {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  padding: 20px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border: 3px solid white;
+  max-width: 80%;
+}
+
+.niveis-portrait-message p {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+}
+
 /* ===== BOTÃO VOLTAR ===== */
 .niveis-btn-voltar {
   position: absolute;
@@ -102,7 +135,7 @@ html, body {
   width: 90%;
   max-width: 500px;
   padding-bottom: 25px;
-  transform: translateY(100px); /* desktop padrão */
+  transform: translateY(50px); /* Desktop mais abaixo para não cobrir título */
 }
 
 /* ===== BOTÕES ===== */
@@ -126,11 +159,31 @@ html, body {
 }
 
 @media (min-width: 769px) {
+  .niveis-button-group {
+    transform: translateY(80px); /* Desktop ainda mais abaixo */
+  }
+  
   .niveis-button-group button {
     padding: 2.2vh 3vw;
     font-size: clamp(1.4rem, 4vw, 1.8rem);
     max-width: 280px;
     border-bottom-width: 10px;
+  }
+}
+
+/* ===== DESKTOP ESPECÍFICO - BOTÕES MENORES E MAIS ABAIXO ===== */
+@media (min-width: 1025px) {
+  .niveis-button-group {
+    transform: translateY(120px); /* Bem mais abaixo para não cobrir título */
+    max-width: 400px;
+    gap: 20px;
+  }
+  
+  .niveis-button-group button {
+    padding: 1.5rem 2rem;
+    font-size: 1.4rem;
+    max-width: 250px;
+    border-radius: 16px;
   }
 }
 
@@ -257,5 +310,38 @@ html, body {
     font-size: 1.1rem;
     max-width: 200px;
     border-radius: 12px;
+  }
+}
+
+/* ===== ORIENTAÇÃO PORTRAIT (EM PÉ) ===== */
+@media (max-width: 768px) and (orientation: portrait) {
+  .niveis-portrait-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/graphics/aviso_rotate.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .niveis-portrait-message {
+    display: none;
+  }
+  
+  .niveis-button-group {
+    filter: blur(3px);
+    pointer-events: none;
+  }
+  
+  .niveis-btn-voltar {
+    pointer-events: none;
+    filter: blur(3px);
   }
 }

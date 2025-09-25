@@ -27,6 +27,39 @@
   z-index: -1;
 }
 
+/* ===== MENSAGEM DE ORIENTAÇÃO VERTICAL ===== */
+.home-portrait-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.home-portrait-message {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  padding: 20px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border: 3px solid white;
+  max-width: 80%;
+}
+
+.home-portrait-message p {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+}
+
 /* GRUPO DE BOTÕES - POSICIONADO MAIS PARA BAIXO */
 .home-button-group {
   display: flex;
@@ -132,30 +165,30 @@
 /* ===== VERSÃO DESKTOP ===== */
 @media (min-width: 1025px) {
   .home-button-group {
-    bottom: 20%;
-    max-width: 600px;
-    gap: 1.5rem;
+    bottom: 15%; /* Descido mais para não sobrepor o título superior */
+    max-width: 500px;
+    gap: 1.2rem;
   }
   
   .home-button-group button {
-    padding: 2,2rem 2.7rem;
-    font-size: 2.5rem;
-    min-width: 350px;
-    max-width: 400px;
-    border-radius: 20px;
+    padding: 1.8rem 2.2rem;
+    font-size: 2.0rem;
+    min-width: 300px;
+    max-width: 350px;
+    border-radius: 18px;
   }
   
   /* Ajuste para telas muito grandes */
   @media (min-width: 1600px) {
     .home-button-group {
-      bottom: 25%;
+      bottom: 18%; /* Descido proporcionalmente para telas grandes */
     }
     
     .home-button-group button {
-      padding: 2rem 2.5rem;
-      font-size: 1.7rem;
-      min-width: 340px;
-      max-width: 380px;
+      padding: 1.6rem 2.0rem;
+      font-size: 1.5rem;
+      min-width: 280px;
+      max-width: 320px;
     }
   }
 }
@@ -171,5 +204,33 @@
     padding: 2vh 5vw;
     font-size: 1.3rem;
     min-width: 220px;
+  }
+}
+
+/* ===== ORIENTAÇÃO PORTRAIT (EM PÉ) ===== */
+@media (max-width: 768px) and (orientation: portrait) {
+  .home-portrait-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/graphics/aviso_rotate.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .home-portrait-message {
+    display: none;
+  }
+  
+  .home-button-group {
+    filter: blur(3px);
+    pointer-events: none;
   }
 }

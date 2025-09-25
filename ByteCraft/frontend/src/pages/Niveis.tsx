@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getNiveis, registrarNivel } from "../api/api";
 import type { Aluno as AlunoType } from "../types";
@@ -13,6 +13,27 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   const [niveis, setNiveis] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isPortrait, setIsPortrait] = useState(false);
+
+  // Verificar orientação da tela
+  useEffect(() => {
+    const checkOrientation = () => {
+      const isMobile = window.innerWidth <= 768;
+      setIsPortrait(isMobile && window.innerHeight > window.innerWidth);
+    };
+
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', () => {
+      // Pequeno delay para aguardar a mudança completa da orientação
+      setTimeout(checkOrientation, 100);
+    });
+    
+    return () => {
+      window.removeEventListener('resize', checkOrientation);
+      window.removeEventListener('orientationchange', checkOrientation);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchNiveis = async () => {
@@ -89,6 +110,15 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   if (loading) {
     return (
       <div className="niveis-isolated-container">
+        {/* Mensagem para orientação vertical */}
+        {isPortrait && (
+          <div className="niveis-portrait-warning">
+            <div className="niveis-portrait-message">
+              <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+            </div>
+          </div>
+        )}
+
         <button className="niveis-btn-voltar" onClick={handleVoltar}>
           <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
         </button>
@@ -102,6 +132,15 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   if (error) {
     return (
       <div className="niveis-isolated-container">
+        {/* Mensagem para orientação vertical */}
+        {isPortrait && (
+          <div className="niveis-portrait-warning">
+            <div className="niveis-portrait-message">
+              <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+            </div>
+          </div>
+        )}
+
         <button className="niveis-btn-voltar" onClick={handleVoltar}>
           <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
         </button>
@@ -117,6 +156,15 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
 
   return (
     <div className="niveis-isolated-container">
+      {/* Mensagem para orientação vertical */}
+      {isPortrait && (
+        <div className="niveis-portrait-warning">
+          <div className="niveis-portrait-message">
+            <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+          </div>
+        </div>
+      )}
+
       <button className="niveis-btn-voltar" onClick={handleVoltar}>
         <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
       </button>
