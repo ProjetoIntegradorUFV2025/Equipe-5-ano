@@ -16,10 +16,10 @@ const Home: React.FC = () => {
     <div className="home-isolated-container">
       <div className="home-button-group">
         <button className="home-btn-professor" onClick={handleProfessor}>
-          Professor
+          PROFESSOR
         </button>
         <button className="home-btn-aluno" onClick={handleAluno}>
-          Aluno
+          ALUNO
         </button>
       </div>
     </div>

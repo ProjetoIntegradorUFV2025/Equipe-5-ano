@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Aluno from "./pages/Aluno";
 import Professor from "./pages/Professor";
+import ProfessorCadastro from "./pages/ProfessorCadastro";
 import Niveis from "./pages/Niveis";
 import Fases from "./pages/Fases";
 import type { Aluno as AlunoType } from "./types";
@@ -16,7 +17,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/aluno" element={<Aluno setAluno={setAluno} />} />
         <Route path="/professor" element={<Professor />} />
-        <Route path="/niveis" element={<Niveis aluno={aluno} />} />
+        <Route path="/professor/cadastro" element={<ProfessorCadastro />} />
+        <Route path="/niveis" element={aluno ? <Niveis aluno={aluno} /> : <Aluno setAluno={setAluno} />} />
         <Route path="/fases" element={<Fases />} />
       </Routes>
     </Router>

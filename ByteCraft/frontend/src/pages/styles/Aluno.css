@@ -1,273 +1,767 @@
 /* ===== ESTILOS ISOLADOS PARA A PÁGINA ALUNO ===== */
-/* Reset completo para evitar conflitos com estilos globais */
-.aluno-isolated-container,
-.aluno-isolated-container *,
-.aluno-isolated-container *::before,
-.aluno-isolated-container *::after {
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-family: inherit !important;
-  line-height: inherit !important;
-  color: inherit !important;
-  background-color: transparent !important;
-  border: none !important;
-  outline: none !important;
-  text-decoration: none !important;
-  list-style: none !important;
-}
-
-/* ===== CONTAINER GERAL ===== */
 .aluno-isolated-container {
-  height: 100vh !important;
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: relative !important;
-  overflow: hidden !important;
-  padding: 20px !important;
-  isolation: isolate !important;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  isolation: isolate;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
 .aluno-isolated-container::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-image: url(src/assets/backgrounds/background_aluno.png) !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  z-index: -1 !important;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(src/assets/backgrounds/background_aluno.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* ===== MENSAGEM DE ORIENTAÇÃO VERTICAL ===== */
+.aluno-portrait-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.aluno-portrait-message {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  padding: 20px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border: 3px solid white;
+  max-width: 80%;
+}
+
+.aluno-portrait-message p {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
 /* ===== BOTÃO VOLTAR ===== */
 .aluno-btn-voltar {
-  position: absolute !important;
-  top: 20px !important;
-  left: 20px !important;
-  background: none !important;
-  border: none !important;
-  cursor: pointer !important;
-  padding: 0 !important;
-  z-index: 10 !important;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
 }
 
 .aluno-btn-voltar img {
-  width: 50px !important;
-  height: 50px !important;
-  object-fit: contain !important;
-  transition: transform 0.2s ease !important;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
 }
 
 .aluno-btn-voltar:hover img {
-  transform: scale(1.1) !important;
+  transform: scale(1.1);
 }
 
 .aluno-btn-voltar:active img {
-  transform: scale(0.95) !important;
+  transform: scale(0.95);
 }
 
 /* ===== CONTEÚDO PRINCIPAL ===== */
 .aluno-content {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 25px !important;
-  width: 90% !important;
-  max-width: 500px !important;
-  padding-bottom: 50px !important;
-  transform: translateY(80px) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  transform: translateY(70px);
 }
 
-.aluno-content h2 {
-  font-size: clamp(2rem, 7vw, 3rem) !important;
-  color: #333 !important;
-  text-align: center !important;
-  margin: 0 !important;
-  padding: 0 15px !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1) !important;
+/* ===== GRUPO DE INPUTS ===== */
+.aluno-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 350px;
 }
 
-.aluno-content p {
-  font-size: clamp(1.2rem, 4vw, 1.6rem) !important;
-  color: #555 !important;
-  text-align: center !important;
-  margin: 0 !important;
-  padding: 0 15px !important;
-  max-width: 400px !important;
+/* ===== LABEL DOS INPUTS ===== */
+.aluno-input-label {
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 1.4rem;
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
 }
 
 /* ===== CAMPOS DE ENTRADA ===== */
-.aluno-apelido-input, .aluno-turma-input {
-  width: 100% !important;
-  max-width: 350px !important;
-  padding: 16px 20px !important;
-  font-size: clamp(1.2rem, 4.5vw, 1.5rem) !important;
-  border: 3px solid #d1d5db !important;
-  border-radius: 16px !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-  transition: all 0.2s ease !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
+.aluno-nome-input, .aluno-turma-input {
+  width: 100%;
+  max-width: 350px;
+  padding: 16px 20px;
+  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+  border: 3px solid #d1d5db;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.aluno-apelido-input:focus, .aluno-turma-input:focus {
-  outline: none !important;
-  border-color: #8b5cf6 !important;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2) !important;
-  transform: translateY(-2px) !important;
+.aluno-nome-input:focus, .aluno-turma-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 
+    0 6px 15px rgba(59, 130, 246, 0.25),
+    0 3px 8px rgba(59, 130, 246, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
 }
 
-.aluno-apelido-input::placeholder, .aluno-turma-input::placeholder {
-  color: #9ca3af !important;
-  text-align: center !important;
+.aluno-nome-input::placeholder, .aluno-turma-input::placeholder {
+  color: #9ca3af;
+  text-align: center;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.aluno-apelido-input:disabled, .aluno-turma-input:disabled {
-  opacity: 0.7 !important;
-  cursor: not-allowed !important;
+.aluno-nome-input:disabled, .aluno-turma-input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* ===== BOTÃO COMEÇAR ===== */
 .aluno-btn-comecar {
-  cursor: pointer !important;
-  transition: all 0.2s ease-in-out !important;
-  background-color: #8b5cf6 !important;
-  color: white !important;
-  padding: 16px 20px !important;
-  border-radius: 16px !important;
-  font-size: clamp(1.2rem, 4.5vw, 1.5rem) !important;
-  font-weight: bold !important;
-  border-style: solid !important;
-  border-width: 3px !important;
-  border-color: #7c3aed !important;
-  border-bottom-color: #6d28d9 !important;
-  border-bottom-width: 6px !important;
-  width: 100% !important;
-  max-width: 350px !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: #3b82f6;
+  color: white;
+  padding: 18px 24px;
+  border-radius: 16px;
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  font-weight: bold;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #2563eb;
+  border-bottom-color: #1e40af;
+  border-bottom-width: 8px;
+  width: 100%;
+  max-width: 350px;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  margin-top: 15px;
+  letter-spacing: 1px;
 }
 
 .aluno-btn-comecar:hover {
-  filter: brightness(110%) !important;
-  transform: translateY(-2px) !important;
-  border-bottom-width: 8px !important;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25) !important;
+  filter: brightness(110%);
+  transform: translateY(-4px);
+  border-bottom-width: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 .aluno-btn-comecar:active {
-  filter: brightness(90%) !important;
-  transform: translateY(3px) !important;
-  border-bottom-width: 3px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  filter: brightness(90%);
+  transform: translateY(4px);
+  border-bottom-width: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 .aluno-btn-comecar:disabled {
-  opacity: 0.7 !important;
-  cursor: not-allowed !important;
-  transform: none !important;
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .aluno-btn-comecar:disabled:hover {
-  filter: none !important;
-  transform: none !important;
-  border-bottom-width: 6px !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  filter: none;
+  transform: none;
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 768px) {
+/* ===== VERSÃO DESKTOP - SEM SCROLL ===== */
+@media (min-width: 1024px) {
   .aluno-isolated-container {
-    padding: 15px !important;
-    justify-content: flex-start !important;
-    padding-top: 80px !important;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
   }
   
   .aluno-btn-voltar {
-    top: 15px !important;
-    left: 15px !important;
+    top: 30px;
+    left: 30px;
   }
   
   .aluno-btn-voltar img {
-    width: 45px !important;
-    height: 45px !important;
+    width: 60px;
+    height: 60px;
   }
   
   .aluno-content {
-    gap: 20px !important;
-    padding-bottom: 30px !important;
-    transform: translateY(60px) !important;
+    transform: translateY(80px); /* Ajustado para descer o conteúdo */
+    gap: 40px;
+    max-width: 450px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
-  .aluno-content h2 {
-    font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
+  .aluno-input-group {
+    gap: 12px;
+    width: 100%;
+    max-width: 450px;
   }
   
-  .aluno-content p {
-    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+  .aluno-input-label {
+    font-size: 1.6rem;
+    letter-spacing: 2px;
   }
   
-  .aluno-apelido-input, .aluno-turma-input {
-    padding: 14px 18px !important;
-    font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important;
-    max-width: 320px !important;
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 20px 24px;
+    font-size: 1.4rem;
+    max-width: 450px;
+    width: 100%;
+    border-radius: 18px;
+    border-width: 4px;
+  }
+  
+  .aluno-nome-input:focus, .aluno-turma-input:focus {
+    transform: translateY(-3px);
   }
   
   .aluno-btn-comecar {
-    padding: 14px 18px !important;
-    font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important;
-    max-width: 320px !important;
+    padding: 22px 28px;
+    font-size: 1.8rem;
+    max-width: 450px;
+    width: 100%;
+    border-radius: 18px;
+    border-width: 5px;
+    border-bottom-width: 10px;
+    margin-top: 20px;
+  }
+  
+  .aluno-btn-comecar:hover:not(:disabled) {
+    transform: translateY(-5px);
+    border-bottom-width: 14px;
+  }
+  
+  .aluno-btn-comecar:active:not(:disabled) {
+    transform: translateY(3px);
+    border-bottom-width: 7px;
+  }
+}
+
+/* ===== DESKTOP EXTRA LARGE ===== */
+@media (min-width: 1440px) {
+  .aluno-btn-voltar {
+    top: 40px;
+    left: 40px;
+  }
+  
+  .aluno-btn-voltar img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .aluno-content {
+    gap: 50px;
+    max-width: 500px;
+    transform: translateY(90px); /* Ajustado para descer o conteúdo */
+  }
+  
+  .aluno-input-group {
+    gap: 15px;
+    max-width: 500px;
+  }
+  
+  .aluno-input-label {
+    font-size: 1.8rem;
+    letter-spacing: 2.5px;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 24px 28px;
+    font-size: 1.6rem;
+    max-width: 500px;
+    border-radius: 20px;
+    border-width: 5px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 26px 32px;
+    font-size: 2rem;
+    max-width: 500px;
+    border-radius: 20px;
+    border-width: 6px;
+    border-bottom-width: 12px;
+    margin-top: 25px;
+  }
+  
+  .aluno-btn-comecar:hover:not(:disabled) {
+    transform: translateY(-6px);
+    border-bottom-width: 16px;
+  }
+  
+  .aluno-btn-comecar:active:not(:disabled) {
+    transform: translateY(4px);
+    border-bottom-width: 8px;
+  }
+}
+
+/* ===== DESKTOP 4K E ULTRA WIDE ===== */
+@media (min-width: 1920px) {
+  .aluno-btn-voltar {
+    top: 50px;
+    left: 50px;
+  }
+  
+  .aluno-btn-voltar img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .aluno-content {
+    gap: 60px;
+    max-width: 600px;
+    transform: translateY(100px); /* Ajustado para descer o conteúdo */
+  }
+  
+  .aluno-input-group {
+    gap: 18px;
+    max-width: 600px;
+  }
+  
+  .aluno-input-label {
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 28px 32px;
+    font-size: 1.8rem;
+    max-width: 600px;
+    border-radius: 22px;
+    border-width: 6px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 30px 36px;
+    font-size: 2.2rem;
+    max-width: 600px;
+    border-radius: 22px;
+    border-width: 7px;
+    border-bottom-width: 14px;
+    margin-top: 30px;
+  }
+  
+  .aluno-btn-comecar:hover:not(:disabled) {
+    transform: translateY(-7px);
+    border-bottom-width: 18px;
+  }
+  
+  .aluno-btn-comecar:active:not(:disabled) {
+    transform: translateY(5px);
+    border-bottom-width: 10px;
+  }
+}
+
+/* ===== RESPONSIVIDADE MOBILE ===== */
+@media (max-width: 1023px) {
+  .aluno-isolated-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .aluno-isolated-container {
+    padding: 15px;
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+  
+  .aluno-btn-voltar {
+    top: 15px;
+    left: 15px;
+  }
+  
+  .aluno-btn-voltar img {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .aluno-content {
+    gap: 25px;
+    padding: 20px;
+    padding-bottom: 30px;
+    transform: translateY(60px);
+  }
+  
+  .aluno-input-label {
+    font-size: 1.2rem;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 14px 18px;
+    font-size: clamp(1.1rem, 4.5vw, 1.3rem);
+    max-width: 320px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 16px 20px;
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
+    max-width: 320px;
   }
 }
 
 @media (max-width: 480px) {
   .aluno-isolated-container {
-    padding: 12px !important;
-    padding-top: 70px !important;
+    padding: 12px;
+    padding-top: 70px;
   }
   
   .aluno-btn-voltar {
-    top: 12px !important;
-    left: 12px !important;
+    top: 12px;
+    left: 12px;
   }
   
   .aluno-btn-voltar img {
-    width: 40px !important;
-    height: 40px !important;
+    width: 40px;
+    height: 40px;
   }
   
   .aluno-content {
-    gap: 18px !important;
-    transform: translateY(40px) !important;
+    gap: 20px;
+    padding: 20px;
+    transform: translateY(50px);
   }
   
-  .aluno-content h2 {
-    font-size: clamp(1.6rem, 7vw, 2rem) !important;
+  .aluno-input-group {
+    gap: 6px;
   }
   
-  .aluno-content p {
-    font-size: clamp(1rem, 4vw, 1.2rem) !important;
+  .aluno-input-label {
+    font-size: 1.1rem;
   }
   
-  .aluno-apelido-input, .aluno-turma-input {
-    padding: 12px 16px !important;
-    font-size: clamp(1rem, 4.5vw, 1.2rem) !important;
-    max-width: 280px !important;
-    border-radius: 14px !important;
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 12px 16px;
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
+    max-width: 280px;
+    border-radius: 14px;
   }
   
   .aluno-btn-comecar {
-    padding: 12px 16px !important;
-    font-size: clamp(1rem, 4.5vw, 1.2rem) !important;
-    max-width: 280px !important;
-    border-radius: 14px !important;
+    padding: 14px 18px;
+    font-size: clamp(1.2rem, 5vw, 1.4rem);
+    max-width: 280px;
+    border-radius: 14px;
+    border-width: 3px;
+    border-bottom-width: 7px;
+  }
+  
+  .aluno-btn-comecar:hover {
+    border-bottom-width: 10px;
+  }
+  
+  .aluno-btn-comecar:active {
+    border-bottom-width: 5px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE - LAYOUT FIXO NA PARTE INFERIOR ===== */
+@media (max-width: 1200px) and (orientation: landscape) {
+  .aluno-isolated-container {
+    padding: 0;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .aluno-btn-voltar {
+    top: 8px;
+    left: 8px;
+    position: absolute;
+    z-index: 20;
+  }
+  
+  .aluno-btn-voltar img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .aluno-content {
+    position: fixed;
+    bottom: 40px; /* Aumentado de 15px para 40px - subiu os botões */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 400px;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: none;
+    backdrop-filter: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .aluno-input-group {
+    gap: 4px;
+    width: 100%;
+    margin: 0;
+    max-width: none;
+  }
+  
+  .aluno-input-label {
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    border-width: 2px;
+    height: 36px;
+    box-sizing: border-box;
+    max-width: none;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    border-width: 2px;
+    border-bottom-width: 3px;
+    margin-top: 8px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: none;
+  }
+  
+  .aluno-btn-comecar:hover:not(:disabled) {
+    border-bottom-width: 4px;
+    transform: translateY(-1px);
+  }
+  
+  .aluno-btn-comecar:active:not(:disabled) {
+    border-bottom-width: 2px;
+    transform: translateY(1px);
+  }
+}
+
+/* ===== MOBILE LANDSCAPE MUITO PEQUENO - ALTURA < 400px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (max-height: 400px) {
+  .aluno-content {
+    bottom: 25px; /* Aumentado de 8px para 25px - subiu os botões */
+    gap: 4px;
+    max-width: 350px;
+    width: 80%;
+  }
+  
+  .aluno-input-group {
+    gap: 2px;
+  }
+  
+  .aluno-input-label {
+    font-size: 0.72rem;
+    margin-bottom: 1px;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    height: 30px;
+    border-radius: 6px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    height: 32px;
+    margin-top: 4px;
+    border-radius: 6px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE ALTURA MÉDIA - 400px a 500px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (min-height: 401px) and (max-height: 500px) {
+  .aluno-content {
+    bottom: 35px; /* Aumentado de 10px para 35px - subiu os botões */
+    gap: 6px;
+    max-width: 370px;
+    width: 82%;
+  }
+  
+  .aluno-input-label {
+    font-size: 0.78rem;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 7px 11px;
+    font-size: 0.78rem;
+    height: 34px;
+    border-radius: 7px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 7px 11px;
+    font-size: 0.8rem;
+    height: 36px;
+    margin-top: 6px;
+    border-radius: 7px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE ALTURA GRANDE - 500px a 700px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .aluno-content {
+    bottom: 45px; /* Aumentado de 12px para 45px - subiu os botões */
+    gap: 8px;
+    max-width: 390px;
+    width: 84%;
+  }
+  
+  .aluno-input-label {
+    font-size: 0.82rem;
+    margin-bottom: 3px;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    height: 36px;
+    border-radius: 8px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    height: 38px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE ALTURA MUITO GRANDE - > 700px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (min-height: 701px) {
+  .aluno-content {
+    bottom: 60px; /* Aumentado de 15px para 60px - subiu os botões */
+    gap: 10px;
+    max-width: 420px;
+    width: 86%;
+  }
+  
+  .aluno-input-label {
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+  }
+  
+  .aluno-nome-input, .aluno-turma-input {
+    padding: 9px 13px;
+    font-size: 0.85rem;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  .aluno-btn-comecar {
+    padding: 9px 13px;
+    font-size: 0.9rem;
+    height: 42px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+}
+
+/* ===== LANDSCAPE TABLETS E DISPOSITIVOS MAIORES ===== */
+@media (min-width: 1201px) and (orientation: landscape) {
+  .aluno-portrait-warning {
+    display: none;
+  }
+  
+  .aluno-content {
+    filter: none;
+    pointer-events: auto;
+  }
+  
+  .aluno-btn-voltar {
+    pointer-events: auto;
+    filter: none;
+  }
+}
+
+/* ===== ORIENTAÇÃO PORTRAIT (EM PÉ) ===== */
+@media (max-width: 768px) and (orientation: portrait) {
+  .aluno-portrait-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/graphics/aviso_rotate.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .aluno-portrait-message {
+    display: none;
+  }
+  
+  .aluno-content {
+    filter: blur(3px);
+    pointer-events: none;
+  }
+  
+  .aluno-btn-voltar {
+    pointer-events: none;
+    filter: blur(3px);
   }
 }

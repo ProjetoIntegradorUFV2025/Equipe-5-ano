@@ -38,17 +38,17 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
 
   const selecionarNivel = async (nivel: string) => {
     try {
-      if (!aluno?.apelido) {
-        alert("Aluno não identificado. Faça login novamente.");
+      if (!aluno?.apelido || !aluno?.codigoSala) {
+        alert("Aluno ou código da sala não identificado. Faça login novamente.");
         navigate("/aluno");
         return;
       }
-
+  
       setLoading(true);
-      const atualizado = await registrarNivel(aluno.apelido, nivel);
-      
+      const atualizado = await registrarNivel(aluno.apelido, nivel, aluno.codigoSala!);
+  
       const alunoAtualizado = { ...aluno, nivel: atualizado.nivel };
-      
+  
       navigate("/fases", { 
         state: { 
           nivel,

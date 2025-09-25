@@ -1,5 +1,5 @@
-/* ===== ESTILOS ISOLADOS PARA A PÁGINA PROFESSOR ===== */
-.professor-isolated-container {
+/* ===== ESTILOS ISOLADOS PARA A PÁGINA PROFESSOR CADASTRO ===== */
+.professor-cadastro-isolated-container {
   height: 100vh;
   width: 100%;
   display: flex;
@@ -13,14 +13,14 @@
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.professor-isolated-container::before {
+.professor-cadastro-isolated-container::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(src/assets/backgrounds/background_professor.png);
+  background-image: url(src/assets/backgrounds/background_cadastro.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -28,7 +28,7 @@
 }
 
 /* ===== MENSAGEM DE ORIENTAÇÃO VERTICAL ===== */
-.professor-portrait-warning {
+.professor-cadastro-portrait-warning {
   position: fixed;
   top: 0;
   left: 0;
@@ -41,8 +41,8 @@
   z-index: 1000;
 }
 
-.professor-portrait-message {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+.professor-cadastro-portrait-message {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
   padding: 20px 30px;
   border-radius: 15px;
   text-align: center;
@@ -51,7 +51,7 @@
   max-width: 80%;
 }
 
-.professor-portrait-message p {
+.professor-cadastro-portrait-message p {
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -60,8 +60,8 @@
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-/* ===== BOTÃO VOLTAR ===== */
-.professor-btn-voltar {
+/* ===== BOTÃO VOLTAR (IGUAL AO DA PÁGINA PROFESSOR) ===== */
+.professor-cadastro-btn-voltar {
   position: absolute;
   top: 20px;
   left: 20px;
@@ -72,35 +72,35 @@
   z-index: 10;
 }
 
-.professor-btn-voltar img {
+.professor-cadastro-btn-voltar img {
   width: 50px;
   height: 50px;
   object-fit: contain;
   transition: transform 0.2s ease;
 }
 
-.professor-btn-voltar:hover img {
+.professor-cadastro-btn-voltar:hover img {
   transform: scale(1.1);
 }
 
-.professor-btn-voltar:active img {
+.professor-cadastro-btn-voltar:active img {
   transform: scale(0.95);
 }
 
 /* ===== CONTEÚDO PRINCIPAL ===== */
-.professor-content {
+.professor-cadastro-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   width: 100%;
   max-width: 300px;
-  margin-top: 220px;
-  padding-bottom: 20px;
+  margin-top: 120px; /* Aumentado de 80px para 120px para descer os botões */
+  padding-bottom: 40px;
 }
 
 /* ===== GRUPO DE INPUTS ===== */
-.professor-input-group {
+.professor-cadastro-input-group {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,7 +109,7 @@
 }
 
 /* ===== LABEL DOS INPUTS ===== */
-.professor-input-label {
+.professor-cadastro-input-label {
   font-family: "Impact", "Arial Black", sans-serif;
   font-size: 1.2rem;
   color: white;
@@ -119,7 +119,9 @@
 }
 
 /* ===== CAMPOS DE ENTRADA ===== */
-.professor-nome-input, .professor-senha-input {
+.professor-cadastro-nome-input, 
+.professor-cadastro-senha-input, 
+.professor-cadastro-turma-input {
   width: 100%;
   padding: 12px 16px;
   font-size: 1rem;
@@ -136,7 +138,9 @@
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.professor-nome-input:focus, .professor-senha-input:focus {
+.professor-cadastro-nome-input:focus, 
+.professor-cadastro-senha-input:focus, 
+.professor-cadastro-turma-input:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 
@@ -146,52 +150,23 @@
   transform: translateY(-2px);
 }
 
-.professor-nome-input::placeholder, .professor-senha-input::placeholder {
+.professor-cadastro-nome-input::placeholder, 
+.professor-cadastro-senha-input::placeholder, 
+.professor-cadastro-turma-input::placeholder {
   color: #9ca3af;
   text-align: center;
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-/* ===== BOTÃO ENTRAR (VERDE) ===== */
-.professor-btn-entrar {
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  background-color: #22c55e;
-  color: white;
-  padding: 14px 20px;
-  border-radius: 14px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-style: solid;
-  border-width: 3px;
-  border-color: #16a34a;
-  border-bottom-color: #14532d;
-  border-bottom-width: 6px;
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
-  letter-spacing: 1px;
-  margin-top: 10px;
-}
-
-.professor-btn-entrar:hover {
-  filter: brightness(110%);
-  transform: translateY(-3px);
-  border-bottom-width: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-.professor-btn-entrar:active {
-  filter: brightness(90%);
-  transform: translateY(2px);
-  border-bottom-width: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+.professor-cadastro-nome-input:disabled, 
+.professor-cadastro-senha-input:disabled, 
+.professor-cadastro-turma-input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* ===== BOTÃO CADASTRAR (AZUL) ===== */
-.professor-btn-cadastrar {
+.professor-cadastro-btn-cadastrar {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   background-color: #3b82f6;
@@ -211,39 +186,55 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
   letter-spacing: 1px;
+  margin-top: 10px;
 }
 
-.professor-btn-cadastrar:hover {
+.professor-cadastro-btn-cadastrar:hover:not(:disabled) {
   filter: brightness(110%);
   transform: translateY(-3px);
   border-bottom-width: 8px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.professor-btn-cadastrar:active {
+.professor-cadastro-btn-cadastrar:active:not(:disabled) {
   filter: brightness(90%);
   transform: translateY(2px);
   border-bottom-width: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
+.professor-cadastro-btn-cadastrar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.professor-cadastro-btn-cadastrar:disabled:hover {
+  filter: none;
+  transform: none;
+  border-bottom-width: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* ===== VERSÃO DESKTOP ===== */
 @media (min-width: 1024px) {
-  .professor-content {
-    margin-top: 240px;
-    max-width: 350px;
+  .professor-cadastro-content {
+    margin-top: 190px; /* Aumentado para desktop também */
+    max-width: 350px; /* Ligeiramente maior para desktop */
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 1.3rem;
   }
   
-  .professor-nome-input, .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 14px 18px;
     font-size: 1.1rem;
   }
   
-  .professor-btn-entrar, .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 16px 22px;
     font-size: 1.3rem;
   }
@@ -251,77 +242,81 @@
 
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
-  .professor-isolated-container {
-    padding-top: 70px;
+  .professor-cadastro-isolated-container {
+    padding-top: 60px;
   }
   
-  .professor-btn-voltar {
+  .professor-cadastro-btn-voltar {
     top: 15px;
     left: 15px;
   }
   
-  .professor-btn-voltar img {
+  .professor-cadastro-btn-voltar img {
     width: 45px;
     height: 45px;
   }
   
-  .professor-content {
+  .professor-cadastro-content {
     gap: 18px;
-    margin-top: 150px;
+    margin-top: 90px; /* Aumentado de 70px para 90px */
     max-width: 280px;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 1.1rem;
   }
   
-  .professor-nome-input, .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 11px 15px;
     font-size: 0.95rem;
   }
   
-  .professor-btn-entrar, .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 13px 18px;
     font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .professor-isolated-container {
-    padding-top: 60px;
+  .professor-cadastro-isolated-container {
+    padding-top: 50px;
   }
   
-  .professor-btn-voltar {
+  .professor-cadastro-btn-voltar {
     top: 12px;
     left: 12px;
   }
   
-  .professor-btn-voltar img {
+  .professor-cadastro-btn-voltar img {
     width: 40px;
     height: 40px;
   }
   
-  .professor-content {
+  .professor-cadastro-content {
     gap: 16px;
-    margin-top: 130px;
+    margin-top: 80px; /* Aumentado de 60px para 80px */
     max-width: 260px;
   }
   
-  .professor-input-group {
+  .professor-cadastro-input-group {
     gap: 5px;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 1.0rem;
   }
   
-  .professor-nome-input, .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 10px 14px;
     font-size: 0.9rem;
     border-radius: 12px;
   }
   
-  .professor-btn-entrar, .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 12px 16px;
     font-size: 1.0rem;
     border-radius: 12px;
@@ -329,37 +324,37 @@
     border-bottom-width: 5px;
   }
   
-  .professor-btn-entrar:hover, .professor-btn-cadastrar:hover {
+  .professor-cadastro-btn-cadastrar:hover:not(:disabled) {
     border-bottom-width: 7px;
   }
   
-  .professor-btn-entrar:active, .professor-btn-cadastrar:active {
+  .professor-cadastro-btn-cadastrar:active:not(:disabled) {
     border-bottom-width: 3px;
   }
 }
 
-/* ===== MOBILE LANDSCAPE - LAYOUT FLUÍDO ===== */
+/* ===== MOBILE LANDSCAPE - LAYOUT FIXO NA PARTE INFERIOR ===== */
 @media (max-width: 1200px) and (orientation: landscape) {
-  .professor-isolated-container {
+  .professor-cadastro-isolated-container {
     padding: 0;
     position: relative;
     height: 100vh;
     overflow: hidden;
   }
   
-  .professor-btn-voltar {
+  .professor-cadastro-btn-voltar {
     top: 8px;
     left: 8px;
     position: absolute;
     z-index: 20;
   }
   
-  .professor-btn-voltar img {
+  .professor-cadastro-btn-voltar img {
     width: 28px;
     height: 28px;
   }
   
-  .professor-content {
+  .professor-cadastro-content {
     position: fixed;
     bottom: 15px;
     left: 50%;
@@ -371,24 +366,26 @@
     padding: 0;
     box-sizing: border-box;
     background: none;
+    backdrop-filter: none;
     border-radius: 0;
     border: none;
     box-shadow: none;
   }
   
-  .professor-input-group {
+  .professor-cadastro-input-group {
     gap: 4px;
     width: 100%;
     margin: 0;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 0.85rem;
     margin-bottom: 2px;
   }
   
-  .professor-nome-input, 
-  .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 8px 12px;
     font-size: 0.8rem;
     border-radius: 8px;
@@ -397,8 +394,7 @@
     box-sizing: border-box;
   }
   
-  .professor-btn-entrar,
-  .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 8px 12px;
     font-size: 0.85rem;
     border-radius: 8px;
@@ -411,14 +407,12 @@
     justify-content: center;
   }
   
-  .professor-btn-entrar:hover,
-  .professor-btn-cadastrar:hover {
+  .professor-cadastro-btn-cadastrar:hover:not(:disabled) {
     border-bottom-width: 4px;
     transform: translateY(-1px);
   }
   
-  .professor-btn-entrar:active,
-  .professor-btn-cadastrar:active {
+  .professor-cadastro-btn-cadastrar:active:not(:disabled) {
     border-bottom-width: 2px;
     transform: translateY(1px);
   }
@@ -426,32 +420,32 @@
 
 /* ===== MOBILE LANDSCAPE MUITO PEQUENO - ALTURA < 400px ===== */
 @media (max-width: 1200px) and (orientation: landscape) and (max-height: 400px) {
-  .professor-content {
+  .professor-cadastro-content {
     bottom: 8px;
     gap: 6px;
     max-width: 350px;
     width: 80%;
   }
   
-  .professor-input-group {
+  .professor-cadastro-input-group {
     gap: 2px;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 0.72rem;
     margin-bottom: 1px;
   }
   
-  .professor-nome-input, 
-  .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 6px 10px;
     font-size: 0.75rem;
     height: 30px;
     border-radius: 6px;
   }
   
-  .professor-btn-entrar,
-  .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 6px 10px;
     font-size: 0.75rem;
     height: 32px;
@@ -462,27 +456,27 @@
 
 /* ===== MOBILE LANDSCAPE ALTURA MÉDIA - 400px a 500px ===== */
 @media (max-width: 1200px) and (orientation: landscape) and (min-height: 401px) and (max-height: 500px) {
-  .professor-content {
+  .professor-cadastro-content {
     bottom: 10px;
     gap: 8px;
     max-width: 370px;
     width: 82%;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 0.78rem;
   }
   
-  .professor-nome-input, 
-  .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 7px 11px;
     font-size: 0.78rem;
     height: 34px;
     border-radius: 7px;
   }
   
-  .professor-btn-entrar,
-  .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 7px 11px;
     font-size: 0.8rem;
     height: 36px;
@@ -493,28 +487,28 @@
 
 /* ===== MOBILE LANDSCAPE ALTURA GRANDE - 500px a 700px ===== */
 @media (max-width: 1200px) and (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
-  .professor-content {
+  .professor-cadastro-content {
     bottom: 12px;
     gap: 10px;
     max-width: 390px;
     width: 84%;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 0.82rem;
     margin-bottom: 3px;
   }
   
-  .professor-nome-input, 
-  .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 8px 12px;
     font-size: 0.82rem;
     height: 36px;
     border-radius: 8px;
   }
   
-  .professor-btn-entrar,
-  .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 8px 12px;
     font-size: 0.85rem;
     height: 38px;
@@ -525,28 +519,28 @@
 
 /* ===== MOBILE LANDSCAPE ALTURA MUITO GRANDE - > 700px ===== */
 @media (max-width: 1200px) and (orientation: landscape) and (min-height: 701px) {
-  .professor-content {
+  .professor-cadastro-content {
     bottom: 15px;
     gap: 12px;
     max-width: 420px;
     width: 86%;
   }
   
-  .professor-input-label {
+  .professor-cadastro-input-label {
     font-size: 0.9rem;
     margin-bottom: 3px;
   }
   
-  .professor-nome-input, 
-  .professor-senha-input {
+  .professor-cadastro-nome-input, 
+  .professor-cadastro-senha-input, 
+  .professor-cadastro-turma-input {
     padding: 9px 13px;
     font-size: 0.85rem;
     height: 40px;
     border-radius: 10px;
   }
   
-  .professor-btn-entrar,
-  .professor-btn-cadastrar {
+  .professor-cadastro-btn-cadastrar {
     padding: 9px 13px;
     font-size: 0.9rem;
     height: 42px;
@@ -557,16 +551,16 @@
 
 /* ===== LANDSCAPE TABLETS E DISPOSITIVOS MAIORES ===== */
 @media (min-width: 1201px) and (orientation: landscape) {
-  .professor-portrait-warning {
+  .professor-cadastro-portrait-warning {
     display: none;
   }
   
-  .professor-content {
+  .professor-cadastro-content {
     filter: none;
     pointer-events: auto;
   }
   
-  .professor-btn-voltar {
+  .professor-cadastro-btn-voltar {
     pointer-events: auto;
     filter: none;
   }
@@ -574,7 +568,7 @@
 
 /* ===== ORIENTAÇÃO PORTRAIT (EM PÉ) ===== */
 @media (max-width: 768px) and (orientation: portrait) {
-  .professor-portrait-warning {
+  .professor-cadastro-portrait-warning {
     position: fixed;
     top: 0;
     left: 0;
@@ -590,16 +584,16 @@
     z-index: 1000;
   }
   
-  .professor-portrait-message {
+  .professor-cadastro-portrait-message {
     display: none;
   }
   
-  .professor-content {
+  .professor-cadastro-content {
     filter: blur(3px);
     pointer-events: none;
   }
   
-  .professor-btn-voltar {
+  .professor-cadastro-btn-voltar {
     pointer-events: none;
     filter: blur(3px);
   }
