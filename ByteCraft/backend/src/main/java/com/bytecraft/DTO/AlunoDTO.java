@@ -1,13 +1,15 @@
 // AlunoDTO.java
 package com.bytecraft.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.bytecraft.model.Aluno;
 
-@Data
-@AllArgsConstructor
-public class AlunoDTO {
-    private String apelido;
-    private String nivel;
-    private SalaDTO sala;
+public record AlunoDTO(String apelido, String nivel, SalaDTO sala) {
+
+    public static AlunoDTO fromEntity(Aluno aluno) {
+        return new AlunoDTO(
+            aluno.getApelido(),
+            aluno.getNivel().name(),
+            SalaDTO.fromEntity(aluno.getSala())
+        );
+    }
 }

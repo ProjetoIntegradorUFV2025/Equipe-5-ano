@@ -29,7 +29,7 @@ public class SalaController {
             return ResponseEntity.badRequest().body(Map.of("erro", "Nome da turma é obrigatório"));
         }
         Sala sala = salaService.criaSala(nomeTurma);
-        SalaDTO salaDTO = salaService.toDTO(sala);
+        SalaDTO salaDTO = SalaDTO.fromEntity(sala);
         return ResponseEntity.ok(salaDTO);
     }
 
@@ -46,7 +46,7 @@ public class SalaController {
         try {
             Byte codigo = Byte.parseByte(codigoStr);
             Aluno aluno = alunoService.vincularAlunoASala(apelido, codigo);
-            AlunoDTO alunoDTO = alunoService.toDTO(aluno);
+            AlunoDTO alunoDTO = AlunoDTO.fromEntity(aluno);
             return ResponseEntity.ok(alunoDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
@@ -57,7 +57,7 @@ public class SalaController {
     @GetMapping("/existe")
     public ResponseEntity<Map<String, Object>> existeSala() {
         List<SalaDTO> salas = salaService.getTodasSalas().stream()
-                .map(salaService::toDTO)
+                .map(SalaDTO::fromEntity)
                 .toList();
         boolean existe = !salas.isEmpty();
         return ResponseEntity.ok(Map.of(

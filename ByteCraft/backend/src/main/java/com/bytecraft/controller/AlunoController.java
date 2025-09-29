@@ -87,7 +87,7 @@ public class AlunoController {
             alunoService.registraNivel(aluno);
 
             // Retorna DTO
-            AlunoDTO alunoDTO = alunoService.toDTO(aluno);
+            AlunoDTO alunoDTO = AlunoDTO.fromEntity(aluno);
             return ResponseEntity.ok(alunoDTO);
 
         } catch (Exception e) {

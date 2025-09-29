@@ -68,7 +68,7 @@ const ProfessorCadastro: React.FC = () => {
       const sala = professor.sala;
       alert(
         `Cadastro realizado!\nProfessor: ${professor.nomeDeUsuario}\n` +
-        `Turma: ${sala?.nomeTurma}\nCódigo: ${sala?.codigo}`
+        `Turma: ${sala?.nomeTurma}\nCódigo: ${sala?.codigoUnico}`
       );
       
       // Limpa campos

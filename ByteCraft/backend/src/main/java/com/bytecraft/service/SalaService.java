@@ -1,6 +1,5 @@
 package com.bytecraft.service;
 
-import com.bytecraft.DTO.SalaDTO;
 import com.bytecraft.model.Sala;
 import com.bytecraft.repository.SalaRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,31 +14,34 @@ public class SalaService {
 
     private final SalaRepository salaRepository;
 
+    // Gera código único entre 10 e 99, sem repetição
     private Byte geraCodigoUnico() {
-        // Gera um número aleatório entre 10 e 99
-        return (byte) (10 + (int)(Math.random() * 90));
+        Byte codigo;
+        do {
+            codigo = (byte) (10 + (int) (Math.random() * 90));
+        } while (salaRepository.findByCodigoUnico(codigo).isPresent());
+        return codigo;
     }
 
+    // Cria sala se não existir
     public Sala criaSala(String nomeTurma) {
         return salaRepository.findByNomeTurma(nomeTurma)
                 .orElseGet(() -> {
                     Sala nova = Sala.builder()
                             .nomeTurma(nomeTurma)
-                            .codigoUnico(geraCodigoUnico()) // <- Preenche antes de salvar
+                            .codigoUnico(geraCodigoUnico())
                             .build();
                     return salaRepository.save(nova);
                 });
-            }
+    }
 
+    // Busca sala por código
     public Optional<Sala> getSalaByCodigo(Byte codigo) {
         return salaRepository.findByCodigoUnico(codigo);
     }
 
+    // Retorna todas as salas
     public List<Sala> getTodasSalas() {
         return salaRepository.findAll();
-    }
-
-    public SalaDTO toDTO(Sala sala) {
-        return new SalaDTO(sala.getId(), sala.getNomeTurma(), sala.getCodigoUnico());
     }
 }

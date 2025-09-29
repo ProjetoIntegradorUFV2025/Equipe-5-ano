@@ -1,7 +1,5 @@
 package com.bytecraft.service;
 
-import com.bytecraft.DTO.AlunoDTO;
-import com.bytecraft.DTO.SalaDTO;
 import com.bytecraft.model.Aluno;
 import com.bytecraft.model.Sala;
 import com.bytecraft.repository.AlunoRepository;
@@ -49,9 +47,4 @@ public class AlunoService {
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 
-    public AlunoDTO toDTO(Aluno aluno) {
-        Sala sala = aluno.getSala();
-        SalaDTO salaDTO = new SalaDTO(sala.getId(), sala.getNomeTurma(), sala.getCodigoUnico());
-        return new AlunoDTO(aluno.getApelido(), aluno.getNivel().name(), salaDTO);
-    }
 }

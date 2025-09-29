@@ -1,56 +1,52 @@
 package com.bytecraft.service;
 
-import com.bytecraft.DTO.ProfessorDTO;
-import com.bytecraft.DTO.SalaDTO;
 import com.bytecraft.model.Professor;
 import com.bytecraft.model.Sala;
+import com.bytecraft.DTO.ProfessorDTO;
+import com.bytecraft.DTO.SalaDTO;
 import com.bytecraft.repository.ProfessorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+
+@Service
+@RequiredArgsConstructor
 public class ProfessorService {
 
-    // Cadastra professor e cria sala se não existir
-    public static boolean cadastrarProfessor(String nome, String senha, String nomeTurma,
-                                            ProfessorRepository professorRepo,
-                                            SalaService salaService,
-                                            PasswordEncoder passwordEncoder) {
+    private final ProfessorRepository professorRepository;
+    private final SalaService salaService;
+    private final PasswordEncoder passwordEncoder;
 
-        // RN02: senha mínima 6 caracteres
+    // Cadastra professor e cria sala se não existir
+    // Retorna Professor para ser convertido no Controller
+    public ProfessorDTO cadastrarProfessor(String nome, String senha, String nomeTurma) {
         if (senha == null || senha.length() < 6) {
             throw new IllegalArgumentException("Senha deve ter no mínimo 6 caracteres");
         }
-
-        // RN03: nome de usuário único
-        if (professorRepo.buscarPorNome(nome) != null) {
-            return false;
+        if (professorRepository.buscarPorNome(nome) != null) {
+            throw new IllegalStateException("Nome de usuário já existe");
         }
-
-        // Cria ou obtém sala
+    
         Sala sala = salaService.criaSala(nomeTurma);
-
-        // Cria professor com senha codificada
+    
         Professor professor = new Professor();
         professor.setNomeDeUsuario(nome);
         professor.setSenha(passwordEncoder.encode(senha));
         professor.setSala(sala);
-
-        // Salva professor no banco
-        return professorRepo.salvaProfessor(professor) == 1;
+    
+        professorRepository.salvaProfessor(professor);
+    
+        // Retorna DTO garantindo que o código da sala esteja presente
+        return new ProfessorDTO(professor.getNomeDeUsuario(), SalaDTO.fromEntity(sala));
     }
 
-    // Autentica professor
-    public static boolean autenticarProfessor(String nome, String senha,
-                                              ProfessorRepository professorRepo,
-                                              PasswordEncoder passwordEncoder) {
-        Professor professor = professorRepo.buscarPorNome(nome);
-        return professor != null && passwordEncoder.matches(senha, professor.getSenha());
+    public Professor autenticarProfessor(String nome, String senha) {
+        Professor professor = professorRepository.buscarPorNome(nome);
+        if (professor != null && passwordEncoder.matches(senha, professor.getSenha())) {
+            return professor;
+        }
+        return null;
     }
 
-    // Converte Professor -> ProfessorDTO
-    public static ProfessorDTO toDTO(Professor professor) {
-        return new ProfessorDTO(
-                professor.getNomeDeUsuario(),
-                professor.getSala() != null ? SalaDTO.fromEntity(professor.getSala()) : null
-        );
-    }
 }

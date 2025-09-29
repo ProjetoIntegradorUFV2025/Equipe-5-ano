@@ -1,13 +1,13 @@
 package com.bytecraft.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.bytecraft.model.Professor;
 
-@Data
-@AllArgsConstructor
-public class ProfessorDTO {
-    private String nomeDeUsuario;
-    private SalaDTO sala; // referencia direta ao DTO da sala
+public record ProfessorDTO(String nomeDeUsuario, SalaDTO sala) {
 
-    public ProfessorDTO() {} // construtor vazio, útil para frameworks
+    public static ProfessorDTO fromEntity(Professor professor) {
+        return new ProfessorDTO(
+            professor.getNomeDeUsuario(),
+            SalaDTO.fromEntity(professor.getSala())
+        );
+    }
 }

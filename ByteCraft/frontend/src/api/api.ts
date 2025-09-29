@@ -9,7 +9,7 @@ export interface ApiAluno {
 export interface ApiSala {
   id: number;
   nomeTurma: string;
-  codigo: number; // JS não tem byte, usamos number
+  codigoUnico: number; 
 }
 
 export interface ApiProfessor {
