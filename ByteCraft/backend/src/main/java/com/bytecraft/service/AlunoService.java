@@ -1,5 +1,6 @@
 package com.bytecraft.service;
 
+import com.bytecraft.enums.NivelDificuldadeEnum;
 import com.bytecraft.model.Aluno;
 import com.bytecraft.model.Sala;
 import com.bytecraft.repository.AlunoRepository;
@@ -32,10 +33,20 @@ public class AlunoService {
         return alunoRepository.save(novo);
     }
 
-    // Atualiza nível do aluno
     @Transactional
-    public void registraNivel(Aluno aluno) {
-        alunoRepository.atualizaNivel(aluno.getNivel(), aluno.getApelido(), aluno.getSala());
+    public boolean registraNivel(NivelDificuldadeEnum nivel, String apelido, Byte codigoSala) {
+        // Primeiro busca a sala
+        Sala sala = salaRepository.buscarPorCodigo(codigoSala)
+                .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+
+        // Busca o aluno pelo apelido e sala
+        return alunoRepository.buscarPorApelidoESala(apelido, sala)
+                .map(aluno -> {
+                    aluno.setNivel(nivel);
+                    alunoRepository.save(aluno); // persiste a alteração
+                    return true; // sucesso
+                })
+                .orElse(false); // aluno não encontrado
     }
 
     // Busca aluno em uma sala
