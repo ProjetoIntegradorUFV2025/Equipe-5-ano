@@ -20,10 +20,10 @@ public class AlunoService {
 
     // Vincula aluno à sala
     public Aluno vincularAlunoASala(String apelido, Byte codigoSala) {
-        Sala sala = salaRepository.findByCodigoUnico(codigoSala)
+        Sala sala = salaRepository.buscarPorCodigo(codigoSala)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
 
-        Optional<Aluno> existente = alunoRepository.findByApelidoAndSala(apelido, sala);
+        Optional<Aluno> existente = alunoRepository.buscarPorApelidoESala(apelido, sala);
         if (existente.isPresent()) return existente.get();
 
         Aluno novo = new Aluno();
@@ -40,10 +40,10 @@ public class AlunoService {
 
     // Busca aluno em uma sala
     public Aluno findAluno(String apelido, Byte codigoSala) {
-        Sala sala = salaRepository.findByCodigoUnico(codigoSala)
+        Sala sala = salaRepository.buscarPorCodigo(codigoSala)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
 
-        return alunoRepository.findByApelidoAndSala(apelido, sala)
+        return alunoRepository.buscarPorApelidoESala(apelido, sala)
                 .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 

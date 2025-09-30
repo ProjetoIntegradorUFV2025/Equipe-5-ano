@@ -15,10 +15,12 @@ import java.util.Optional;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     // Buscar aluno por apelido e sala (único por sala)
-    Optional<Aluno> findByApelidoAndSala(String apelido, Sala sala);
+    @Query("SELECT a FROM Aluno a WHERE a.apelido = :apelido AND a.sala = :sala")
+    Optional<Aluno> buscarPorApelidoESala(String apelido, Sala sala);
 
     // Buscar aluno só por apelido
-    Optional<Aluno> findByApelido(String apelido);
+    @Query("SELECT a FROM Aluno a WHERE a.apelido = :apelido")
+    Optional<Aluno> buscarPorApelido(String apelido);
 
     // Atualizar nível considerando apelido + sala
     @Modifying

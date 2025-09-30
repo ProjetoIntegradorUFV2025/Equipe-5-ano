@@ -19,13 +19,13 @@ public class SalaService {
         Byte codigo;
         do {
             codigo = (byte) (10 + (int) (Math.random() * 90));
-        } while (salaRepository.findByCodigoUnico(codigo).isPresent());
+        } while (salaRepository.buscarPorCodigo(codigo).isPresent());
         return codigo;
     }
 
     // Cria sala se não existir
     public Sala criaSala(String nomeTurma) {
-        return salaRepository.findByNomeTurma(nomeTurma)
+        return salaRepository.buscarSala(nomeTurma)
                 .orElseGet(() -> {
                     Sala nova = Sala.builder()
                             .nomeTurma(nomeTurma)
@@ -37,7 +37,7 @@ public class SalaService {
 
     // Busca sala por código
     public Optional<Sala> getSalaByCodigo(Byte codigo) {
-        return salaRepository.findByCodigoUnico(codigo);
+        return salaRepository.buscarPorCodigo(codigo);
     }
 
     // Retorna todas as salas
