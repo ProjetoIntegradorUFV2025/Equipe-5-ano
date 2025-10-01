@@ -24,7 +24,7 @@ public class Professor {
     @Column(name = "senha", nullable = false)
     private String senha;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "sala_id", nullable = false)
     private Sala sala;
 }
