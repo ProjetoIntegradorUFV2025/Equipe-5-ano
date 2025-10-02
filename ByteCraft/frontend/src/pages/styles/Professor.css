@@ -1,237 +1,606 @@
 /* ===== ESTILOS ISOLADOS PARA A PÁGINA PROFESSOR ===== */
-/* Reset completo para evitar conflitos com estilos globais */
-.professor-isolated-container,
-.professor-isolated-container *,
-.professor-isolated-container *::before,
-.professor-isolated-container *::after {
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-family: inherit !important;
-  line-height: inherit !important;
-  color: inherit !important;
-  background-color: transparent !important;
-  border: none !important;
-  outline: none !important;
-  text-decoration: none !important;
-  list-style: none !important;
-}
-
-/* ===== CONTAINER GERAL ===== */
 .professor-isolated-container {
-  height: 100vh !important;
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: relative !important;
-  overflow: hidden !important;
-  padding: 25px !important;
-  isolation: isolate !important;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  isolation: isolate;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
 .professor-isolated-container::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-image: url(src/assets/backgrounds/background_professor.png) !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  z-index: -1 !important;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(src/assets/backgrounds/background_professor.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* ===== MENSAGEM DE ORIENTAÇÃO VERTICAL ===== */
+.professor-portrait-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.professor-portrait-message {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  padding: 20px 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border: 3px solid white;
+  max-width: 80%;
+}
+
+.professor-portrait-message p {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
 /* ===== BOTÃO VOLTAR ===== */
 .professor-btn-voltar {
-  position: absolute !important;
-  top: 20px !important;
-  left: 20px !important;
-  background: none !important;
-  border: none !important;
-  cursor: pointer !important;
-  padding: 0 !important;
-  z-index: 10 !important;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
 }
 
 .professor-btn-voltar img {
-  width: 50px !important;
-  height: 50px !important;
-  object-fit: contain !important;
-  transition: transform 0.2s ease !important;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
 }
 
 .professor-btn-voltar:hover img {
-  transform: scale(1.1) !important;
+  transform: scale(1.1);
 }
 
 .professor-btn-voltar:active img {
-  transform: scale(0.95) !important;
+  transform: scale(0.95);
 }
 
 /* ===== CONTEÚDO PRINCIPAL ===== */
 .professor-content {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 25px !important;
-  width: 90% !important;
-  max-width: 500px !important;
-  padding-bottom: 50px !important;
-  transform: translateY(80px) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 300px;
+  margin-top: 220px;
+  padding-bottom: 20px;
 }
 
-.professor-content h2 {
-  font-size: clamp(2rem, 7vw, 3rem) !important;
-  color: #333 !important;
-  text-align: center !important;
-  margin: 0 !important;
-  padding: 0 15px !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1) !important;
+/* ===== GRUPO DE INPUTS ===== */
+.professor-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
 }
 
-.professor-content p {
-  font-size: clamp(1.2rem, 4vw, 1.6rem) !important;
-  color: #555 !important;
-  text-align: center !important;
-  margin: 0 !important;
-  padding: 0 15px !important;
-  max-width: 400px !important;
+/* ===== LABEL DOS INPUTS ===== */
+.professor-input-label {
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 1.2rem;
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
 }
 
-/* ===== OPÇÕES ===== */
-.professor-options {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 20px !important;
-  width: 100% !important;
-  max-width: 350px !important;
-  margin-top: 20px !important;
+/* ===== CAMPOS DE ENTRADA ===== */
+.professor-nome-input, .professor-senha-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 3px solid #d1d5db;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.professor-options button {
-  cursor: pointer !important;
-  transition: all 0.2s ease-in-out !important;
-  color: white !important;
-  padding: 16px 20px !important;
-  border-radius: 16px !important;
-  font-size: clamp(1.2rem, 4.5vw, 1.5rem) !important;
-  font-weight: bold !important;
-  border-bottom-width: 6px !important;
-  width: 100% !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-  border-style: solid !important;
-  border-width: 3px !important;
+.professor-nome-input:focus, .professor-senha-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 
+    0 6px 15px rgba(59, 130, 246, 0.25),
+    0 3px 8px rgba(59, 130, 246, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
 }
 
-/* ===== ESTILOS DOS BOTÕES DE OPÇÃO ===== */
-.professor-btn-option-primary {
-  background-color: #8b5cf6 !important;
-  border-color: #7c3aed !important;
-  border-bottom-color: #6d28d9 !important;
+.professor-nome-input::placeholder, .professor-senha-input::placeholder {
+  color: #9ca3af;
+  text-align: center;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.professor-btn-option-secondary {
-  background-color: #0ea5e9 !important;
-  border-color: #0284c7 !important;
-  border-bottom-color: #0369a1 !important;
+/* ===== BOTÃO ENTRAR (VERDE) ===== */
+.professor-btn-entrar {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: #22c55e;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-style: solid;
+  border-width: 3px;
+  border-color: #16a34a;
+  border-bottom-color: #14532d;
+  border-bottom-width: 6px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  letter-spacing: 1px;
+  margin-top: 10px;
 }
 
-.professor-btn-option-tertiary {
-  background-color: #10b981 !important;
-  border-color: #059669 !important;
-  border-bottom-color: #047857 !important;
+.professor-btn-entrar:hover {
+  filter: brightness(110%);
+  transform: translateY(-3px);
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.professor-options button:hover {
-  filter: brightness(110%) !important;
-  transform: translateY(-2px) !important;
-  border-bottom-width: 8px !important;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25) !important;
+.professor-btn-entrar:active {
+  filter: brightness(90%);
+  transform: translateY(2px);
+  border-bottom-width: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
-.professor-options button:active {
-  filter: brightness(90%) !important;
-  transform: translateY(3px) !important;
-  border-bottom-width: 3px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+/* ===== BOTÃO CADASTRAR (AZUL) ===== */
+.professor-btn-cadastrar {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: #3b82f6;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-style: solid;
+  border-width: 3px;
+  border-color: #2563eb;
+  border-bottom-color: #1e40af;
+  border-bottom-width: 6px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  letter-spacing: 1px;
+}
+
+.professor-btn-cadastrar:hover {
+  filter: brightness(110%);
+  transform: translateY(-3px);
+  border-bottom-width: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.professor-btn-cadastrar:active {
+  filter: brightness(90%);
+  transform: translateY(2px);
+  border-bottom-width: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== VERSÃO DESKTOP ===== */
+@media (min-width: 1024px) {
+  .professor-content {
+    margin-top: 240px;
+    max-width: 350px;
+  }
+  
+  .professor-input-label {
+    font-size: 1.3rem;
+  }
+  
+  .professor-nome-input, .professor-senha-input {
+    padding: 14px 18px;
+    font-size: 1.1rem;
+  }
+  
+  .professor-btn-entrar, .professor-btn-cadastrar {
+    padding: 16px 22px;
+    font-size: 1.3rem;
+  }
 }
 
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
   .professor-isolated-container {
-    padding: 20px !important;
-    justify-content: flex-start !important;
-    padding-top: 80px !important;
+    padding-top: 70px;
   }
   
   .professor-btn-voltar {
-    top: 15px !important;
-    left: 15px !important;
+    top: 15px;
+    left: 15px;
   }
   
   .professor-btn-voltar img {
-    width: 45px !important;
-    height: 45px !important;
+    width: 45px;
+    height: 45px;
   }
   
   .professor-content {
-    gap: 20px !important;
-    padding-bottom: 30px !important;
-    transform: translateY(60px) !important;
+    gap: 18px;
+    margin-top: 150px;
+    max-width: 280px;
   }
   
-  .professor-content h2 {
-    font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
+  .professor-input-label {
+    font-size: 1.1rem;
   }
   
-  .professor-content p {
-    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+  .professor-nome-input, .professor-senha-input {
+    padding: 11px 15px;
+    font-size: 0.95rem;
+  }
+  
+  .professor-btn-entrar, .professor-btn-cadastrar {
+    padding: 13px 18px;
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
   .professor-isolated-container {
-    padding: 15px !important;
-    padding-top: 70px !important;
+    padding-top: 60px;
   }
   
   .professor-btn-voltar {
-    top: 12px !important;
-    left: 12px !important;
+    top: 12px;
+    left: 12px;
   }
   
   .professor-btn-voltar img {
-    width: 40px !important;
-    height: 40px !important;
+    width: 40px;
+    height: 40px;
   }
   
   .professor-content {
-    gap: 18px !important;
-    transform: translateY(40px) !important;
+    gap: 16px;
+    margin-top: 130px;
+    max-width: 260px;
   }
   
-  .professor-content h2 {
-    font-size: clamp(1.6rem, 7vw, 2rem) !important;
+  .professor-input-group {
+    gap: 5px;
   }
   
-  .professor-content p {
-    font-size: clamp(1rem, 4vw, 1.2rem) !important;
+  .professor-input-label {
+    font-size: 1.0rem;
   }
   
-  .professor-options {
-    gap: 15px !important;
-    max-width: 300px !important;
+  .professor-nome-input, .professor-senha-input {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: 12px;
   }
   
-  .professor-options button {
-    padding: 14px 18px !important;
-    font-size: clamp(1.1rem, 4.5vw, 1.3rem) !important;
-    border-radius: 14px !important;
+  .professor-btn-entrar, .professor-btn-cadastrar {
+    padding: 12px 16px;
+    font-size: 1.0rem;
+    border-radius: 12px;
+    border-width: 2px;
+    border-bottom-width: 5px;
+  }
+  
+  .professor-btn-entrar:hover, .professor-btn-cadastrar:hover {
+    border-bottom-width: 7px;
+  }
+  
+  .professor-btn-entrar:active, .professor-btn-cadastrar:active {
+    border-bottom-width: 3px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE - LAYOUT FLUÍDO ===== */
+@media (max-width: 1200px) and (orientation: landscape) {
+  .professor-isolated-container {
+    padding: 0;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .professor-btn-voltar {
+    top: 8px;
+    left: 8px;
+    position: absolute;
+    z-index: 20;
+  }
+  
+  .professor-btn-voltar img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .professor-content {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 400px;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .professor-input-group {
+    gap: 4px;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .professor-input-label {
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+  }
+  
+  .professor-nome-input, 
+  .professor-senha-input {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    border-width: 2px;
+    height: 36px;
+    box-sizing: border-box;
+  }
+  
+  .professor-btn-entrar,
+  .professor-btn-cadastrar {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    border-width: 2px;
+    border-bottom-width: 3px;
+    margin-top: 8px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .professor-btn-entrar:hover,
+  .professor-btn-cadastrar:hover {
+    border-bottom-width: 4px;
+    transform: translateY(-1px);
+  }
+  
+  .professor-btn-entrar:active,
+  .professor-btn-cadastrar:active {
+    border-bottom-width: 2px;
+    transform: translateY(1px);
+  }
+}
+
+/* ===== MOBILE LANDSCAPE MUITO PEQUENO - ALTURA < 400px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (max-height: 400px) {
+  .professor-content {
+    bottom: 8px;
+    gap: 6px;
+    max-width: 350px;
+    width: 80%;
+  }
+  
+  .professor-input-group {
+    gap: 2px;
+  }
+  
+  .professor-input-label {
+    font-size: 0.72rem;
+    margin-bottom: 1px;
+  }
+  
+  .professor-nome-input, 
+  .professor-senha-input {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    height: 30px;
+    border-radius: 6px;
+  }
+  
+  .professor-btn-entrar,
+  .professor-btn-cadastrar {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    height: 32px;
+    margin-top: 4px;
+    border-radius: 6px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE ALTURA MÉDIA - 400px a 500px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (min-height: 401px) and (max-height: 500px) {
+  .professor-content {
+    bottom: 10px;
+    gap: 8px;
+    max-width: 370px;
+    width: 82%;
+  }
+  
+  .professor-input-label {
+    font-size: 0.78rem;
+  }
+  
+  .professor-nome-input, 
+  .professor-senha-input {
+    padding: 7px 11px;
+    font-size: 0.78rem;
+    height: 34px;
+    border-radius: 7px;
+  }
+  
+  .professor-btn-entrar,
+  .professor-btn-cadastrar {
+    padding: 7px 11px;
+    font-size: 0.8rem;
+    height: 36px;
+    margin-top: 6px;
+    border-radius: 7px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE ALTURA GRANDE - 500px a 700px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .professor-content {
+    bottom: 12px;
+    gap: 10px;
+    max-width: 390px;
+    width: 84%;
+  }
+  
+  .professor-input-label {
+    font-size: 0.82rem;
+    margin-bottom: 3px;
+  }
+  
+  .professor-nome-input, 
+  .professor-senha-input {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    height: 36px;
+    border-radius: 8px;
+  }
+  
+  .professor-btn-entrar,
+  .professor-btn-cadastrar {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    height: 38px;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+}
+
+/* ===== MOBILE LANDSCAPE ALTURA MUITO GRANDE - > 700px ===== */
+@media (max-width: 1200px) and (orientation: landscape) and (min-height: 701px) {
+  .professor-content {
+    bottom: 15px;
+    gap: 12px;
+    max-width: 420px;
+    width: 86%;
+  }
+  
+  .professor-input-label {
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+  }
+  
+  .professor-nome-input, 
+  .professor-senha-input {
+    padding: 9px 13px;
+    font-size: 0.85rem;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  .professor-btn-entrar,
+  .professor-btn-cadastrar {
+    padding: 9px 13px;
+    font-size: 0.9rem;
+    height: 42px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+}
+
+/* ===== LANDSCAPE TABLETS E DISPOSITIVOS MAIORES ===== */
+@media (min-width: 1201px) and (orientation: landscape) {
+  .professor-portrait-warning {
+    display: none;
+  }
+  
+  .professor-content {
+    filter: none;
+    pointer-events: auto;
+  }
+  
+  .professor-btn-voltar {
+    pointer-events: auto;
+    filter: none;
+  }
+}
+
+/* ===== ORIENTAÇÃO PORTRAIT (EM PÉ) ===== */
+@media (max-width: 768px) and (orientation: portrait) {
+  .professor-portrait-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/graphics/aviso_rotate.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .professor-portrait-message {
+    display: none;
+  }
+  
+  .professor-content {
+    filter: blur(3px);
+    pointer-events: none;
+  }
+  
+  .professor-btn-voltar {
+    pointer-events: none;
+    filter: blur(3px);
   }
 }
