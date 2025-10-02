@@ -1,10 +1,7 @@
 package com.bytecraft.controller;
 
-import com.bytecraft.DTO.AlunoDTO;
 import com.bytecraft.DTO.SalaDTO;
-import com.bytecraft.model.Aluno;
 import com.bytecraft.model.Sala;
-import com.bytecraft.service.AlunoService;
 import com.bytecraft.service.SalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +16,6 @@ import java.util.List;
 public class SalaController {
 
     private final SalaService salaService;
-    private final AlunoService alunoService;
 
     // Criar sala
     @PostMapping("/criar")
@@ -34,25 +30,7 @@ public class SalaController {
     }
 
     // Vincular aluno à sala
-    @PostMapping("/vincular")
-    public ResponseEntity<?> vincularAluno(@RequestBody Map<String, String> payload) {
-        String apelido = payload.get("apelido");
-        String codigoStr = payload.get("codigoSala");
-
-        if (apelido == null || apelido.isBlank() || codigoStr == null || codigoStr.isBlank()) {
-            return ResponseEntity.badRequest().body(Map.of("erro", "Parâmetros inválidos"));
-        }
-
-        try {
-            Byte codigo = Byte.parseByte(codigoStr);
-            Aluno aluno = alunoService.vincularAlunoASala(apelido, codigo);
-            AlunoDTO alunoDTO = AlunoDTO.fromEntity(aluno);
-            return ResponseEntity.ok(alunoDTO);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
-        }
-    }
-
+    
     // Verifica se há salas cadastradas
     @GetMapping("/existe")
     public ResponseEntity<Map<String, Object>> existeSala() {
