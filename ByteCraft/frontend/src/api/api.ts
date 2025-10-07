@@ -4,6 +4,7 @@ export interface ApiAluno {
   apelido: string;
   nivel?: string;
   turma?: string;
+  pontuacao?: number;
 }
 
 export interface ApiSala {
@@ -60,6 +61,26 @@ export const registrarNivel = async (apelido: string, nivel: string, codigoSala:
   return await response.json();
 };
 
+export const registraPontuacao = async (
+  apelido: string,
+  codigoSala: number,
+  pontos: number,
+  segundos: number
+): Promise<{ atualizado: boolean }> => {
+  const response = await fetch(`${API_BASE_URL}/alunos/setPontuacao`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ apelido, codigoSala: codigoSala.toString(), pontos: pontos.toString(), segundos: segundos.toString() }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || `Erro ao registrar pontuação: ${response.status}`);
+  }
+
+  return response.json(); // { atualizado: true/false }
+};
+
 // ===== SALA =====
 export const cadastrarSala = async (nomeTurma: string): Promise<ApiSala> => {
   const response = await fetch(`${API_BASE_URL}/salas/criar`, {
@@ -83,6 +104,12 @@ export const listarSalas = async (): Promise<ApiSala[]> => {
     throw new Error(errorText || `Erro ao listar salas: ${response.status}`);
   }
   return await response.json();
+};
+
+export const getRankingTurma = async (codigoUnico: number): Promise<ApiAluno[]> => {
+  const res = await fetch(`${API_BASE_URL}/salas/getRanking/${codigoUnico}`);
+  if (!res.ok) throw new Error(await res.text() || `Erro ao buscar ranking: ${res.status}`);
+  return res.json();
 };
 
 // ===== PROFESSOR =====
@@ -117,10 +144,12 @@ export const api = {
   loginAluno,
   getNiveis,
   registrarNivel,
+  registraPontuacao,
 
   // Salas
   listarSalas,
   cadastrarSala,
+  getRankingTurma, 
 
   // Professores
   cadastrarProfessor,

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
 public class ProfessorService {
@@ -19,34 +18,52 @@ public class ProfessorService {
     private final PasswordEncoder passwordEncoder;
 
     // Cadastra professor e cria sala se não existir
-    // Retorna Professor para ser convertido no Controller
     public ProfessorDTO cadastrarProfessor(String nome, String senha, String nomeTurma) {
-        if (senha == null || senha.length() < 6) {
+        // Normaliza entradas
+        String nomeTrim = nome != null ? nome.trim() : null;
+        String senhaTrim = senha != null ? senha.trim() : null; // opcional, mas evita espaços no início/fim
+        String nomeTurmaTrim = nomeTurma != null ? nomeTurma.trim() : null;
+
+        // Validações básicas
+        if (nomeTrim == null || nomeTrim.isEmpty() || senhaTrim == null || senhaTrim.isEmpty() || nomeTurmaTrim == null || nomeTurmaTrim.isEmpty()) {
+            throw new IllegalArgumentException("Nome, senha e nome da turma são obrigatórios");
+        }
+        if (senhaTrim.length() < 6) {
             throw new IllegalArgumentException("Senha deve ter no mínimo 6 caracteres");
         }
-        if (professorRepository.buscarPorNome(nome) != null) {
+
+        // Verifica duplicidade
+        if (professorRepository.buscarPorNome(nomeTrim) != null) {
             throw new IllegalStateException("Nome de usuário já existe");
         }
-    
-        Sala sala = salaService.criaSala(nomeTurma);
-    
+
+        // Cria sala associada
+        Sala sala = salaService.criaSala(nomeTurmaTrim);
+
+        // Cria e persiste professor
         Professor professor = new Professor();
-        professor.setNomeDeUsuario(nome);
-        professor.setSenha(passwordEncoder.encode(senha));
+        professor.setNomeDeUsuario(nomeTrim);
+        professor.setSenha(passwordEncoder.encode(senhaTrim));
         professor.setSala(sala);
-    
+
         professorRepository.salvaProfessor(professor);
-    
+
         // Retorna DTO garantindo que o código da sala esteja presente
         return new ProfessorDTO(professor.getNomeDeUsuario(), SalaDTO.fromEntity(sala));
     }
 
     public Professor autenticarProfessor(String nome, String senha) {
-        Professor professor = professorRepository.buscarPorNome(nome);
-        if (professor != null && passwordEncoder.matches(senha, professor.getSenha())) {
+        String nomeTrim = nome != null ? nome.trim() : null;
+        String senhaTrim = senha != null ? senha.trim() : null;
+
+        if (nomeTrim == null || nomeTrim.isEmpty() || senhaTrim == null || senhaTrim.isEmpty()) {
+            throw new IllegalArgumentException("Nome e senha são obrigatórios");
+        }
+
+        Professor professor = professorRepository.buscarPorNome(nomeTrim);
+        if (professor != null && passwordEncoder.matches(senhaTrim, professor.getSenha())) {
             return professor;
         }
         return null;
     }
-
 }

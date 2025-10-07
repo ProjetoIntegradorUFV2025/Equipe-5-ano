@@ -1,5 +1,6 @@
 package com.bytecraft.service;
 
+import com.bytecraft.model.Aluno;
 import com.bytecraft.model.Sala;
 import com.bytecraft.repository.SalaRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,12 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Comparator;
 
 @Service
 @RequiredArgsConstructor
 public class SalaService {
 
     private final SalaRepository salaRepository;
+    private final AlunoService alunoService;
 
     // Gera código único entre 10 e 99, sem repetição
     private Byte geraCodigoUnico() {
@@ -43,5 +46,28 @@ public class SalaService {
     // Retorna todas as salas
     public List<Sala> getTodasSalas() {
         return salaRepository.findAll();
+    }
+
+    // Busca ID da sala pelo código único
+    private Long getSalaID(Byte codigoUnico) {
+        return salaRepository.buscarSalaID(codigoUnico);
+    }
+
+    // Retorna ranking da turma (alunos ordenados por pontuação)
+    public Optional<List<Aluno>> getRankingTurma(Byte codigoUnico) {
+        Long idSala = getSalaID(codigoUnico);
+
+        Optional<List<Aluno>> alunosOpt = alunoService.getAlunosPorSala(idSala);
+
+        if (alunosOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Aluno> alunos = alunosOpt.get();
+
+        // Ordena pela pontuação (maior primeiro)
+        alunos.sort(Comparator.comparingInt(Aluno::getPontuacao).reversed());
+
+        return Optional.of(alunos);
     }
 }

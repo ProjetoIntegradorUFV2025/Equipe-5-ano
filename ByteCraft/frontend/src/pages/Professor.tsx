@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api/api";
+import { api, ApiProfessor } from "../api/api";
 import "./styles/Professor.css";
 
 const safeUrl = (relPath: string) => {
@@ -12,7 +12,6 @@ const safeUrl = (relPath: string) => {
   }
 };
 
-// Ajuste os caminhos relativos conforme a posição deste arquivo
 const backgroundProfessor = safeUrl("../assets/backgrounds/background_professor.png");
 const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
 
@@ -22,7 +21,7 @@ const Professor: React.FC = () => {
   const [senha, setSenha] = useState("");
   const [isPortrait, setIsPortrait] = useState(false);
 
-  // Verificar orientação da tela
+  // Detecta orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -30,71 +29,68 @@ const Professor: React.FC = () => {
     };
 
     checkOrientation();
-    window.addEventListener('resize', checkOrientation);
-    window.addEventListener('orientationchange', () => {
-      // Pequeno delay para aguardar a mudança completa da orientação
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", () => {
       setTimeout(checkOrientation, 100);
     });
-    
+
     return () => {
-      window.removeEventListener('resize', checkOrientation);
-      window.removeEventListener('orientationchange', checkOrientation);
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
     };
   }, []);
 
-  // DEBUG: veja no console a URL resolvida
-  console.log("backgroundProfessor =>", backgroundProfessor);
-  console.log("voltarIcon =>", voltarIcon);
-
   const handleLogin = async () => {
     if (!nome || !senha) {
-      alert('Preencha todos os campos!');
+      alert("Preencha todos os campos!");
       return;
     }
 
     try {
-      await api.loginProfessor(nome, senha);
+      // Faz o login e obtém os dados do professor
+      const professorLogado: ApiProfessor = await api.loginProfessor(nome, senha);
+
+      // Armazena no localStorage (para persistência após refresh)
+      localStorage.setItem("professor", JSON.stringify(professorLogado));
+
       alert("Login bem-sucedido!");
-      navigate("/professor/dashboard");
+
+      // Redireciona para a página da sala, enviando o professor logado
+      navigate("/sala", { state: { professor: professorLogado } });
     } catch (error: any) {
       alert("Erro no login: " + (error.response?.data || error.message));
     }
   };
 
-  const handleVoltar = () => {
-    navigate("/");
-  };
-
-  const irParaCadastro = () => {
-    navigate("/professor/cadastro");
-  };
+  const handleVoltar = () => navigate("/");
+  const irParaCadastro = () => navigate("/professor/cadastro");
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleLogin();
-    }
+    if (e.key === "Enter") handleLogin();
   };
 
   return (
-    <div 
+    <div
       className="professor-isolated-container"
       style={{
-        backgroundImage: backgroundProfessor ? `url(${backgroundProfessor})` : undefined,
+        backgroundImage: backgroundProfessor
+          ? `url(${backgroundProfessor})`
+          : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Mensagem para orientação vertical */}
+      {/* Mensagem para modo retrato */}
       {isPortrait && (
         <div className="professor-portrait-warning">
           <div className="professor-portrait-message">
-            <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+            <p>📱 Vire o telefone para a posição deitada! 🔄</p>
           </div>
         </div>
       )}
 
-      <button className="professor-btn-voltar" onClick={handleVoltar} aria-label="Voltar">
+      <button className="professor-btn-voltar" onClick={handleVoltar}>
         <img src={voltarIcon || undefined} alt="Voltar" />
       </button>
 
@@ -125,16 +121,16 @@ const Professor: React.FC = () => {
           />
         </div>
 
-        <button 
-          className="professor-btn-entrar" 
+        <button
+          className="professor-btn-entrar"
           onClick={handleLogin}
           aria-label="Entrar como professor"
         >
           ENTRAR
         </button>
 
-        <button 
-          className="professor-btn-cadastrar" 
+        <button
+          className="professor-btn-cadastrar"
           onClick={irParaCadastro}
           aria-label="Cadastrar novo professor"
         >

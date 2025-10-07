@@ -2,6 +2,8 @@ package com.bytecraft.controller;
 
 import com.bytecraft.DTO.SalaDTO;
 import com.bytecraft.model.Sala;
+import com.bytecraft.model.Aluno;
+import com.bytecraft.DTO.AlunoDTO;
 import com.bytecraft.service.SalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/salas")
@@ -28,8 +31,6 @@ public class SalaController {
         SalaDTO salaDTO = SalaDTO.fromEntity(sala);
         return ResponseEntity.ok(salaDTO);
     }
-
-    // Vincular aluno à sala
     
     // Verifica se há salas cadastradas
     @GetMapping("/existe")
@@ -43,4 +44,23 @@ public class SalaController {
                 "salas", salas
         ));
     }
-}
+
+    // Obter ranking da turma
+    @GetMapping("/getRanking/{codigoUnico}")
+    public ResponseEntity<?> getRankingTurma(@PathVariable Byte codigoUnico) {
+        Optional<List<Aluno>> alunosOpt = salaService.getRankingTurma(codigoUnico);
+
+        if (alunosOpt.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("erro", "Sala não encontrada ou sem alunos."));
+        }
+
+        // Converte cada Aluno para AlunoDTO
+        List<AlunoDTO> ranking = alunosOpt.get().stream()
+                .map(AlunoDTO::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(ranking);
+    }
+   
+}    
