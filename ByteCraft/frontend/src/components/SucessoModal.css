@@ -4,54 +4,199 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.sucesso-modal-content {
+  background: white;
+  padding: 3rem 2.5rem 2.5rem;
+  border-radius: 25px;
+  max-width: 500px;
+  width: 85%;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: slideIn 0.3s ease-out;
+  margin-top: 80px;
+}
+
+.sucesso-ramon-container {
+  position: absolute;
+  top: -80px;
+  left: -30px;
+  width: 160px;
+  height: 160px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
 }
 
-.sucesso-modal-container {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 1rem;
-  padding: 2rem 3rem;
-  text-align: center;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
-  border: 3px solid #16a34a;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
-  max-width: 480px;
-  animation: fadeIn 0.3s ease;
+.sucesso-ramon {
+  font-size: 100px;
+  animation: bounce 1s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
-.sucesso-modal-imagem {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
-  margin: 0 auto 1rem;
-  display: block;
+.sucesso-modal-texto {
+  margin: 1.5rem 0 2rem;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 .sucesso-modal-titulo {
-  font-size: 2rem;
-  font-family: "Impact", "Comic Sans MS", cursive;
-  color: #16a34a;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-.sucesso-modal-mensagem {
+.sucesso-modal-texto p {
   font-size: 1.2rem;
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 0 1rem 0;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+}
+
+.sucesso-pontos-ganhos {
+  font-size: 1.8rem !important;
+  font-weight: bold;
+  color: #fbbf24 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: 1rem !important;
 }
 
 .sucesso-modal-btn {
-  width: 100%;
+  background-color: #22c55e;
+  color: white;
+  border: 3px solid #16a34a;
+  border-bottom-color: #14532d;
+  border-radius: 15px;
+  padding: 1rem 3rem;
   font-size: 1.3rem;
-  margin-top: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 5px 0 #14532d;
+  letter-spacing: 0.8px;
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.sucesso-modal-btn:hover {
+  background-color: #16a34a;
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #14532d;
+  margin-bottom: 0.25rem;
+}
+
+.sucesso-modal-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #14532d;
+  margin-bottom: 0.75rem;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.1); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sucesso-modal-content {
+    padding: 2.5rem 2rem 2rem;
+    max-width: 85%;
+    margin-top: 60px;
+  }
+
+  .sucesso-ramon-container {
+    top: -60px;
+    left: -20px;
+    width: 120px;
+    height: 120px;
+  }
+
+  .sucesso-ramon {
+    font-size: 80px;
+  }
+
+  .sucesso-modal-texto {
+    margin: 1rem 0 1.5rem;
+  }
+
+  .sucesso-modal-titulo {
+    font-size: 1.8rem;
+  }
+
+  .sucesso-modal-texto p {
+    font-size: 1.1rem;
+  }
+
+  .sucesso-pontos-ganhos {
+    font-size: 1.5rem !important;
+  }
+
+  .sucesso-modal-btn {
+    padding: 0.9rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Portrait */
+@media (max-width: 768px) and (orientation: portrait) {
+  .sucesso-modal-overlay {
+    background-image: url('../assets/graphics/aviso_rotate.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .sucesso-modal-content {
+    filter: blur(3px);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .sucesso-modal-overlay::before {
+    content: '📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+    border: 0.2rem solid white;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 2001;
+    max-width: 80%;
+    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  }
 }

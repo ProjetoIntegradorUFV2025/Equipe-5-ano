@@ -17,13 +17,19 @@ const SucessoModal: React.FC<SucessoModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="sucesso-modal">
-        <div className="sucesso-icon">✅</div>
-        <h2>Sucesso!</h2>
-        <p>{mensagem}</p>
-        <p className="pontos-ganhos">+{pontosGanhos} pontos</p>
-        <button className="btn-continuar" onClick={onClose}>
+    <div className="sucesso-modal-overlay">
+      <div className="sucesso-modal-content">
+        <div className="sucesso-ramon-container">
+          <div className="sucesso-ramon">🎯</div>
+        </div>
+
+        <div className="sucesso-modal-texto">
+          <h2 className="sucesso-modal-titulo">Sucesso!</h2>
+          <p>{mensagem}</p>
+          <p className="sucesso-pontos-ganhos">+{pontosGanhos} pontos</p>
+        </div>
+
+        <button className="sucesso-modal-btn" onClick={onClose}>
           Continuar
         </button>
       </div>

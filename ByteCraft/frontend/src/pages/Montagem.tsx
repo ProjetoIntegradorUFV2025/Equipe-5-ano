@@ -5,6 +5,7 @@ import DropZone from "../components/DropZone";
 import SucessoModal from "../components/SucessoModal";
 import ErroModal from "../components/ErroModal";
 import HistoriaModal from "../components/HistoriaModal";
+import BoasVindasModal from "../components/BoasVindasModal";
 import PainelPontuacao from "../components/PainelPontuacao";
 import Cronometro from "../components/Cronometro";
 import { useCronometro } from "../hooks/useCronometro";
@@ -162,6 +163,7 @@ const Montagem: React.FC = () => {
   const [historiaAtual, setHistoriaAtual] = useState<DialogoHistoria | null>(null);
   const [mostrarHistoria, setMostrarHistoria] = useState(false);
   const [mensagemSucesso, setMensagemSucesso] = useState("");
+  const [mostrarBoasVindas, setMostrarBoasVindas] = useState(true);
 
   const {
     pontuacaoTotal,
@@ -178,9 +180,11 @@ const Montagem: React.FC = () => {
   } = useCronometro();
 
   useEffect(() => {
-    iniciarCronometro();
+    if (!mostrarBoasVindas) {
+      iniciarCronometro();
+    }
     return () => pausarCronometro();
-  }, []);
+  }, [mostrarBoasVindas]);
 
   const [pecas, setPecas] = useState<PecaItem[]>([
     { 
@@ -252,6 +256,10 @@ const Montagem: React.FC = () => {
 
   const handleContinuarHistoria = () => {
     setShowHistoria(false);
+  };
+
+  const handleContinuarBoasVindas = () => {
+    setMostrarBoasVindas(false);
   };
 
   const avancarHistoria = () => {
@@ -384,13 +392,11 @@ const Montagem: React.FC = () => {
     pausarCronometro();
     const pontuacaoExterna = calcularPontuacaoFinalComBonus(tempo);
     
-    // Salvar dados da montagem externa no localStorage
     localStorage.setItem("pontuacaoMontagem", pontuacaoExterna.toString());
     localStorage.setItem("tempoMontagem", tempo.toString());
     
     console.log("Montagem externa concluída! Avançando para montagem interna...");
     
-    // Navegar para montagem interna mantendo os dados do aluno
     navigate("/montagem-interna", {
       state: {
         aluno: aluno,
@@ -430,6 +436,11 @@ const Montagem: React.FC = () => {
 
   return (
     <div className="montagem-container">
+      <BoasVindasModal 
+        isOpen={mostrarBoasVindas}
+        onContinuar={handleContinuarBoasVindas}
+      />
+
       <div className="montagem-fantasma-esquerda" />
       
       <div className="montagem-header">
@@ -534,7 +545,7 @@ const Montagem: React.FC = () => {
 
       {historiaAtualFluxo && (
         <HistoriaModal
-          isOpen={showHistoria}
+          isOpen={showHistoria && !mostrarBoasVindas}
           historia={historiaAtualFluxo}
           onContinuar={handleContinuarHistoria}
         />

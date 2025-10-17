@@ -6,6 +6,7 @@ export interface ApiAluno {
   nivel?: string;
   turma?: string;
   pontuacao?: number;
+  modoHistoriaCompleto?: boolean;
 }
 
 export interface ApiSala {
@@ -134,8 +135,10 @@ export const loginProfessor = async (
 };
 
 // ==== PROGRESSO ====
+
 /**
  * Salva o progresso do aluno (marca modo história como concluído)
+ * CSU07 - RN16: Registrar progresso após encaixe correto
  */
 export const salvarProgresso = async (
   apelido: string,
@@ -150,13 +153,13 @@ export const salvarProgresso = async (
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         apelido,
-        codigo: codigoSala, // 🔄 altera para 'codigo' (mais comum no backend)
+        codigoSala: Number(codigoSala),
         modoHistoriaCompleto,
       }),
     });
 
-    const texto = await response.text();
     if (!response.ok) {
+      const texto = await response.text();
       console.error("❌ Erro ao salvar progresso:", response.status, texto);
       throw new Error(`Erro ao salvar progresso: ${texto}`);
     }
@@ -170,24 +173,89 @@ export const salvarProgresso = async (
 
 /**
  * Obtém o progresso do aluno
+ * CSU07 - Passo 2: Carregar dados de progresso
+ * 
+ * IMPLEMENTAÇÕES POSSÍVEIS NO BACKEND:
+ * 1. Endpoint dedicado: GET /api/alunos/progresso/{apelido}/{codigoSala}
+ * 2. Retornar no login: POST /api/alunos/login (com campo modoHistoriaCompleto)
+ * 3. Endpoint do aluno: GET /api/alunos/{apelido}?codigoSala={codigoSala}
  */
 export const obterProgresso = async (
   apelido: string,
   codigoSala: number
 ): Promise<{ modoHistoriaCompleto: boolean }> => {
-  const response = await fetch(
-    `${API_BASE_URL}/alunos/progresso/${encodeURIComponent(apelido)}/${codigoSala}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+  try {
+    console.log("📥 Tentando obter progresso via endpoint dedicado...");
+    
+    // OPÇÃO 1: Endpoint dedicado de progresso (PREFERENCIAL)
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/alunos/progresso/${encodeURIComponent(apelido)}/${codigoSala}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("✅ Progresso obtido (endpoint dedicado):", data);
+        return {
+          modoHistoriaCompleto: data.modoHistoriaCompleto || false
+        };
+      }
+    } catch (err) {
+      console.warn("⚠️ Endpoint de progresso não disponível, tentando alternativa...");
     }
-  );
 
-  if (!response.ok) {
-    throw new Error('Erro ao obter progresso');
+    // OPÇÃO 2: Buscar dados do aluno completo
+    console.log("📥 Tentando obter progresso via dados do aluno...");
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/alunos/${encodeURIComponent(apelido)}?codigoSala=${codigoSala}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.ok) {
+        const aluno: ApiAluno = await response.json();
+        console.log("✅ Dados do aluno obtidos:", aluno);
+        return {
+          modoHistoriaCompleto: aluno.modoHistoriaCompleto || false
+        };
+      }
+    } catch (err) {
+      console.warn("⚠️ Endpoint de aluno não disponível, tentando localStorage...");
+    }
+
+    // OPÇÃO 3: Fallback - Verificar localStorage
+    console.log("📥 Verificando progresso no localStorage...");
+    const progressoLocal = localStorage.getItem(`progresso_${apelido}_${codigoSala}`);
+    
+    if (progressoLocal) {
+      const data = JSON.parse(progressoLocal);
+      console.log("✅ Progresso obtido do localStorage:", data);
+      return {
+        modoHistoriaCompleto: data.modoHistoriaCompleto || false
+      };
+    }
+
+    // OPÇÃO 4: Primeira vez - retorna false
+    console.log("ℹ️ Nenhum progresso encontrado. Primeira vez do aluno.");
+    return {
+      modoHistoriaCompleto: false
+    };
+
+  } catch (error) {
+    console.error("❌ Erro ao obter progresso:", error);
+    
+    // Em caso de erro total, retorna false (bloqueia Quiz por segurança)
+    return {
+      modoHistoriaCompleto: false
+    };
   }
-
-  return await response.json();
 };
 
 // ==== OBJETO EXPORTADO ====
