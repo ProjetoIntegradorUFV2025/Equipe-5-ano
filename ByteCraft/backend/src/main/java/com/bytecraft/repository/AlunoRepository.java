@@ -31,10 +31,9 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     Optional<Aluno> buscarPorApelido(String apelido);
     
     // Atualizar pontuação considerando id do aluno
-    //Integração
     @Modifying
     @Transactional
-    @Query("")
+    @Query("UPDATE Aluno a SET a.pontuacao = :pontuacao WHERE a.id = :id")
     int atualizaPontuacao(@Param("id") Long id, @Param("pontuacao") int pontuacao);
 
     // Buscar alunos por sala

@@ -4,6 +4,18 @@ import { getNiveis, registrarNivel } from "../api/api";
 import type { Aluno as AlunoType } from "../types";
 import "./styles/Niveis.css";
 
+const safeUrl = (relPath: string) => {
+  try {
+    return new URL(relPath, import.meta.url).href;
+  } catch (err) {
+    console.error("Erro ao resolver asset:", relPath, err);
+    return "";
+  }
+};
+
+const backgroundNiveis = safeUrl("../assets/backgrounds/background_niveis.png");
+const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
+
 interface NiveisProps {
   aluno: AlunoType | null;
 }
@@ -15,7 +27,7 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   const [error, setError] = useState<string | null>(null);
   const [isPortrait, setIsPortrait] = useState(false);
 
-  // Verificar orientação da tela
+  // Detecta orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -23,15 +35,14 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
     };
 
     checkOrientation();
-    window.addEventListener('resize', checkOrientation);
-    window.addEventListener('orientationchange', () => {
-      // Pequeno delay para aguardar a mudança completa da orientação
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", () => {
       setTimeout(checkOrientation, 100);
     });
-    
+
     return () => {
-      window.removeEventListener('resize', checkOrientation);
-      window.removeEventListener('orientationchange', checkOrientation);
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
     };
   }, []);
 
@@ -64,17 +75,20 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
         navigate("/aluno");
         return;
       }
-  
+
       setLoading(true);
       const atualizado = await registrarNivel(aluno.apelido, nivel, aluno.codigoSala!);
-  
+
+      // Salvar nível no localStorage
+      localStorage.setItem("nivelSelecionado", nivel);
+
       const alunoAtualizado = { ...aluno, nivel: atualizado.nivel };
-  
-      navigate("/fases", { 
-        state: { 
+
+      navigate("/fases", {
+        state: {
           nivel,
           aluno: alunoAtualizado
-        } 
+        }
       });
     } catch (err) {
       alert("Erro: " + (err as Error).message);
@@ -92,7 +106,7 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
     } else if (nivel.includes("dificil")) {
       return "niveis-btn-dificil";
     }
-    
+
     return "";
   };
 
@@ -109,18 +123,26 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
 
   if (loading) {
     return (
-      <div className="niveis-isolated-container">
-        {/* Mensagem para orientação vertical */}
+      <div
+        className="niveis-isolated-container"
+        style={{
+          backgroundImage: backgroundNiveis ? `url(${backgroundNiveis})` : undefined,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Mensagem para modo retrato */}
         {isPortrait && (
           <div className="niveis-portrait-warning">
             <div className="niveis-portrait-message">
-              <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+              <p>📱 Vire o telefone para a posição deitada! 🔄</p>
             </div>
           </div>
         )}
 
         <button className="niveis-btn-voltar" onClick={handleVoltar}>
-          <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
+          <img src={voltarIcon || undefined} alt="Voltar" />
         </button>
         <div className="niveis-button-group">
           <p>Carregando níveis...</p>
@@ -131,22 +153,30 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
 
   if (error) {
     return (
-      <div className="niveis-isolated-container">
-        {/* Mensagem para orientação vertical */}
+      <div
+        className="niveis-isolated-container"
+        style={{
+          backgroundImage: backgroundNiveis ? `url(${backgroundNiveis})` : undefined,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Mensagem para modo retrato */}
         {isPortrait && (
           <div className="niveis-portrait-warning">
             <div className="niveis-portrait-message">
-              <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+              <p>📱 Vire o telefone para a posição deitada! 🔄</p>
             </div>
           </div>
         )}
 
         <button className="niveis-btn-voltar" onClick={handleVoltar}>
-          <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
+          <img src={voltarIcon || undefined} alt="Voltar" />
         </button>
         <div className="niveis-button-group">
           <p style={{ color: 'red' }}>Erro: {error}</p>
-          <button onClick={() => window.location.reload()}>
+          <button className="niveis-btn-facil" onClick={() => window.location.reload()}>
             Tentar Novamente
           </button>
         </div>
@@ -155,18 +185,26 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   }
 
   return (
-    <div className="niveis-isolated-container">
-      {/* Mensagem para orientação vertical */}
+    <div
+      className="niveis-isolated-container"
+      style={{
+        backgroundImage: backgroundNiveis ? `url(${backgroundNiveis})` : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* Mensagem para modo retrato */}
       {isPortrait && (
         <div className="niveis-portrait-warning">
           <div className="niveis-portrait-message">
-            <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+            <p>📱 Vire o telefone para a posição deitada! 🔄</p>
           </div>
         </div>
       )}
 
       <button className="niveis-btn-voltar" onClick={handleVoltar}>
-        <img src="src/assets/bottons/botao_voltar.png" alt="Voltar" />
+        <img src={voltarIcon || undefined} alt="Voltar" />
       </button>
       <div className="niveis-button-group">
         {niveis.length > 0 ? (
