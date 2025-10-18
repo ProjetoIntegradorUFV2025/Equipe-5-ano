@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getRankingTurma, registraPontuacao, salvarProgresso } from "../api/api";
 import type { ApiAluno } from "../api/api";
 import "./ConclusaoModal.css";
-import ramonFelizImage from "../assets/graphics/RAMon_feliz.png";
+import parabensImage from "../assets/graphics/Parabens.png";
 
 interface ConclusaoModalProps {
   isOpen: boolean;
@@ -97,13 +97,11 @@ const ConclusaoModal: React.FC<ConclusaoModalProps> = ({
       <div className="conclusao-modal-content">
         {!mostrarRanking ? (
           <>
-            <div className="conclusao-ramon-container">
-              <img src={ramonFelizImage} alt="RAMon Feliz" className="conclusao-ramon" />
+            <div className="parabens-container">
+              <img src={parabensImage} alt="Parabéns" className="parabens-image" />
             </div>
 
             <div className="conclusao-modal-texto">
-              <h1 className="conclusao-modal-titulo">PARABÉNS!</h1>
-              
               {erroEnvio && (
                 <div className="conclusao-erro">
                   ⚠️ {erroEnvio}
@@ -152,12 +150,12 @@ const ConclusaoModal: React.FC<ConclusaoModalProps> = ({
           </>
         ) : (
           <>
-            <div className="conclusao-ramon-container">
-              <div className="conclusao-ramon-ranking">📊</div>
+            <div className="parabens-container">
+              <div className="ranking-icon">🏆</div>
             </div>
 
             <div className="conclusao-modal-texto">
-              <h1 className="conclusao-modal-titulo">🏆 RANKING</h1>
+              <h2 className="ranking-titulo">RANKING DA TURMA</h2>
               <div className="conclusao-modal-ranking">
                 {ranking.length > 0 ? (
                   <table className="conclusao-modal-tabela">

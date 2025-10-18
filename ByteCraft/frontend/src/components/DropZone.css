@@ -38,8 +38,8 @@
 }
 
 .dropzone-area.teclado {
-  width: clamp(15rem, 26vw, 18.75rem);
-  height: clamp(5.5rem, 9vh, 6.9rem);
+  width: clamp(18rem, 30vw, 22rem);
+  height: clamp(6rem, 10vh, 8rem);
 }
 
 .dropzone-area.mouse {
@@ -113,12 +113,23 @@
    ========================================================== */
 
 .dropzone-imagem {
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   position: relative;
   z-index: 2;
   pointer-events: none;
+}
+
+/* Classe específica para o teclado - Aumentar padding interno */
+.dropzone-area.teclado {
+  padding: 10px !important;
+}
+
+.dropzone-area.teclado .dropzone-imagem {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
 }
 
 /* ==========================================================

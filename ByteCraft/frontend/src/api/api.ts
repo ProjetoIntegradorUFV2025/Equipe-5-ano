@@ -134,12 +134,6 @@ export const loginProfessor = async (
   return handleResponse<ApiProfessor>(response);
 };
 
-// ==== PROGRESSO ====
-
-/**
- * Salva o progresso do aluno (marca modo história como concluído)
- * CSU07 - RN16: Registrar progresso após encaixe correto
- */
 export const salvarProgresso = async (
   apelido: string,
   codigoSala: number | string,
@@ -171,15 +165,6 @@ export const salvarProgresso = async (
   }
 };
 
-/**
- * Obtém o progresso do aluno
- * CSU07 - Passo 2: Carregar dados de progresso
- * 
- * IMPLEMENTAÇÕES POSSÍVEIS NO BACKEND:
- * 1. Endpoint dedicado: GET /api/alunos/progresso/{apelido}/{codigoSala}
- * 2. Retornar no login: POST /api/alunos/login (com campo modoHistoriaCompleto)
- * 3. Endpoint do aluno: GET /api/alunos/{apelido}?codigoSala={codigoSala}
- */
 export const obterProgresso = async (
   apelido: string,
   codigoSala: number

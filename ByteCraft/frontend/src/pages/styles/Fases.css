@@ -69,7 +69,7 @@ html, body {
 .fases-btn-quiz {
   position: relative;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: none;
   background: none;
   border: none;
   padding: 0;
@@ -78,6 +78,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .fases-btn-historia img,
@@ -555,11 +556,11 @@ html, body {
 
 /* ANIMAÇÃO APENAS NO HOVER */
 .fases-btn-historia:not(:disabled):hover {
-  animation: pulse 1s ease-in-out;
+  animation: none;
 }
 
 .fases-btn-quiz:not(.bloqueado):hover {
-  animation: pulse 1s ease-in-out;
+  animation: none;
 }
 
 /* Efeito de hover suave no quiz bloqueado */

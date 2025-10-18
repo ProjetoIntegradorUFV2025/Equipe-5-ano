@@ -238,15 +238,15 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end; /* 👈 desce o conjunto para baixo */
-  gap: 2.2rem; /* 🔽 espaçamento menor entre as peças */
+  justify-content: flex-end;
+  gap: 0.5rem;
   width: min(60vw, 850px);
   max-width: 850px;
-  height: 80%; /* 🔽 reduz altura útil para aproximar */
-  padding: 0 1rem 4rem; /* 🔽 adiciona respiro inferior */
+  height: 80%;
+  padding: 0 1rem 4rem;
   box-sizing: border-box;
   margin: 0 auto;
-  transform: translateY(40px); /* 👈 empurra o computador um pouco mais para baixo */
+  transform: translateY(40px);
 }
 
 /* Monitor no topo e centralizado */
@@ -254,7 +254,7 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 0.5rem; /* 🔽 espaço menor */
+  margin-bottom: 0;
 }
 
 .montagem-computador-monitor > div {
@@ -267,8 +267,9 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem; /* 🔽 mais próximos */
-  margin-top: -0.5rem; /* 🔽 reduz o espaço vertical extra */
+  gap: 1.5rem;
+  margin-top: -0.5rem;
+  flex-wrap: nowrap;
 }
 
 /* Ordem: Som à esquerda */
@@ -284,11 +285,27 @@ html, body {
 /* Teclado no centro */
 .montagem-computador-teclado {
   order: 2;
+  flex-shrink: 0;
+  margin-top: 10px;
 }
 
 .montagem-computador-teclado > div {
-  width: 280px;
-  height: 100px;
+  width: 340px !important;
+  height: 130px !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+/* Imagem do teclado preenche toda a dropzone */
+.montagem-computador-teclado > div img {
+  width: auto !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  display: block !important;
 }
 
 /* Mouse à direita */
@@ -318,9 +335,26 @@ html, body {
     height: 180px;
   }
 
+  .montagem-computador-teclado {
+    margin-top: 10px;
+  }
+
   .montagem-computador-teclado > div {
-    width: 240px;
-    height: 85px;
+    width: 300px !important;
+    height: 110px !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
   }
 
   .montagem-computador-mouse > div,
@@ -345,8 +379,21 @@ html, body {
   }
 
   .montagem-computador-teclado > div {
-    width: 200px;
-    height: 70px;
+    width: 280px !important;
+    height: 100px !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
   }
 
   .montagem-computador-mouse > div,
@@ -374,8 +421,21 @@ html, body {
   }
 
   .montagem-computador-teclado > div {
-    width: 160px;
-    height: 60px;
+    width: 220px !important;
+    height: 80px !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
   }
 
   .montagem-computador-mouse > div,
@@ -386,7 +446,7 @@ html, body {
 }
 
 /* =====================================================
-   👻 COLUNA FANTASMA DIREITA - Margens invisíveis
+   💻 COLUNA FANTASMA DIREITA - Margens invisíveis
    ===================================================== */
 
 .montagem-coluna-fantasma {
@@ -449,7 +509,7 @@ html, body {
 }
 
 /* =====================================================
-   📊 PAINÉL DE PONTUAÇÃO - Inferior Direita
+   📊 PAINEL DE PONTUAÇÃO - Inferior Direita
    ===================================================== */
 
 .painel-pontuacao-container {
@@ -560,8 +620,9 @@ html, body {
   }
 
   .montagem-computador-teclado > div {
-    width: 240px;
-    height: 85px;
+    width: 340px !important;
+    height: 120px !important;
+    max-width: none !important;
   }
 
   .montagem-computador-mouse > div,
@@ -631,8 +692,20 @@ html, body {
   }
 
   .montagem-computador-teclado > div {
-    width: 200px;
-    height: 70px;
+    width: 240px;
+    height: 90px;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
   }
 
   .montagem-computador-mouse > div,
@@ -674,8 +747,20 @@ html, body {
   }
 
   .montagem-computador-teclado > div {
-    width: 160px;
-    height: 60px;
+    width: 200px;
+    height: 75px;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: fill !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
   }
 
   .montagem-computador-mouse > div,

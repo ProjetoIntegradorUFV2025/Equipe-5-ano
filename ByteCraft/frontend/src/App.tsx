@@ -25,7 +25,7 @@ function App() {
             element={<AlunoPage setAluno={setAluno} />} 
           />
           <Route path="/professor" element={<Professor />} />
-          <Route path="/professor-cadastro" element={<ProfessorCadastro />} />
+          <Route path="/professor/cadastro" element={<ProfessorCadastro />} />
           <Route 
             path="/niveis" 
             element={aluno ? <Niveis aluno={aluno as AlunoType} /> : <Home />} 

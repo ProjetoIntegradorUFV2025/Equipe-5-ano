@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DraggableItem from "../components/DraggableItem";
 import DropZone from "../components/DropZone";
 import SucessoModal from "../components/SucessoModal";
@@ -142,13 +142,20 @@ const MAPEAMENTO_CORRETO: Record<string, string> = {
 
 const MontagemInterna: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const aluno = location.state?.aluno as AlunoType | undefined;
-  const nivelDificuldade = (location.state?.nivel || 'medio') as NivelDificuldade;
+  // Recuperar dados do aluno do state ou localStorage
+  const alunoState = location.state?.aluno as AlunoType | undefined;
+  const alunoLocalStorage = localStorage.getItem("aluno") 
+    ? JSON.parse(localStorage.getItem("aluno")!) as AlunoType 
+    : null;
+  
+  const aluno = alunoState || alunoLocalStorage;
+  const nivelDificuldade = (location.state?.nivel || localStorage.getItem("nivelSelecionado") || 'medio') as NivelDificuldade;
   
   const apelido = aluno?.apelido || localStorage.getItem("apelido") || "teste";
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
-  const nivel = (localStorage.getItem("nivelSelecionado") as NivelDificuldade) || "medio";
+  const nivel = nivelDificuldade;
 
   const [historiaAtual, setHistoriaAtual] = useState<DialogoHistoria | null>(null);
   const [mostrarHistoria, setMostrarHistoria] = useState(false);
@@ -167,6 +174,23 @@ const MontagemInterna: React.FC = () => {
     pausar: pausarCronometro,
     resetar: resetarCronometro
   } = useCronometro();
+
+  // Handler para o botão voltar do navegador
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
+      navigate('/fases', { 
+        state: { aluno },
+        replace: true 
+      });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate, aluno]);
 
   useEffect(() => {
     iniciarCronometro();
@@ -416,7 +440,10 @@ const MontagemInterna: React.FC = () => {
   const handleVoltarFases = () => {
     resetarPontuacao();
     resetarCronometro();
-    window.location.href = "/fases";
+    navigate('/fases', { 
+      state: { aluno },
+      replace: true 
+    });
   };
 
   const obterImagemPeca = (pecaId: string): string | undefined => {

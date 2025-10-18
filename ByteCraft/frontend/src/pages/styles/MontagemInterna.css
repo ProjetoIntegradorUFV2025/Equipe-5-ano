@@ -254,7 +254,7 @@ html, body {
 }
 
 /* =====================================================
-   📍 DROPZONES - Posicionamento no gabinete
+   📌 DROPZONES - Posicionamento no gabinete
    ===================================================== */
 
 /* Processador - Centro superior */
@@ -271,11 +271,11 @@ html, body {
   height: 140px;
 }
 
-/* RAM - Superior direita */
+/* RAM - Inferior esquerda */
 .montagem-interna-dropzone-ram {
   position: absolute;
-  top: 20%;
-  right: 20%;
+  bottom: 25%;
+  left: 15%;
   z-index: 10;
 }
 
@@ -284,11 +284,11 @@ html, body {
   height: 180px;
 }
 
-/* SSD - Inferior esquerda */
+/* SSD - Superior direita */
 .montagem-interna-dropzone-ssd {
   position: absolute;
-  bottom: 25%;
-  left: 15%;
+  top: 20%;
+  right: 20%;
   z-index: 10;
 }
 
