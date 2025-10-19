@@ -1,0 +1,789 @@
+/* =====================================================
+   🎨 MONTAGEM - LAYOUT REORGANIZADO
+   Peças na esquerda, Dropzones centralizadas, Coluna fantasma direita
+   ===================================================== */
+
+/* Remover margens padrão PRIMEIRO */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.montagem-container {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Background como camada separada */
+.montagem-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    url('../assets/backgrounds/background_montagem.png'),
+    url('../../assets/backgrounds/background_montagem.png'),
+    url('/assets/backgrounds/background_montagem.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+}
+
+/* Fallback se a imagem não carregar */
+.montagem-container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  z-index: -2;
+}
+
+/* =====================================================
+   🛒 PAINEL ESQUERDO - Peças verticais
+   ===================================================== */
+
+.montagem-pecas-horizontal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: auto;
+  max-width: 200px;
+  background: transparent;
+  backdrop-filter: none;
+  border-right: none;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.montagem-pecas-horizontal h3 {
+  display: none;
+}
+
+.montagem-pecas-lista-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* =====================================================
+   ✨ ELEMENTOS ARRASTAVEIS - Fundo branco para destaque
+   ===================================================== */
+
+.montagem-pecas-lista-horizontal > div {
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.montagem-pecas-lista-horizontal > div:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.montagem-pecas-lista-horizontal > div > * {
+  background-color: transparent;
+}
+
+/* =====================================================
+   🌈 AREA CENTRAL - DropZones
+   ===================================================== */
+
+.montagem-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  padding-left: 200px;
+  padding-right: 200px;
+  margin: 0;
+  z-index: 1;
+}
+
+.montagem-workspace {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.montagem-central-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 900px;
+  height: 100%;
+}
+
+/* Balão de história - Superior */
+.montagem-historia-balao {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 90%;
+  z-index: 85;
+  border: 3px solid #3498db;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.montagem-historia-balao::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid rgba(255, 255, 255, 0.95);
+}
+
+.montagem-historia-balao h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.3rem;
+  color: #3498db;
+  font-weight: bold;
+}
+
+.montagem-historia-balao p {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Animação de saída */
+.montagem-historia-balao.sair {
+  animation: slideUp 0.4s ease-in forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+}
+
+/* =====================================================
+   🖥️ Estrutura interna do computador (workspace)
+   Layout: Monitor no topo, Som + Teclado + Mouse embaixo
+   ===================================================== */
+
+.montagem-computador {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: min(60vw, 850px);
+  max-width: 850px;
+  height: 80%;
+  padding: 0 1rem 4rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+  transform: translateY(40px);
+}
+
+/* Monitor no topo e centralizado */
+.montagem-computador-monitor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.montagem-computador-monitor > div {
+  width: 380px;
+  height: 230px;
+}
+
+/* Periféricos embaixo em linha: Som - Teclado - Mouse */
+.montagem-computador-perifericos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: -0.5rem;
+  flex-wrap: nowrap;
+}
+
+/* Ordem: Som à esquerda */
+.montagem-computador-som {
+  order: 1;
+}
+
+.montagem-computador-som > div {
+  width: 130px;
+  height: 130px;
+}
+
+/* Teclado no centro */
+.montagem-computador-teclado {
+  order: 2;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+.montagem-computador-teclado > div {
+  width: 340px !important;
+  height: 130px !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+/* Imagem do teclado preenche toda a dropzone */
+.montagem-computador-teclado > div img {
+  width: auto !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+  display: block !important;
+}
+
+/* Mouse à direita */
+.montagem-computador-mouse {
+  order: 3;
+}
+
+.montagem-computador-mouse > div {
+  width: 120px;
+  height: 120px;
+}
+
+/* =====================================================
+   📱 Responsividade (ajustar também versões menores)
+   ===================================================== */
+
+@media (max-width: 1024px) {
+  .montagem-computador {
+    gap: 1.8rem;
+    width: min(70vw, 740px);
+    max-width: 740px;
+    transform: translateY(35px);
+  }
+
+  .montagem-computador-monitor > div {
+    width: 300px;
+    height: 180px;
+  }
+
+  .montagem-computador-teclado {
+    margin-top: 10px;
+  }
+
+  .montagem-computador-teclado > div {
+    width: 300px !important;
+    height: 110px !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .montagem-computador-mouse > div,
+  .montagem-computador-som > div {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+@media (max-width: 768px) {
+  .montagem-computador {
+    gap: 1.5rem;
+    width: min(90vw, 560px);
+    max-width: 560px;
+    transform: translateY(25px);
+    padding-bottom: 2rem;
+  }
+
+  .montagem-computador-monitor > div {
+    width: 240px;
+    height: 150px;
+  }
+
+  .montagem-computador-teclado > div {
+    width: 280px !important;
+    height: 100px !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .montagem-computador-mouse > div,
+  .montagem-computador-som > div {
+    width: 90px;
+    height: 90px;
+  }
+
+  .montagem-computador-perifericos {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .montagem-computador {
+    gap: 1.2rem;
+    width: min(95vw, 420px);
+    max-width: 420px;
+    transform: translateY(20px);
+  }
+
+  .montagem-computador-monitor > div {
+    width: 200px;
+    height: 120px;
+  }
+
+  .montagem-computador-teclado > div {
+    width: 220px !important;
+    height: 80px !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .montagem-computador-mouse > div,
+  .montagem-computador-som > div {
+    width: 75px;
+    height: 75px;
+  }
+}
+
+/* =====================================================
+   💻 COLUNA FANTASMA DIREITA - Margens invisíveis
+   ===================================================== */
+
+.montagem-coluna-fantasma {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  background: transparent;
+  backdrop-filter: none;
+  border-left: none;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 50;
+  overflow-y: auto;
+  pointer-events: none;
+}
+
+.montagem-coluna-fantasma-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  visibility: hidden;
+}
+
+/* =====================================================
+   🚫 Esconder elementos antigos
+   ===================================================== */
+
+.montagem-pecas {
+  display: none !important;
+}
+
+.montagem-header,
+.montagem-alerta-selecao,
+.montagem-dica-banner {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Garantir que modais apareçam */
+.historia-modal,
+.erro-modal,
+.sucesso-modal,
+.conclusao-modal {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* =====================================================
+   📊 PAINEL DE PONTUAÇÃO - Inferior Direita
+   ===================================================== */
+
+.painel-pontuacao-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  border: 2px solid #f39c12;
+  z-index: 90;
+}
+
+.painel-pontuacao-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.painel-pontuacao-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.painel-pontuacao-valor {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================================================
+   ⏱️ CRONÔMETRO - Inferior Centro
+   ===================================================== */
+
+.cronometro-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  border: 2px solid #3498db;
+  z-index: 90;
+}
+
+.cronometro-icone {
+  font-size: 1.2rem;
+}
+
+.cronometro-tempo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  font-family: 'Courier New', monospace;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* =====================================================
+   📱 Responsividade
+   ===================================================== */
+
+@media (max-width: 1024px) {
+  .montagem-content {
+    padding-left: 180px;
+    padding-right: 180px;
+  }
+
+  .montagem-pecas-horizontal {
+    max-width: 180px;
+    padding: 1.5rem 1rem;
+  }
+
+  .montagem-coluna-fantasma {
+    width: 180px;
+    padding: 1.5rem 1rem;
+  }
+
+  .montagem-pecas-lista-horizontal,
+  .montagem-coluna-fantasma-lista {
+    gap: 1.5rem;
+  }
+
+  .montagem-computador {
+    gap: 3rem;
+    width: min(70vw, 760px);
+    max-width: 760px;
+  }
+
+  .montagem-computador-monitor > div {
+    width: 300px;
+    height: 190px;
+  }
+
+  .montagem-computador-teclado > div {
+    width: 340px !important;
+    height: 120px !important;
+    max-width: none !important;
+  }
+
+  .montagem-computador-mouse > div,
+  .montagem-computador-som > div {
+    width: 110px;
+    height: 110px;
+  }
+
+  .montagem-computador-perifericos {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .montagem-container {
+    flex-direction: column;
+  }
+
+  .montagem-content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 180px;
+  }
+
+  .montagem-pecas-horizontal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    max-height: 180px;
+    padding: 1rem 1rem;
+    flex-direction: row;
+    border-left: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .montagem-coluna-fantasma {
+    display: none;
+  }
+
+  .montagem-pecas-lista-horizontal {
+    gap: 1rem;
+    flex-direction: row;
+  }
+
+  .montagem-workspace {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .montagem-computador {
+    gap: 2rem;
+    width: min(92vw, 560px);
+    max-width: 560px;
+  }
+
+  .montagem-computador-monitor > div {
+    width: 250px;
+    height: 160px;
+  }
+
+  .montagem-computador-teclado > div {
+    width: 240px;
+    height: 90px;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: auto !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .montagem-computador-mouse > div,
+  .montagem-computador-som > div {
+    width: 90px;
+    height: 90px;
+  }
+
+  .montagem-computador-perifericos {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .montagem-content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 160px;
+  }
+
+  .montagem-pecas-horizontal {
+    max-height: 160px;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .montagem-pecas-lista-horizontal {
+    gap: 0.75rem;
+  }
+
+  .montagem-computador {
+    gap: 1.5rem;
+    width: min(96vw, 440px);
+    max-width: 440px;
+  }
+
+  .montagem-computador-monitor > div {
+    width: 200px;
+    height: 130px;
+  }
+
+  .montagem-computador-teclado > div {
+    width: 200px;
+    height: 75px;
+    padding: 0 !important;
+  }
+
+  .montagem-computador-teclado > div img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: fill !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  .montagem-computador-mouse > div,
+  .montagem-computador-som > div {
+    width: 75px;
+    height: 75px;
+  }
+
+  .montagem-computador-perifericos {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* Remover margens padrão (reforço) */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}

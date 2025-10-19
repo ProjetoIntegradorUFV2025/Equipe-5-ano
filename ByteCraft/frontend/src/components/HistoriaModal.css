@@ -1,0 +1,143 @@
+/* ========================================
+   💬 HISTÓRIA MODAL - RAMon "pulando" do balão
+   ======================================== */
+
+.historia-modal-topo {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  max-width: 750px;
+  z-index: 120;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Balão de fala menor e mais leve */
+.historia-modal-balao-topo {
+  display: flex;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.92);
+  border: 3px solid #3498db;
+  border-radius: 20px;
+  padding: 1rem 1.5rem 1rem 2rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: slideDown 0.4s ease-out;
+  width: 100%;
+  min-height: 120px;
+  pointer-events: auto;
+  overflow: visible; /* 👈 permite o personagem ultrapassar o balão */
+}
+
+/* Cauda do balão */
+.historia-modal-balao-topo::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 100px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 16px solid rgba(255, 255, 255, 0.92);
+}
+
+/* Personagem RAMon maior, parcialmente saindo do balão */
+.historia-modal-personagem-topo {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  margin-right: 1.2rem;
+  flex-shrink: 0;
+  transform: translateY(-20px) scale(1.1); /* 👈 “pulando” para fora */
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+  z-index: 5;
+}
+
+/* Conteúdo textual reduzido */
+.historia-modal-conteudo-topo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  flex: 1;
+  padding-top: 0.25rem;
+}
+
+.historia-modal-titulo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3498db;
+  margin-bottom: 0.5rem;
+}
+
+.historia-modal-texto {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+/* Botão */
+.historia-modal-btn-continuar {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 0.45rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.4);
+}
+
+.historia-modal-btn-continuar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.6);
+}
+
+.historia-modal-btn-continuar:active {
+  transform: translateY(0);
+}
+
+/* Entrada animada */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .historia-modal-personagem-topo {
+    width: 120px;
+    transform: translateY(-15px) scale(1.05);
+  }
+
+  .historia-modal-balao-topo {
+    padding: 0.8rem 1rem 0.8rem 1.5rem;
+  }
+
+  .historia-modal-titulo {
+    font-size: 1rem;
+  }
+
+  .historia-modal-texto {
+    font-size: 0.85rem;
+  }
+
+  .historia-modal-btn-continuar {
+    padding: 0.4rem 1.1rem;
+    font-size: 0.85rem;
+  }
+}

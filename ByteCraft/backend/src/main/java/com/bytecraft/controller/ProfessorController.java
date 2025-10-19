@@ -16,12 +16,21 @@ public class ProfessorController {
 
     private final ProfessorService professorService;
 
+    // 🔹 Método utilitário para normalizar texto
+    private String normalizar(String texto) {
+        return texto == null ? "" : texto.trim().replaceAll("\\s+", " ");
+    }
+
     // Cadastro do professor + criação de sala automática
     @PostMapping("/cadastrar")
     public ResponseEntity<?> cadastrar(@RequestBody Map<String, String> payload) {
-        String nome = payload.get("nome");
-        String senha = payload.get("senha");
-        String nomeTurma = payload.get("nomeTurma");
+        String nome = normalizar(payload.get("nome"));
+        String senha = normalizar(payload.get("senha"));
+        String nomeTurma = normalizar(payload.get("nomeTurma"));
+
+        if (nome.isEmpty() || senha.isEmpty() || nomeTurma.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "Nome, senha e nome da turma são obrigatórios."));
+        }
 
         try {
             ProfessorDTO professorDTO = professorService.cadastrarProfessor(nome, senha, nomeTurma);
@@ -34,10 +43,10 @@ public class ProfessorController {
     // Autenticação do professor
     @PostMapping("/autenticar")
     public ResponseEntity<?> autenticar(@RequestBody Map<String, String> payload) {
-        String nome = payload.get("nome");
-        String senha = payload.get("senha");
+        String nome = normalizar(payload.get("nome"));
+        String senha = normalizar(payload.get("senha"));
 
-        if (nome == null || senha == null) {
+        if (nome.isEmpty() || senha.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("erro", "Nome e senha são obrigatórios."));
         }
 

@@ -14,7 +14,6 @@ const safeUrl = (relPath: string) => {
   }
 };
 
-// Ajuste os caminhos relativos conforme a posição deste arquivo
 const backgroundAluno = safeUrl("../assets/backgrounds/background_aluno.png");
 const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
 
@@ -29,7 +28,7 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
   const [loading, setLoading] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
 
-  // Verificar orientação da tela
+  // Detecta orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -37,21 +36,16 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
     };
 
     checkOrientation();
-    window.addEventListener('resize', checkOrientation);
-    window.addEventListener('orientationchange', () => {
-      // Pequeno delay para aguardar a mudança completa da orientação
+    window.addEventListener("resize", checkOrientation);
+    window.addEventListener("orientationchange", () => {
       setTimeout(checkOrientation, 100);
     });
-    
+
     return () => {
-      window.removeEventListener('resize', checkOrientation);
-      window.removeEventListener('orientationchange', checkOrientation);
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
     };
   }, []);
-
-  // DEBUG: veja no console a URL resolvida
-  console.log("backgroundAluno =>", backgroundAluno);
-  console.log("voltarIcon =>", voltarIcon);
 
   const handleVoltar = () => navigate("/");
 
@@ -103,11 +97,11 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Mensagem para orientação vertical */}
+      {/* Mensagem para modo retrato */}
       {isPortrait && (
         <div className="aluno-portrait-warning">
           <div className="aluno-portrait-message">
-            <p>📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄</p>
+            <p>📱 Vire o telefone para a posição deitada! 🔄</p>
           </div>
         </div>
       )}
