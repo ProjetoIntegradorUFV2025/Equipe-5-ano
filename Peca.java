@@ -1,21 +1,29 @@
-public class Peca{
-    public int id;
-    public String nome;
+public class Peca {
+    private int id;
+    private String nome;
 
-    public Peca(int id, String nome){
+    public Peca(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
-    public int getId(){
+
+    public int getId() {
         return id;
     }
-    public String getNome(){
-        return nome;
-    }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
-    public void setNome(String nome){
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public void exibirDetalhes() {
+        System.out.println("Peça: " + nome + " (ID: " + id + ")");
     }
 }
