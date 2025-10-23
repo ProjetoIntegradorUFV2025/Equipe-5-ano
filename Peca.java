@@ -23,4 +23,8 @@ public class Peca {
     public void setNome(String nome){
         this.nome = nome;
     }
+
+    public void exibirDetalhes(){ 
+        System.out.println("Peça: " + nome + " (ID: " + id + ")"); 
+    } 
 }
