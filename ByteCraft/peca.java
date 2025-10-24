@@ -2,6 +2,7 @@ public class Peca {
 
     private int id;
     private String nome;
+    
 
     
     public Peca(int id, String nome) {
@@ -26,5 +27,13 @@ public class Peca {
     
     public void setNome(String nome) {
         this.nome = nome;
+    }
+    public void exibirDetalhes(){
+        
+        //System.out.printf("Peça: %s (ID: %d)",this.nome,this.id);
+        System.out.println("Peça: " + nome + " (ID: " + id + ")"); 
+        
+         
+
     }
 }
