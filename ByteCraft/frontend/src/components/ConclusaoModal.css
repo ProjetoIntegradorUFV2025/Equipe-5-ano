@@ -1,0 +1,397 @@
+.conclusao-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.conclusao-modal-content {
+  background: white;
+  padding: 4rem 3rem 3rem;
+  border-radius: 25px;
+  max-width: 600px;
+  width: 85%;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: slideIn 0.3s ease-out;
+  margin-top: 60px;
+}
+
+.parabens-container {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2001;
+}
+
+.parabens-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.ranking-icon {
+  font-size: 80px;
+  animation: bounce 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.conclusao-modal-texto {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ranking-titulo {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  text-align: center;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.conclusao-erro {
+  background-color: #fee;
+  color: #c33;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1rem;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  border: 2px solid #fcc;
+  margin-bottom: 0.5rem;
+}
+
+.conclusao-carregando {
+  background-color: #eef;
+  color: #33c;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1rem;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  border: 2px solid #ccf;
+  margin-bottom: 0.5rem;
+}
+
+.conclusao-sucesso {
+  background-color: #efe;
+  color: #363;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1rem;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  border: 2px solid #cfc;
+  margin-bottom: 0.5rem;
+}
+
+.conclusao-modal-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.conclusao-modal-stat {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  padding: 1.2rem;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.conclusao-modal-stat.final {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.conclusao-modal-stat-label {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.conclusao-modal-stat.final .conclusao-modal-stat-label {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.conclusao-modal-stat-valor {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.conclusao-modal-stat-valor.final {
+  font-size: 2.2rem;
+  color: #fef08a;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.conclusao-modal-botoes {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.conclusao-modal-btn-ranking,
+.conclusao-modal-btn-voltar {
+  background-color: #22c55e;
+  color: white;
+  border: 3px solid #16a34a;
+  border-bottom-color: #14532d;
+  border-radius: 15px;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 5px 0 #14532d;
+  letter-spacing: 0.8px;
+  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  position: relative;
+  margin-bottom: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.conclusao-modal-btn-ranking:hover:not(:disabled),
+.conclusao-modal-btn-voltar:hover {
+  background-color: #16a34a;
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #14532d;
+  margin-bottom: 0.25rem;
+}
+
+.conclusao-modal-btn-ranking:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.conclusao-modal-btn-ranking:active,
+.conclusao-modal-btn-voltar:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #14532d;
+  margin-bottom: 0.75rem;
+}
+
+.conclusao-modal-ranking {
+  margin: 1rem 0;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.conclusao-modal-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e2e8f0;
+}
+
+.conclusao-modal-tabela thead {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+}
+
+.conclusao-modal-tabela th,
+.conclusao-modal-tabela td {
+  padding: 1rem;
+  text-align: left;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-size: 1.1rem;
+}
+
+.conclusao-modal-tabela th {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.conclusao-modal-tabela tbody tr:nth-child(odd) {
+  background: #f8fafc;
+}
+
+.conclusao-modal-tabela tbody tr:hover {
+  background: #e2e8f0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: translateX(-50%) scale(1);
+    filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
+  }
+  50% { 
+    transform: translateX(-50%) scale(1.08);
+    filter: drop-shadow(0 12px 35px rgba(0, 0, 0, 0.6));
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .conclusao-modal-content {
+    padding: 3.5rem 2rem 2rem;
+    max-width: 90%;
+    margin-top: 40px;
+    width: 90%;
+  }
+
+  .parabens-container {
+    top: -30px;
+    width: 350px;
+    height: 130px;
+  }
+
+  .ranking-icon {
+    font-size: 60px;
+  }
+
+  .conclusao-modal-texto {
+    gap: 1.2rem;
+  }
+
+  .ranking-titulo {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+
+  .conclusao-modal-stat-label {
+    font-size: 1.1rem;
+  }
+
+  .conclusao-modal-stat-valor {
+    font-size: 1.4rem;
+  }
+
+  .conclusao-modal-stat-valor.final {
+    font-size: 1.8rem;
+  }
+
+  .conclusao-modal-btn-ranking,
+  .conclusao-modal-btn-voltar {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-width: 150px;
+  }
+
+  .conclusao-modal-botoes {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}
+
+/* Mobile Pequeno */
+@media (max-width: 480px) {
+  .conclusao-modal-content {
+    padding: 3rem 1.5rem 1.5rem;
+    margin-top: 30px;
+  }
+
+  .parabens-container {
+    top: -25px;
+    width: 280px;
+    height: 100px;
+  }
+
+  .ranking-titulo {
+    font-size: 1.8rem;
+  }
+
+  .conclusao-modal-stat {
+    padding: 1rem;
+  }
+
+  .conclusao-modal-stat.final {
+    padding: 1.2rem;
+  }
+}
+
+/* Portrait - Aviso de rotação */
+@media (max-width: 768px) and (orientation: portrait) {
+  .conclusao-modal-overlay {
+    background-image: url('../assets/graphics/aviso_rotate.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .conclusao-modal-content {
+    filter: blur(3px);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .conclusao-modal-overlay::before {
+    content: '📱 Para melhor experiência, vire o telefone para a posição deitada! 🔄';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+    border: 0.2rem solid white;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 2001;
+    max-width: 80%;
+    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  }
+}

@@ -1,13 +1,13 @@
-/* ===== ESTILOS MOBILE FIRST PARA A PÁGINA HOME ===== */
 .home-isolated-container {
   height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
   isolation: isolate;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
@@ -20,14 +20,13 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: url('src/assets/backgrounds/background_home.png');
+  background-image: url('/src/assets/backgrounds/background_padrão.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: -1;
 }
 
-/* ===== MENSAGEM DE ORIENTAÇÃO VERTICAL ===== */
 .home-portrait-warning {
   position: fixed;
   top: 0;
@@ -43,58 +42,71 @@
 
 .home-portrait-message {
   background: linear-gradient(135deg, #3b82f6, #1e40af);
-  padding: 20px 30px;
-  border-radius: 15px;
+  padding: 3% 5%;
+  border-radius: 1rem;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  border: 3px solid white;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+  border: 0.2rem solid white;
   max-width: 80%;
 }
 
 .home-portrait-message p {
   color: white;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3vw, 1.4rem);
   font-weight: bold;
   margin: 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0.0625rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.5);
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
-/* GRUPO DE BOTÕES - POSICIONADO MAIS PARA BAIXO */
+.home-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width: 90%;
+  height: 85vh;
+  gap: 5vh;
+}
+
+.home-logo {
+  width: 60%;
+  max-width: 28rem;
+  height: auto;
+  max-height: 45vh;
+  object-fit: contain;
+  filter: drop-shadow(0 0.25rem 0.625rem rgba(0, 0, 0, 0.3));
+}
+
 .home-button-group {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
   align-items: center;
-  position: absolute;
-  bottom: 15%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85vw;
-  max-width: 300px;
+  width: 100%;
+  max-width: 25rem;
+  gap: 1.5rem;
 }
 
-/* BOTÕES - TAMANHO AUMENTADO */
 .home-button-group button {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   color: white;
-  padding: 1.8vh 5vw;
-  border-radius: 16px;
-  font-size: 1.3rem;
+  padding: 4% 8%;
+  border-radius: 1rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
   font-weight: 700;
-  min-width: 240px;
-  text-align: center;
   width: 100%;
-  max-width: 300px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  min-height: 3.5rem;
+  box-shadow: 0 0.3125rem 0.625rem rgba(0, 0, 0, 0.25);
   border-style: solid;
-  border-bottom-width: 8px;
-  border-width: 4px;
+  border-bottom-width: 0.5rem;
+  border-width: 0.25rem;
   font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  position: relative;
+  margin-bottom: 0.5rem;
 }
 
-/* BOTÃO PROFESSOR */
 .home-btn-professor {
   background-color: #22c55e;
   border-color: #16a34a;
@@ -103,19 +115,20 @@
 
 .home-btn-professor:hover {
   filter: brightness(110%);
-  transform: translateY(-4px);
-  border-bottom-width: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-0.25rem);
+  border-bottom-width: 0.75rem;
+  box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.25rem;
 }
 
 .home-btn-professor:active {
   filter: brightness(90%);
-  transform: translateY(4px);
-  border-bottom-width: 6px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(0.25rem);
+  border-bottom-width: 0.375rem;
+  box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.75rem;
 }
 
-/* BOTÃO ALUNO */
 .home-btn-aluno {
   background-color: #3b82f6;
   border-color: #2563eb;
@@ -124,113 +137,263 @@
 
 .home-btn-aluno:hover {
   filter: brightness(110%);
-  transform: translateY(-4px);
-  border-bottom-width: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-0.25rem);
+  border-bottom-width: 0.75rem;
+  box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.25rem;
 }
 
 .home-btn-aluno:active {
   filter: brightness(90%);
-  transform: translateY(4px);
-  border-bottom-width: 6px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(0.25rem);
+  border-bottom-width: 0.375rem;
+  box-shadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.75rem;
 }
 
-/* AJUSTES PARA DIFERENTES ALTURAS DE TELA */
-@media (max-height: 600px) {
-  .home-button-group {
-    bottom: 10%;
+/* Mobile Landscape */
+@media (max-width: 64rem) and (orientation: landscape) {
+  .home-content {
+    height: 90vh;
+    gap: 3vh;
   }
-}
-
-@media (min-height: 700px) {
-  .home-button-group {
-    bottom: 20%;
+  
+  .home-logo {
+    width: 55%;
+    max-width: 25rem;
+    max-height: 50vh;
   }
-}
-
-/* ===== VERSÃO MOBILE DEITADO (LANDSCAPE) ===== */
-@media (max-width: 1024px) and (orientation: landscape) {
+  
   .home-button-group {
-    bottom: 12%;
+    max-width: 22rem;
     gap: 1rem;
   }
   
   .home-button-group button {
-    padding: 2vh 5vw;
-    font-size: 1.2rem;
+    min-height: 3rem;
+    padding: 3% 6%;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
   }
 }
 
-/* ===== VERSÃO DESKTOP ===== */
-@media (min-width: 1025px) {
+/* Landscape com altura média */
+@media (max-width: 64rem) and (orientation: landscape) and (min-height: 25rem) {
+  .home-logo {
+    max-height: 55vh;
+  }
+  
+  .home-button-group button {
+    min-height: 3.5rem;
+  }
+}
+
+/* Landscape com boa altura */
+@media (max-width: 64rem) and (orientation: landscape) and (min-height: 31.25rem) {
+  .home-content {
+    gap: 4vh;
+  }
+  
+  .home-logo {
+    max-height: 55vh;
+    width: 60%;
+  }
+  
   .home-button-group {
-    bottom: 15%; /* Descido mais para não sobrepor o título superior */
-    max-width: 500px;
     gap: 1.2rem;
   }
   
   .home-button-group button {
-    padding: 1.8rem 2.2rem;
-    font-size: 2.0rem;
-    min-width: 300px;
-    max-width: 350px;
-    border-radius: 18px;
-  }
-  
-  /* Ajuste para telas muito grandes */
-  @media (min-width: 1600px) {
-    .home-button-group {
-      bottom: 18%; /* Descido proporcionalmente para telas grandes */
-    }
-    
-    .home-button-group button {
-      padding: 1.6rem 2.0rem;
-      font-size: 1.5rem;
-      min-width: 280px;
-      max-width: 320px;
-    }
+    min-height: 3.75rem;
+    padding: 3.5% 7%;
   }
 }
 
-/* ===== VERSÃO MOBILE PEQUENA (ALTURA LIMITADA) ===== */
-@media (max-height: 500px) {
+/* Desktop - Base */
+@media (min-width: 64.0625rem) {
+  .home-content {
+    width: 70%;
+    max-width: 70%;
+    height: 80vh;
+    gap: 4vh;
+  }
+  
+  .home-logo {
+    width: 65%;
+    max-width: 45rem;
+    max-height: 55vh;
+  }
+  
   .home-button-group {
-    bottom: 20%;
-    gap: 0.8rem;
+    max-width: 28rem;
+    gap: 2rem;
   }
   
   .home-button-group button {
-    padding: 2vh 5vw;
-    font-size: 1.3rem;
-    min-width: 220px;
+    padding: 4.5% 9%;
+    font-size: clamp(1.3rem, 1.5vw, 1.8rem);
+    border-radius: 1.25rem;
+    min-height: 4.5rem;
   }
 }
 
-/* ===== ORIENTAÇÃO PORTRAIT (EM PÉ) ===== */
-@media (max-width: 768px) and (orientation: portrait) {
+/* Desktop médio */
+@media (min-width: 64.0625rem) and (max-width: 89.9375rem) {
+  .home-logo {
+    width: 60%;
+    max-width: 40rem;
+    max-height: 52vh;
+  }
+  
+  .home-content {
+    width: 65%;
+  }
+  
+  .home-button-group {
+    max-width: 26rem;
+  }
+}
+
+/* Desktop grande */
+@media (min-width: 90rem) and (max-width: 119.9375rem) {
+  .home-content {
+    width: 60%;
+    gap: 5vh;
+  }
+  
+  .home-logo {
+    width: 55%;
+    max-width: 50rem;
+    max-height: 58vh;
+  }
+  
+  .home-button-group {
+    max-width: 30rem;
+    gap: 2.5rem;
+  }
+  
+  .home-button-group button {
+    font-size: clamp(1.4rem, 1.6vw, 2rem);
+    min-height: 5rem;
+    border-radius: 1.375rem;
+  }
+}
+
+/* Desktop muito grande / 4K */
+@media (min-width: 120rem) {
+  .home-content {
+    width: 55%;
+    gap: 6vh;
+  }
+  
+  .home-logo {
+    width: 50%;
+    max-width: 55rem;
+    max-height: 60vh;
+  }
+  
+  .home-button-group {
+    max-width: 32rem;
+    gap: 3rem;
+  }
+  
+  .home-button-group button {
+    padding: 5% 10%;
+    font-size: clamp(1.6rem, 1.8vw, 2.2rem);
+    min-height: 5.5rem;
+    border-radius: 1.5rem;
+    border-bottom-width: 0.75rem;
+  }
+}
+
+/* Desktop com altura grande */
+@media (min-width: 64.0625rem) and (min-height: 62.5rem) {
+  .home-logo {
+    max-height: 58vh;
+  }
+  
+  .home-content {
+    gap: 5vh;
+  }
+}
+
+/* Desktop ultra-wide */
+@media (min-width: 125rem) and (orientation: landscape) {
+  .home-logo {
+    width: 45%;
+    max-width: 52rem;
+  }
+  
+  .home-content {
+    width: 50%;
+  }
+}
+
+/* Telas muito largas - ajuste extra */
+@media (min-width: 100rem) {
+  .home-content {
+    width: 60%;
+  }
+}
+
+/* Landscape com pouca altura */
+@media (max-height: 37.5rem) and (orientation: landscape) {
+  .home-content {
+    height: 92vh;
+    gap: 2vh;
+  }
+  
+  .home-logo {
+    max-height: 48vh;
+    width: 50%;
+  }
+  
+  .home-button-group {
+    gap: 0.8rem;
+    max-width: 20rem;
+  }
+  
+  .home-button-group button {
+    padding: 2.5% 5%;
+    font-size: clamp(0.95rem, 2vw, 1.2rem);
+    min-height: 2.8rem;
+  }
+}
+
+/* Portrait - Aviso de rotação */
+@media (max-width: 48rem) and (orientation: portrait) {
   .home-portrait-warning {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     background-image: url('../../assets/graphics/aviso_rotate.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
   }
   
   .home-portrait-message {
     display: none;
   }
   
-  .home-button-group {
-    filter: blur(3px);
+  .home-content {
+    filter: blur(0.1875rem);
     pointer-events: none;
+  }
+}
+
+/* Ajustes para telas pequenas em landscape */
+@media (max-width: 48rem) and (orientation: landscape) and (max-height: 28.125rem) {
+  .home-content {
+    gap: 1.5vh;
+  }
+  
+  .home-logo {
+    max-height: 45vh;
+    width: 48%;
+  }
+  
+  .home-button-group {
+    gap: 0.6rem;
+  }
+  
+  .home-button-group button {
+    min-height: 2.5rem;
   }
 }

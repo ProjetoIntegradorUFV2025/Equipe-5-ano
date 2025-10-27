@@ -27,11 +27,20 @@ public class AlunoController {
             String apelido = payload.get("apelido");
             String codigoSalaStr = payload.get("codigoSala");
 
-            if (apelido == null || apelido.isBlank()) {
+            // === Normalização ===
+            if (apelido != null) {
+                apelido = apelido.trim().replaceAll("\\s+", " ");
+            }
+            if (codigoSalaStr != null) {
+                codigoSalaStr = codigoSalaStr.trim();
+            }
+
+            // === Validação ===
+            if (apelido == null || apelido.isEmpty()) {
                 resposta.put("erro", "Apelido é obrigatório");
                 return ResponseEntity.badRequest().body(resposta);
             }
-            if (codigoSalaStr == null || codigoSalaStr.isBlank()) {
+            if (codigoSalaStr == null || codigoSalaStr.isEmpty()) {
                 resposta.put("erro", "Código da sala é obrigatório");
                 return ResponseEntity.badRequest().body(resposta);
             }
@@ -40,7 +49,6 @@ public class AlunoController {
             Aluno aluno = alunoService.vincularAlunoASala(apelido, codigoSala);
 
             resposta.put("apelido", aluno.getApelido());
-            // verifica se nivel é nulo antes de chamar .name()
             resposta.put("nivel", aluno.getNivel() != null ? aluno.getNivel().name() : null);
             resposta.put("sala", Map.of(
                     "id", aluno.getSala().getId(),
@@ -71,23 +79,29 @@ public class AlunoController {
     public ResponseEntity<?> registrarNivel(@PathVariable String apelido,
                                             @RequestBody Map<String, String> payload) {
         try {
+            // Normaliza apelido e parâmetros
+            apelido = apelido != null ? apelido.trim().replaceAll("\\s+", " ") : null;
             String codigoSalaStr = payload.get("codigoSala");
             String nivelStr = payload.get("nivel");
 
-            if (codigoSalaStr == null || codigoSalaStr.isBlank())
+            if (codigoSalaStr != null) codigoSalaStr = codigoSalaStr.trim();
+            if (nivelStr != null) nivelStr = nivelStr.trim();
+
+            // Validação
+            if (apelido == null || apelido.isEmpty())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Apelido é obrigatório"));
+            if (codigoSalaStr == null || codigoSalaStr.isEmpty())
                 return ResponseEntity.badRequest().body(Map.of("erro", "Código da sala é obrigatório"));
-            if (nivelStr == null || nivelStr.isBlank())
+            if (nivelStr == null || nivelStr.isEmpty())
                 return ResponseEntity.badRequest().body(Map.of("erro", "Nível é obrigatório"));
 
             Byte codigoSala = Byte.parseByte(codigoSalaStr);
             NivelDificuldadeEnum nivel = NivelDificuldadeEnum.valueOf(nivelStr.toUpperCase());
 
-            // Atualiza nível pelo service
             boolean atualizado = alunoService.registraNivel(nivel, apelido, codigoSala);
             if (!atualizado)
                 return ResponseEntity.badRequest().body(Map.of("erro", "Aluno não encontrado"));
 
-            // Busca o aluno atualizado para retornar DTO
             Aluno aluno = alunoService.findAluno(apelido, codigoSala);
             AlunoDTO alunoDTO = AlunoDTO.fromEntity(aluno);
 
@@ -97,4 +111,40 @@ public class AlunoController {
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }
+
+    @PostMapping("/setPontuacao")
+    public ResponseEntity<?> salvaPontuacao(@RequestBody Map<String, String> payload) {
+        try {
+            String apelido = payload.get("apelido");
+            String codigoSalaStr = payload.get("codigoSala");
+            String pontosStr = payload.get("pontos");
+            String segundosStr = payload.get("segundos");
+
+            if (apelido != null) apelido = apelido.trim().replaceAll("\\s+", " ");
+            if (codigoSalaStr != null) codigoSalaStr = codigoSalaStr.trim();
+            if (pontosStr != null) pontosStr = pontosStr.trim();
+            if (segundosStr != null) segundosStr = segundosStr.trim();
+
+            if (apelido == null || apelido.isEmpty())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Apelido é obrigatório"));
+            if (codigoSalaStr == null || codigoSalaStr.isEmpty())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Código da sala é obrigatório"));
+            if (pontosStr == null || pontosStr.isEmpty())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Pontos são obrigatórios"));
+            if (segundosStr == null || segundosStr.isEmpty())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Tempo (segundos) é obrigatório"));
+
+            Byte codigoSala = Byte.parseByte(codigoSalaStr);
+            int pontos = Integer.parseInt(pontosStr);
+            int segundos = Integer.parseInt(segundosStr);
+
+            boolean atualizado = alunoService.registraPontuacao(apelido, segundos, pontos, codigoSala);
+
+            return ResponseEntity.ok(Map.of("atualizado", atualizado));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "Erro ao registrar pontuação: " + e.getMessage()));
+        }
+    }
+
+
 }

@@ -1,0 +1,275 @@
+.dropzone {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.dropzone-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ==========================================================
+   ÁREAS DE ENCAIXE - Apenas bordas visíveis
+   ========================================================== */
+
+.dropzone-area {
+  position: relative;
+  border: 3px dashed rgba(100, 116, 139, 0.4);
+  border-radius: 12px;
+  background: transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tamanhos específicos para cada área */
+.dropzone-area.monitor {
+  width: clamp(20rem, 35vw, 25rem);
+  height: clamp(12.5rem, 22vh, 15.6rem);
+}
+
+.dropzone-area.teclado {
+  width: clamp(18rem, 30vw, 22rem);
+  height: clamp(6rem, 10vh, 8rem);
+}
+
+.dropzone-area.mouse {
+  width: clamp(6.5rem, 11vw, 8.1rem);
+  height: clamp(6.5rem, 11vw, 8.1rem);
+}
+
+.dropzone-area.som {
+  width: clamp(7rem, 12vw, 8.75rem);
+  height: clamp(7rem, 12vw, 8.75rem);
+}
+
+/* Hover */
+.dropzone-area:hover {
+  border-color: rgba(59, 130, 246, 0.6);
+  background: rgba(59, 130, 246, 0.05);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+/* Estado quando item está sendo arrastado sobre */
+.dropzone-area.dropzone-hover {
+  border-color: rgba(34, 197, 94, 0.8);
+  border-width: 4px;
+  background: rgba(34, 197, 94, 0.1);
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.3);
+  transform: scale(1.05);
+}
+
+/* Estado iluminado (dica visual) */
+.dropzone-area.dropzone-iluminado {
+  border-color: rgba(251, 191, 36, 0.9);
+  border-width: 4px;
+  background: rgba(251, 191, 36, 0.15);
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+  animation: pulsar 1.5s ease-in-out infinite;
+}
+
+@keyframes pulsar {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.7);
+    transform: scale(1.08);
+  }
+}
+
+/* Após encaixar peça */
+.dropzone-area.dropzone-placed {
+  border-color: rgba(34, 197, 94, 0.5);
+  border-style: solid;
+  background: rgba(34, 197, 94, 0.08);
+}
+
+/* ==========================================================
+   LAYOUT DOS PERIFÉRICOS
+   ========================================================== */
+
+.dropzone-perifericos {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================
+   Imagem da peça encaixada
+   ========================================================== */
+
+.dropzone-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Classe específica para o teclado - Aumentar padding interno */
+.dropzone-area.teclado {
+  padding: 10px !important;
+}
+
+.dropzone-area.teclado .dropzone-imagem {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================
+   Placeholder e brilho de ajuda
+   ========================================================== */
+
+.dropzone-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dropzone-brilho-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background: rgba(251, 191, 36, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.7);
+  animation: brilhar 1.2s ease-in-out infinite;
+}
+
+@keyframes brilhar {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.15);
+  }
+}
+
+.dropzone-brilho-texto {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+/* ==========================================================
+   Label indicativa (hover)
+   ========================================================== */
+
+.dropzone-area::after {
+  content: attr(data-label);
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dropzone-area:hover::after {
+  opacity: 1;
+}
+
+/* ==========================================================
+   Ícone de ajuda visual
+   ========================================================== */
+
+.dropzone-icone {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0.15;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.dropzone-area:hover .dropzone-icone {
+  opacity: 0.3;
+}
+
+.dropzone-area.dropzone-placed .dropzone-icone {
+  display: none;
+}
+
+/* ==========================================================
+   Responsividade
+   ========================================================== */
+
+@media (max-width: 1024px) {
+  .dropzone-container {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dropzone-container {
+    gap: 1.5rem;
+  }
+
+  .dropzone-brilho-texto {
+    font-size: 0.9rem;
+  }
+
+  .dropzone-area::after {
+    font-size: 0.85rem;
+    top: -30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropzone-container {
+    gap: 1rem;
+  }
+
+  .dropzone-area {
+    border-width: 2px;
+  }
+
+  .dropzone-perifericos {
+    gap: 1rem;
+    flex-direction: column;
+  }
+
+  .dropzone-brilho-texto {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .dropzone-icone {
+    font-size: 2rem;
+  }
+}

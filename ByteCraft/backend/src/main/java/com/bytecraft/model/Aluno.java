@@ -36,4 +36,7 @@ public class Aluno {
     @JsonBackReference // não serializa essa referência
     private Sala sala;
 
+    @Column(nullable = false)
+    private int pontuacao;
+
 }
