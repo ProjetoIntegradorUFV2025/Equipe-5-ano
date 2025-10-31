@@ -1,0 +1,107 @@
+/* Quiz.css */
+
+/* Container geral do quiz */
+.quiz-container {
+  max-width: 600px;
+  max-height: 90vh; /* limita a altura da tela */
+  overflow-y: auto;  /* ativa scroll vertical se necessário */
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+  
+  /* Título e enunciado */
+  .quiz-container h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  .quiz-enunciado {
+    font-size: 18px;
+    margin-bottom: 24px;
+    color: #555;
+  }
+  
+  /* Container das alternativas */
+  .quiz-alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  /* Botões das alternativas */
+  .quiz-alternativas button {
+    padding: 14px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 250px; /* garante que o botão seja grande o suficiente */
+    text-align: left;
+  }
+  
+  .quiz-alternativas button:hover:not(:disabled) {
+    background-color: #f0f0f0;
+  }
+  
+  .quiz-alternativas button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Estado de acerto */
+  .quiz-alternativas button.acertou {
+    background-color: #4caf50;
+    color: #fff;
+    border-color: #4caf50;
+  }
+  
+  /* Estado de erro */
+  .quiz-alternativas button.errou {
+    background-color: #f44336;
+    color: #fff;
+    border-color: #f44336;
+  }
+  
+  /* Feedback abaixo das alternativas */
+  .quiz-feedback {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Responsividade mobile */
+  @media (max-width: 480px) {
+    .quiz-container {
+      padding: 16px;
+      margin: 20px;
+    }
+  
+    .quiz-alternativas button {
+      font-size: 14px;
+      padding: 12px 16px;
+      min-width: 100%;
+    }
+
+  /* Imagem das perguntas */
+  .quiz-imagem {
+    max-width: 100%;      /* nunca ultrapassa a largura do container */
+    max-height: 250px;    /* limita a altura para não empurrar os botões */
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;  /* centraliza e dá espaçamento abaixo */
+    object-fit: contain;  /* mantém proporção */
+    border-radius: 8px;   /* opcional, deixa mais bonito */
+    border: 1px solid #ddd; /* opcional, delimita a imagem */
+  }
+  }
+  

@@ -108,6 +108,16 @@ export const getRankingTurma = async (codigoUnico: number): Promise<ApiAluno[]> 
   return handleResponse<ApiAluno[]>(response);
 };
 
+export const getDetalhesSala = async (codigoUnico: number): Promise<ApiSala & { nomesAlunos: string[] }> => {
+  const response = await fetch(`${API_BASE_URL}/salas/${codigoUnico}/detalhes`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  return handleResponse<ApiSala & { nomesAlunos: string[] }>(response);
+};
+
+
 // ==== PROFESSOR ====
 export const cadastrarProfessor = async (
   nomeDeUsuario: string,
@@ -132,6 +142,15 @@ export const loginProfessor = async (
     body: JSON.stringify({ nome: nomeDeUsuario, senha }),
   });
   return handleResponse<ApiProfessor>(response);
+};
+
+export const getSalaDoProfessor = async (nomeProfessor: string): Promise<ApiSala> => {
+  const response = await fetch(`${API_BASE_URL}/professores/${encodeURIComponent(nomeProfessor)}/sala`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  return handleResponse<ApiSala>(response);
 };
 
 export const salvarProgresso = async (
@@ -243,6 +262,64 @@ export const obterProgresso = async (
   }
 };
 
+//===PERGUNTAS===
+
+export interface PerguntaRequest {
+  quantidade: number;
+  nivelDificuldade: string; // FACIL, MEDIO, DIFICIL
+}
+
+export const getPerguntasPorNivel = async (
+  quantidade: number,
+  nivelDificuldade: string
+): Promise<Pergunta[]> => {
+  const body: PerguntaRequest = { 
+    quantidade, 
+    nivelDificuldade: nivelDificuldade.toUpperCase() 
+  };
+
+  const response = await fetch(`${API_BASE_URL}/perguntas/list`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  return handleResponse<Pergunta[]>(response);
+};
+
+export const importarPerguntasCSV = async (arquivos: File[]): Promise<string> => {
+  const formData = new FormData();
+
+  arquivos.forEach((file) => {
+    formData.append("arquivos", file); // mesmo nome do @RequestParam no backend
+  });
+
+  const response = await fetch(`${API_BASE_URL}/perguntas/import`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || "Erro ao importar CSV");
+  }
+
+  return response.text();
+};
+
+// ✅ Nova interface Pergunta compatível com o backend refatorado
+export interface Pergunta {
+  id: number;
+  enunciado: string;
+  imagem?: string; // opcional
+  alternativaA: string;
+  alternativaB: string;
+  alternativaC: string;
+  alternativaD: string;
+  alternativaCorreta: string; // novo campo
+  nivelDificuldade: string;
+}
+
 // ==== OBJETO EXPORTADO ====
 export const api = {
   // Aluno
@@ -257,10 +334,16 @@ export const api = {
   listarSalas,
   cadastrarSala,
   getRankingTurma,
+  getDetalhesSala,
 
   // Professor
   cadastrarProfessor,
   loginProfessor,
+  getSalaDoProfessor,
+
+  // Perguntas
+  getPerguntasPorNivel,
+  importarPerguntasCSV,
 };
 
 // ==== EXPORT DEFAULT ====

@@ -165,12 +165,12 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
   // Fluxo Alternativo (3): Se modoHistoriaCompleto for true, quiz está disponível
   const iniciarModoQuiz = () => {
     // CSU07 - RN10: Validar se pode acessar o Quiz
-    if (!modoHistoriaCompleto) {
-      console.warn("⚠️ Quiz bloqueado: Modo História não concluído");
-      setMensagemErro("Você precisa concluir o Modo História antes de acessar o Modo Quiz.");
-      setShowErroModal(true);
-      return;
-    }
+    //if (!modoHistoriaCompleto) {
+      //console.warn("⚠️ Quiz bloqueado: Modo História não concluído");
+      //setMensagemErro("Você precisa concluir o Modo História antes de acessar o Modo Quiz.");
+      //setShowErroModal(true);
+      //return;
+   // }
 
     if (!nivel) {
       setMensagemErro("Nível não foi selecionado corretamente.");
@@ -198,7 +198,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
 
   // CSU07 - RN08: Determinar disponibilidade do Quiz
   // CSU07 - Fluxo Alternativo (3): Quiz ativo se modoHistoriaCompleto for true
-  const modoQuizDisponivel = modoHistoriaCompleto;
+  const modoQuizDisponivel = true //modoHistoriaCompleto;
 
   // Validação de dados críticos
   const dadosValidos = aluno && aluno.apelido && nivel;

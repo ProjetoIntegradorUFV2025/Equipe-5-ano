@@ -74,4 +74,9 @@ public class SalaService {
 
         return Optional.of(alunos);
     }
+
+    public Sala getSalaByProfessor(Long id){
+        Sala sala = salaRepository.buscarPorProfessor(id);
+        return sala;
+    }
 }
