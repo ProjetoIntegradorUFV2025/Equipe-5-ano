@@ -4,6 +4,7 @@ import com.bytecraft.enums.NivelDificuldadeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
+//Classe da Lara adaptada
 @Entity
 @Table(name = "pergunta")
 @Data

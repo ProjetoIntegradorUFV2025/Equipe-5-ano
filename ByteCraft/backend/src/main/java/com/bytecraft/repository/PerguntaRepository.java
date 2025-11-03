@@ -13,6 +13,7 @@ import com.bytecraft.model.Pergunta;
 @Repository
 public interface PerguntaRepository extends JpaRepository<Pergunta, Long> {
 
+    //Querry da Lara
     @Query("SELECT p FROM Pergunta p WHERE p.nivelDificuldade = :nivel")
     List<Pergunta> buscarPorNivel(@Param("nivel") NivelDificuldadeEnum nivel);
 
