@@ -13,7 +13,8 @@ interface DropZoneProps {
 }
 
 /**
- * DropZone com fundo transparente mostrando apenas bordas dos encaixes
+ * DropZone com controle de visibilidade por nível
+ * ✅ CORREÇÃO PROBLEMA 3: Ícones visíveis apenas em Fácil e Médio
  */
 const DropZone: React.FC<DropZoneProps> = ({
   id,
@@ -48,7 +49,6 @@ const DropZone: React.FC<DropZoneProps> = ({
     if (ref.current) drop(ref.current);
   }, [drop, id]);
 
-  // Mapear o ID para o tipo de área e label
   const getAreaInfo = () => {
     switch (id) {
       case "dropzone_monitor":
@@ -59,6 +59,16 @@ const DropZone: React.FC<DropZoneProps> = ({
         return { tipo: "mouse", label: "Mouse", icone: "🖱️" };
       case "dropzone_som":
         return { tipo: "som", label: "Caixa de Som", icone: "🔊" };
+      case "dropzone_processador":
+        return { tipo: "processador", label: "Processador", icone: "🧠" };
+      case "dropzone_ram":
+        return { tipo: "ram", label: "Memória RAM", icone: "💾" };
+      case "dropzone_ssd":
+        return { tipo: "ssd", label: "SSD", icone: "💿" };
+      case "dropzone_placa_video":
+        return { tipo: "placa_video", label: "Placa de Vídeo", icone: "🎮" };
+      case "dropzone_fan":
+        return { tipo: "fan", label: "Cooler", icone: "❄️" };
       default:
         return { tipo: "", label: "", icone: "" };
     }
@@ -74,17 +84,20 @@ const DropZone: React.FC<DropZoneProps> = ({
     return classes.join(" ");
   };
 
+  // ✅ CORREÇÃO PROBLEMA 3: Ícone aparece em Fácil e Médio, mas NÃO no Difícil
+  const mostrarIcone = (nivel === 'facil' || nivel === 'medio') && !placed;
+
   return (
     <div ref={ref} className={getClassName()} data-label={label}>
-      {/* Ícone de fundo sutil */}
-      {!placed && <span className="dropzone-icone">{icone}</span>}
+      {/* ✅ Ícone de fundo APENAS nos níveis Fácil e Médio */}
+      {mostrarIcone && <span className="dropzone-icone">{icone}</span>}
 
       {/* Se a peça foi colocada, mostra a imagem */}
       {placed && image && (
         <img src={image} alt={label} className="dropzone-imagem" />
       )}
 
-      {/* Brilho temporário de destaque */}
+      {/* Brilho temporário de destaque (ajuda visual) */}
       {!placed && destacar && (
         <div className="dropzone-placeholder">
           <div className="dropzone-brilho-container">

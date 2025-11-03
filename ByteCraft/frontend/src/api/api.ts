@@ -2,6 +2,7 @@ const API_BASE_URL = "http://localhost:8080/api";
 
 // ==== INTERFACES ====
 export interface ApiAluno {
+  id?: number; // ✅ ADICIONADO: propriedade id opcional
   apelido: string;
   nivel?: string;
   turma?: string;

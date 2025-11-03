@@ -14,6 +14,7 @@ import Montagem from './pages/Montagem';
 import MontagemInterna from "./pages/MontagemInterna";
 import Importar from './pages/Importar';
 import Quiz from './pages/Quiz';
+import { ProfessorPage } from './pages/Sala';
 
 function App() {
   const [aluno, setAluno] = useState<AlunoType | null>(null);
@@ -26,6 +27,9 @@ function App() {
           <Route path="/aluno" element={<AlunoPage setAluno={setAluno} />} />
           <Route path="/professor" element={<Professor />} />
           <Route path="/professor/cadastro" element={<ProfessorCadastro />} />
+          
+          {/* ✅ Rota Sala - Agora o componente busca os dados diretamente da API */}
+          <Route path="/sala" element={<ProfessorPage />} />
 
           <Route 
             path="/niveis" 

@@ -6,29 +6,24 @@ import type { DialogoHistoria } from "../types";
 interface HistoriaModalProps {
   isOpen: boolean;
   historia: DialogoHistoria | null;
-  onContinuar: () => void;
 }
 
-const HistoriaModal: React.FC<HistoriaModalProps> = ({ isOpen, historia, onContinuar }) => {
+const HistoriaModal: React.FC<HistoriaModalProps> = ({ isOpen, historia }) => {
   if (!isOpen || !historia) return null;
 
   return (
-    <div className="historia-modal-topo">
-      <div className="historia-modal-balao-topo">
-        <img
-          src={RAMon}
-          alt="RAMon personagem"
-          className="historia-modal-personagem-topo"
-        />
-        <div className="historia-modal-conteudo-topo">
+    <div className="historia-modal-overlay-nao-bloqueante">
+      <div className="historia-modal-container">
+        <div className="historia-modal-personagem-wrapper">
+          <img
+            src={RAMon}
+            alt="RAMon personagem"
+            className="historia-modal-personagem"
+          />
+        </div>
+        <div className="historia-modal-balao">
           <h2 className="historia-modal-titulo">{historia.titulo}</h2>
           <p className="historia-modal-texto">{historia.texto}</p>
-          <button
-            className="historia-modal-btn-continuar"
-            onClick={onContinuar}
-          >
-            Continuar
-          </button>
         </div>
       </div>
     </div>

@@ -27,7 +27,6 @@ public class AlunoController {
             String apelido = payload.get("apelido");
             String codigoSalaStr = payload.get("codigoSala");
 
-            // === Normalização ===
             if (apelido != null) {
                 apelido = apelido.trim().replaceAll("\\s+", " ");
             }
@@ -35,7 +34,6 @@ public class AlunoController {
                 codigoSalaStr = codigoSalaStr.trim();
             }
 
-            // === Validação ===
             if (apelido == null || apelido.isEmpty()) {
                 resposta.put("erro", "Apelido é obrigatório");
                 return ResponseEntity.badRequest().body(resposta);
@@ -50,6 +48,7 @@ public class AlunoController {
 
             resposta.put("apelido", aluno.getApelido());
             resposta.put("nivel", aluno.getNivel() != null ? aluno.getNivel().name() : null);
+            resposta.put("modoHistoriaCompleto", aluno.getModoHistoriaCompleto());
             resposta.put("sala", Map.of(
                     "id", aluno.getSala().getId(),
                     "nomeTurma", aluno.getSala().getNomeTurma(),
@@ -63,6 +62,7 @@ public class AlunoController {
             return ResponseEntity.badRequest().body(resposta);
         }
     }
+
     // Retorna níveis disponíveis
     @GetMapping("/niveis")
     public ResponseEntity<List<String>> getNiveis() {
@@ -79,7 +79,6 @@ public class AlunoController {
     public ResponseEntity<?> registrarNivel(@PathVariable String apelido,
                                             @RequestBody Map<String, String> payload) {
         try {
-            // Normaliza apelido e parâmetros
             apelido = apelido != null ? apelido.trim().replaceAll("\\s+", " ") : null;
             String codigoSalaStr = payload.get("codigoSala");
             String nivelStr = payload.get("nivel");
@@ -87,7 +86,6 @@ public class AlunoController {
             if (codigoSalaStr != null) codigoSalaStr = codigoSalaStr.trim();
             if (nivelStr != null) nivelStr = nivelStr.trim();
 
-            // Validação
             if (apelido == null || apelido.isEmpty())
                 return ResponseEntity.badRequest().body(Map.of("erro", "Apelido é obrigatório"));
             if (codigoSalaStr == null || codigoSalaStr.isEmpty())
@@ -146,5 +144,71 @@ public class AlunoController {
         }
     }
 
+    // ✅ NOVO: Salvar progresso do Modo História
+    @PostMapping("/progresso")
+    public ResponseEntity<?> salvarProgresso(@RequestBody Map<String, Object> payload) {
+        try {
+            String apelido = (String) payload.get("apelido");
+            Integer codigoSala = (Integer) payload.get("codigoSala");
+            Boolean modoHistoriaCompleto = (Boolean) payload.get("modoHistoriaCompleto");
 
+            System.out.println("📥 Salvando progresso: apelido=" + apelido + 
+                             ", codigoSala=" + codigoSala + 
+                             ", modoHistoriaCompleto=" + modoHistoriaCompleto);
+
+            if (apelido != null) apelido = apelido.trim().replaceAll("\\s+", " ");
+
+            if (apelido == null || apelido.isEmpty())
+                return ResponseEntity.badRequest().body(Map.of("erro", "Apelido é obrigatório"));
+            if (codigoSala == null)
+                return ResponseEntity.badRequest().body(Map.of("erro", "Código da sala é obrigatório"));
+            if (modoHistoriaCompleto == null)
+                return ResponseEntity.badRequest().body(Map.of("erro", "Status do modo história é obrigatório"));
+
+            Byte codigoSalaByte = codigoSala.byteValue();
+            boolean atualizado = alunoService.salvarProgresso(apelido, codigoSalaByte, modoHistoriaCompleto);
+
+            if (!atualizado) {
+                return ResponseEntity.badRequest().body(Map.of("erro", "Aluno não encontrado"));
+            }
+
+            System.out.println("✅ Progresso salvo com sucesso!");
+            return ResponseEntity.ok(Map.of("sucesso", true, "modoHistoriaCompleto", modoHistoriaCompleto));
+
+        } catch (Exception e) {
+            System.err.println("❌ Erro ao salvar progresso: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("erro", "Erro ao salvar progresso: " + e.getMessage()));
+        }
+    }
+
+    // ✅ NOVO: Obter progresso do aluno
+    @GetMapping("/progresso/{apelido}/{codigoSala}")
+    public ResponseEntity<?> obterProgresso(
+            @PathVariable String apelido,
+            @PathVariable Byte codigoSala) {
+        try {
+            System.out.println("📥 Buscando progresso: apelido=" + apelido + ", codigoSala=" + codigoSala);
+
+            if (apelido != null) apelido = apelido.trim().replaceAll("\\s+", " ");
+
+            Aluno aluno = alunoService.findAluno(apelido, codigoSala);
+            
+            Map<String, Object> resposta = new HashMap<>();
+            resposta.put("modoHistoriaCompleto", aluno.getModoHistoriaCompleto());
+            resposta.put("apelido", aluno.getApelido());
+            resposta.put("pontuacao", aluno.getPontuacao());
+
+            System.out.println("✅ Progresso encontrado: modoHistoriaCompleto=" + aluno.getModoHistoriaCompleto());
+            return ResponseEntity.ok(resposta);
+
+        } catch (RuntimeException e) {
+            System.err.println("❌ Aluno não encontrado: " + e.getMessage());
+            return ResponseEntity.status(404).body(Map.of("erro", "Aluno não encontrado"));
+        } catch (Exception e) {
+            System.err.println("❌ Erro ao buscar progresso: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("erro", "Erro ao buscar progresso: " + e.getMessage()));
+        }
+    }
 }

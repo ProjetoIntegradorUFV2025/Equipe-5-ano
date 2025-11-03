@@ -2,7 +2,9 @@ import type { NivelDificuldade } from "../types";
 
 /**
  * Define a pontuação base por peça
- * Total esperado: 4 peças × 100 = 400 pontos base
+ * Montagem Externa: 4 peças × 100 = 400 pontos
+ * Montagem Interna: 5 peças × 100 = 500 pontos
+ * Total máximo possível: 900 pontos base
  */
 const PONTUACAO_BASE_POR_PECA = 100;
 
@@ -59,7 +61,7 @@ const FEEDBACK_TENTATIVA: Record<NivelDificuldade, Record<number, string>> = {
 };
 
 /**
- * Calcula a pontuação de uma peça conforme RN10
+ * ✅ CORREÇÃO: Calcula a pontuação de uma peça conforme RN10
  * 
  * @param numeroTentativas - Número da tentativa (1, 2, 3, etc)
  * @param nivel - Nível de dificuldade
@@ -71,55 +73,93 @@ export function calcularPontuacaoPeca(
   nivel: NivelDificuldade,
   pontosBase: number = PONTUACAO_BASE_POR_PECA
 ): { pontos: number; feedback: string; desconto: number } {
-  // Pegar a penalidade da tabela (se não existir, retorna 0)
-  const penalidade = PENALIDADES[nivel][numeroTentativas] ?? PENALIDADES[nivel][5] ?? 50;
+  // Pegar a penalidade da tabela
+  const penalidade = PENALIDADES[nivel][numeroTentativas] ?? 
+                     PENALIDADES[nivel][Object.keys(PENALIDADES[nivel]).length] ?? 
+                     50;
   
-  // Calcular desconto (pode ultrapassar 100% em casos extremos)
+  // Calcular desconto (não pode ultrapassar 100%)
   const desconto = Math.min(penalidade, 100);
   
-  // Calcular pontos finais
-  const pontos = Math.max(0, pontosBase * (1 - desconto / 100));
+  // Calcular pontos finais (nunca negativo)
+  const pontos = Math.max(0, Math.round(pontosBase * (1 - desconto / 100)));
   
   // Obter feedback
   const feedback = FEEDBACK_TENTATIVA[nivel][numeroTentativas] ?? 
-                   FEEDBACK_TENTATIVA[nivel][5] ?? 
+                   FEEDBACK_TENTATIVA[nivel][Object.keys(FEEDBACK_TENTATIVA[nivel]).length] ?? 
                    "Tente novamente!";
   
+  console.log(`📊 Cálculo peça - Tentativas: ${numeroTentativas}, Nível: ${nivel}, Desconto: ${desconto}%, Pontos: ${pontos}`);
+  
   return {
-    pontos: Math.round(pontos),
+    pontos,
     feedback,
     desconto
   };
 }
 
 /**
- * Calcula a pontuação final com bônus de tempo conforme RN22
+ * ✅ CORREÇÃO: Calcula a pontuação final com bônus de tempo conforme RN22
  * 
  * Fórmula: X × max(1, (2 - T/600))
  * Onde:
- *   X = pontuação total (sem bônus)
- *   T = tempo em segundos
+ *   X = pontuação total acumulada (sem bônus)
+ *   T = tempo TOTAL em segundos (montagem externa + interna)
  * 
  * Ganha bônus se completar em menos de 10 minutos (600 segundos)
+ * Não perde pontos se demorar mais (mínimo é 1x)
  * 
- * @param pontuacaoTotal - Pontuação total sem bônus
- * @param tempoSegundos - Tempo em segundos
+ * @param pontuacaoTotal - Pontuação total acumulada sem bônus
+ * @param tempoSegundos - Tempo TOTAL em segundos
  * @returns Pontuação final com bônus aplicado
  */
 export function calcularPontuacaoFinal(
   pontuacaoTotal: number,
   tempoSegundos: number
 ): number {
-  const bonus = Math.max(1, 2 - tempoSegundos / 600);
-  const pontuacaoFinal = pontuacaoTotal * bonus;
+  // ✅ Aplicar fórmula RN22: max(1, (2 - T/600))
+  const multiplicador = Math.max(1, 2 - tempoSegundos / 600);
+  const pontuacaoFinal = Math.round(pontuacaoTotal * multiplicador);
   
-  console.log(`Cálculo de pontuação RN22:
-    Pontuação base: ${pontuacaoTotal}
-    Tempo: ${tempoSegundos}s (${Math.floor(tempoSegundos / 60)}:${String(tempoSegundos % 60).padStart(2, '0')})
-    Multiplicador: ${bonus.toFixed(2)}
-    Pontuação final: ${Math.round(pontuacaoFinal)}`);
+  const tempoMinutos = Math.floor(tempoSegundos / 60);
+  const tempoSegundosRestantes = tempoSegundos % 60;
   
-  return Math.round(pontuacaoFinal);
+  console.log(`
+╔════════════════════════════════════════════════════════════╗
+║          📊 CÁLCULO DE PONTUAÇÃO FINAL (RN22)             ║
+╠════════════════════════════════════════════════════════════╣
+║  Pontuação Base (acumulada): ${String(pontuacaoTotal).padStart(24)} pts  ║
+║  Tempo Total: ${String(`${tempoMinutos}:${String(tempoSegundosRestantes).padStart(2, '0')}`).padStart(36)} (${tempoSegundos}s)  ║
+║  Multiplicador de Tempo: ${String(multiplicador.toFixed(3)).padStart(27)}x  ║
+║  ───────────────────────────────────────────────────────  ║
+║  🎯 PONTUAÇÃO FINAL: ${String(pontuacaoFinal).padStart(32)} pts  ║
+╚════════════════════════════════════════════════════════════╝
+  `);
+  
+  return pontuacaoFinal;
+}
+
+/**
+ * ✅ NOVO: Valida e exibe o resumo da pontuação
+ */
+export function validarPontuacao(
+  pontuacaoExibida: number,
+  pontuacaoCalculada: number,
+  pontuacaoBackend: number
+): boolean {
+  const valido = pontuacaoExibida === pontuacaoCalculada && 
+                 pontuacaoCalculada === pontuacaoBackend;
+  
+  if (!valido) {
+    console.error(`
+⚠️ INCONSISTÊNCIA DETECTADA:
+   Pontuação Exibida: ${pontuacaoExibida}
+   Pontuação Calculada: ${pontuacaoCalculada}
+   Pontuação Backend: ${pontuacaoBackend}
+    `);
+  }
+  
+  return valido;
 }
 
 /**
@@ -140,5 +180,21 @@ export function simularPontuacoes() {
         `${i}        | ${String(pontos).padStart(6)} | ${String(desconto).padStart(7)}% | ${feedback}`
       );
     }
+  });
+  
+  console.log("\n=== SIMULAÇÃO RN22 (Bônus de Tempo) ===\n");
+  console.log("Tempo     | Multiplicador | Pontuação Base | Pontuação Final");
+  console.log("----------|---------------|----------------|----------------");
+  
+  const pontuacaoBase = 900; // Máximo possível
+  const tempos = [300, 450, 600, 750, 900, 1200]; // 5min, 7.5min, 10min, 12.5min, 15min, 20min
+  
+  tempos.forEach(tempo => {
+    const multiplicador = Math.max(1, 2 - tempo / 600);
+    const pontuacaoFinal = Math.round(pontuacaoBase * multiplicador);
+    const minutos = Math.floor(tempo / 60);
+    console.log(
+      `${String(minutos).padStart(2)}min     | ${multiplicador.toFixed(3).padStart(13)} | ${String(pontuacaoBase).padStart(14)} | ${String(pontuacaoFinal).padStart(15)}`
+    );
   });
 }
