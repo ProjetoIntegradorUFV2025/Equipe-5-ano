@@ -1,143 +1,254 @@
 /* ========================================
-   💬 HISTÓRIA MODAL - RAMon "pulando" do balão
+   💬 HISTÓRIA MODAL - Caixa de fala não bloqueante
    ======================================== */
 
-.historia-modal-topo {
+.historia-modal-overlay-nao-bloqueante {
   position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-  max-width: 750px;
-  z-index: 120;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
   display: flex;
   justify-content: center;
-  pointer-events: none;
-}
-
-/* Balão de fala menor e mais leve */
-.historia-modal-balao-topo {
-  display: flex;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.92);
-  border: 3px solid #3498db;
-  border-radius: 20px;
-  padding: 1rem 1.5rem 1rem 2rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  padding-top: 1.5rem;
+  pointer-events: none; /* Permite interação com elementos abaixo */
+}
+
+/* Container principal - horizontal e largo */
+.historia-modal-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 900px;
+  width: 90%;
   position: relative;
-  animation: slideDown 0.4s ease-out;
-  width: 100%;
-  min-height: 120px;
-  pointer-events: auto;
-  overflow: visible; /* 👈 permite o personagem ultrapassar o balão */
+  animation: slideInFromTop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: auto; /* Apenas o modal pode receber cliques */
 }
 
-/* Cauda do balão */
-.historia-modal-balao-topo::after {
-  content: '';
-  position: absolute;
-  bottom: -12px;
-  left: 100px;
-  width: 0;
-  height: 0;
-  border-left: 16px solid transparent;
-  border-right: 16px solid transparent;
-  border-top: 16px solid rgba(255, 255, 255, 0.92);
+/* Wrapper do personagem */
+.historia-modal-personagem-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
-/* Personagem RAMon maior, parcialmente saindo do balão */
-.historia-modal-personagem-topo {
-  width: 160px;
+.historia-modal-personagem {
+  width: 140px;
   height: auto;
   object-fit: contain;
-  margin-right: 1.2rem;
-  flex-shrink: 0;
-  transform: translateY(-20px) scale(1.1); /* 👈 “pulando” para fora */
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
-  z-index: 5;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+  animation: gentleBounce 3s ease-in-out infinite;
 }
 
-/* Conteúdo textual reduzido */
-.historia-modal-conteudo-topo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-  flex: 1;
-  padding-top: 0.25rem;
-}
-
-.historia-modal-titulo {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #3498db;
-  margin-bottom: 0.5rem;
-}
-
-.historia-modal-texto {
-  font-size: 0.95rem;
-  line-height: 1.4;
-  color: #333;
-  margin-bottom: 0.75rem;
-}
-
-/* Botão */
-.historia-modal-btn-continuar {
-  align-self: flex-end;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  color: white;
-  border: none;
-  padding: 0.45rem 1.3rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.4);
-}
-
-.historia-modal-btn-continuar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.6);
-}
-
-.historia-modal-btn-continuar:active {
-  transform: translateY(0);
-}
-
-/* Entrada animada */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-25px);
-  }
-  to {
-    opacity: 1;
+@keyframes gentleBounce {
+  0%, 100% {
     transform: translateY(0);
   }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .historia-modal-personagem-topo {
-    width: 120px;
-    transform: translateY(-15px) scale(1.05);
+/* Balão de fala - largo mas fino (baixa altura) */
+.historia-modal-balao {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  border: 3px solid #3498db;
+  border-radius: 18px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  position: relative;
+  flex: 1;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Triângulo apontando para o personagem */
+.historia-modal-balao::before {
+  content: '';
+  position: absolute;
+  left: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-right: 13px solid #3498db;
+}
+
+.historia-modal-balao::after {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-right: 9px solid #ffffff;
+}
+
+/* Título - destaque mas compacto */
+.historia-modal-titulo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #3498db;
+  margin: 0;
+  text-align: left;
+  line-height: 1.3;
+}
+
+/* Texto - legível mas não muito espaçado */
+.historia-modal-texto {
+  font-size: 1rem;
+  line-height: 1.45;
+  color: #2c3e50;
+  margin: 0;
+  text-align: left;
+}
+
+/* Animação de entrada suave de cima */
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px) scale(0.9);
+  }
+  60% {
+    transform: translateY(10px) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================
+   📱 RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .historia-modal-container {
+    max-width: 800px;
+    width: 88%;
   }
 
-  .historia-modal-balao-topo {
-    padding: 0.8rem 1rem 0.8rem 1.5rem;
+  .historia-modal-personagem {
+    width: 130px;
+  }
+
+  .historia-modal-balao {
+    padding: 0.95rem 1.4rem;
   }
 
   .historia-modal-titulo {
-    font-size: 1rem;
+    font-size: 1.15rem;
+  }
+
+  .historia-modal-texto {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .historia-modal-overlay-nao-bloqueante {
+    padding-top: 1.25rem;
+  }
+
+  .historia-modal-container {
+    flex-direction: row;
+    align-items: center;
+    width: 92%;
+    max-width: 650px;
+    gap: 0.85rem;
+  }
+
+  .historia-modal-personagem-wrapper {
+    padding-top: 0;
+  }
+
+  .historia-modal-personagem {
+    width: 110px;
+  }
+
+  .historia-modal-balao {
+    padding: 0.85rem 1.2rem;
+  }
+
+  /* Manter triângulo lateral */
+  .historia-modal-balao::before {
+    left: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: none;
+    border-right: 11px solid #3498db;
+  }
+
+  .historia-modal-balao::after {
+    left: -7px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: none;
+    border-right: 7px solid #ffffff;
+  }
+
+  .historia-modal-titulo {
+    font-size: 1.05rem;
+  }
+
+  .historia-modal-texto {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .historia-modal-overlay-nao-bloqueante {
+    padding-top: 1rem;
+  }
+
+  .historia-modal-container {
+    width: 95%;
+    gap: 0.7rem;
+  }
+
+  .historia-modal-personagem {
+    width: 90px;
+  }
+
+  .historia-modal-balao {
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+  }
+
+  .historia-modal-titulo {
+    font-size: 0.95rem;
   }
 
   .historia-modal-texto {
     font-size: 0.85rem;
+    line-height: 1.35;
   }
 
-  .historia-modal-btn-continuar {
-    padding: 0.4rem 1.1rem;
-    font-size: 0.85rem;
+  .historia-modal-balao::before {
+    left: -9px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 9px solid #3498db;
+  }
+
+  .historia-modal-balao::after {
+    left: -5px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid #ffffff;
   }
 }

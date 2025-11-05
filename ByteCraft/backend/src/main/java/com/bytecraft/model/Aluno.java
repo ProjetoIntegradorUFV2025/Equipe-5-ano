@@ -3,9 +3,8 @@ package com.bytecraft.model;
 import com.bytecraft.enums.NivelDificuldadeEnum;
 import jakarta.persistence.*;
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;    // em Aluno
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-//Classe do Pablo
 @Entity
 @Table(
     name = "alunos",
@@ -21,22 +20,24 @@ public class Aluno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // PK técnica, não exposta para lógica de negócio
+    private Long id;
 
     @Column(nullable = false)
-    private String apelido;  // Identificador dentro da sala
+    private String apelido;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true) // ou apenas remover nullable, que por padrão aceita null
+    @Column(nullable = true)
     private NivelDificuldadeEnum nivel;
-
 
     @ManyToOne
     @JoinColumn(name = "sala_id", nullable = false)
-    @JsonBackReference // não serializa essa referência
+    @JsonBackReference
     private Sala sala;
 
     @Column(nullable = false)
     private int pontuacao;
 
+    // ✅ NOVO CAMPO: Indica se o aluno completou o Modo História
+    @Column(name = "modo_historia_completo", nullable = false)
+    private Boolean modoHistoriaCompleto = false;
 }

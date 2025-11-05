@@ -107,3 +107,16 @@ export interface DialogosPorNivel {
   medio: DialogoHistoria[];
   dificil: DialogoHistoria[];
 }
+
+
+export interface Pergunta {
+  id: number;
+  enunciado: string;
+  imagem?: string; // opcional
+  alternativaA: string;
+  alternativaB: string;
+  alternativaC: string;
+  alternativaD: string;
+  alternativaCorreta: string; // novo campo
+  nivelDificuldade: string;
+}

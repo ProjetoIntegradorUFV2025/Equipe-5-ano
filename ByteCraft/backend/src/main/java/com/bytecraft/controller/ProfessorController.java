@@ -58,4 +58,22 @@ public class ProfessorController {
             return ResponseEntity.status(401).body(Map.of("erro", "Nome de usuário ou senha inválidos."));
         }
     }
+
+    @GetMapping("/{nomeProfessor}/sala")
+    public ResponseEntity<?> getSala(@PathVariable String nomeProfessor) {
+        try {
+            // Chama o service para buscar a sala do professor
+            var salaDTO = professorService.getSalaByNomeProfessor(nomeProfessor);
+
+            if (salaDTO != null) {
+                return ResponseEntity.ok(salaDTO);
+            } else {
+                return ResponseEntity.status(404)
+                        .body(Map.of("erro", "Professor ou sala não encontrados."));
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("erro", e.getMessage()));
+        }
+    }
 }

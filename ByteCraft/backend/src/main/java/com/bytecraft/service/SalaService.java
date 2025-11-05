@@ -57,6 +57,10 @@ public class SalaService {
     public Optional<List<Aluno>> getRankingTurma(Byte codigoUnico) {
         Long idSala = getSalaID(codigoUnico);
 
+        if (idSala == null) {
+            return Optional.empty();
+        }
+
         Optional<List<Aluno>> alunosOpt = alunoService.getAlunosPorSala(idSala);
 
         if (alunosOpt.isEmpty()) {
@@ -69,5 +73,10 @@ public class SalaService {
         alunos.sort(Comparator.comparingInt(Aluno::getPontuacao).reversed());
 
         return Optional.of(alunos);
+    }
+
+    public Sala getSalaByProfessor(Long id){
+        Sala sala = salaRepository.buscarPorProfessor(id);
+        return sala;
     }
 }

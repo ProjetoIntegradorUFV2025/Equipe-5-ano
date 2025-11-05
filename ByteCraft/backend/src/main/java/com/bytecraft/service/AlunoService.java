@@ -20,7 +20,7 @@ public class AlunoService {
     private final AlunoRepository alunoRepository;
     private final SalaRepository salaRepository;
 
-    //Vincula aluno à sala (cria se não existir)
+    // Vincula aluno à sala (cria se não existir)
     public Aluno vincularAlunoASala(String apelido, Byte codigoSala) {
         String apelidoTrim = apelido != null ? apelido.trim() : null;
 
@@ -34,6 +34,7 @@ public class AlunoService {
         novo.setApelido(apelidoTrim);
         novo.setSala(sala);
         novo.setPontuacao(0);
+        novo.setModoHistoriaCompleto(false); // ✅ Inicializar como false
         return alunoRepository.save(novo);
     }
 
@@ -53,7 +54,7 @@ public class AlunoService {
                 .orElse(false);
     }
 
-    //Busca aluno em uma sala
+    // Busca aluno em uma sala
     public Aluno findAluno(String apelido, Byte codigoSala) {
         String apelidoTrim = apelido != null ? apelido.trim() : null;
 
@@ -66,8 +67,8 @@ public class AlunoService {
 
     // Calcula pontuação com base no tempo (em segundos) e pontos recebidos do frontend
     public int calculaPontuacao(int pontos, int segundos) {
-        if (pontos < 0) pontos = 0;  // Evita pontuação negativa
-        if (segundos < 0) segundos = 0; // Evita valores negativos de tempo
+        if (pontos < 0) pontos = 0;
+        if (segundos < 0) segundos = 0;
     
         // Fórmula RN22: aplica bônus se T < 600s (10 minutos)
         double fatorTempo = Math.max(1.0, 2.0 - ((double) segundos / 600.0));
@@ -79,15 +80,9 @@ public class AlunoService {
     @Transactional
     public boolean registraPontuacao(String apelido, int segundos, int pontuacao, Byte codigoSala) {
         try {
-            // Busca o aluno
             Aluno aluno = findAluno(apelido, codigoSala);
-
-            // Calcula pontuação
             int pontuacaoFinal = calculaPontuacao(pontuacao, segundos);
-
-            // Atualiza pontuação usando o repositório
             int rowsUpdated = alunoRepository.atualizaPontuacao(aluno.getId(), pontuacaoFinal);
-
             return rowsUpdated > 0;
         } catch (Exception e) {
             System.err.println("Erro ao registrar pontuação: " + e.getMessage());
@@ -95,6 +90,39 @@ public class AlunoService {
         }
     }
 
+    // ✅ NOVO: Salvar progresso do Modo História
+    @Transactional
+    public boolean salvarProgresso(String apelido, Byte codigoSala, Boolean modoHistoriaCompleto) {
+        try {
+            String apelidoTrim = apelido != null ? apelido.trim() : null;
+
+            System.out.println("💾 [Service] Salvando progresso: apelido=" + apelidoTrim + 
+                             ", codigoSala=" + codigoSala + 
+                             ", modoHistoriaCompleto=" + modoHistoriaCompleto);
+
+            Sala sala = salaRepository.buscarPorCodigo(codigoSala)
+                    .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+
+            Optional<Aluno> alunoOpt = alunoRepository.buscarPorApelidoESala(apelidoTrim, sala);
+            
+            if (alunoOpt.isEmpty()) {
+                System.err.println("❌ [Service] Aluno não encontrado");
+                return false;
+            }
+
+            Aluno aluno = alunoOpt.get();
+            aluno.setModoHistoriaCompleto(modoHistoriaCompleto);
+            alunoRepository.save(aluno);
+
+            System.out.println("✅ [Service] Progresso salvo com sucesso!");
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("❌ [Service] Erro ao salvar progresso: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // Buscar alunos por sala
     public Optional<List<Aluno>> getAlunosPorSala(Long id){

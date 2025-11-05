@@ -160,16 +160,14 @@ const Montagem: React.FC = () => {
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
   const nivel = (localStorage.getItem("nivelSelecionado") as NivelDificuldade) || "medio";
 
-  const [historiaAtual, setHistoriaAtual] = useState<DialogoHistoria | null>(null);
-  const [mostrarHistoria, setMostrarHistoria] = useState(false);
   const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [mostrarBoasVindas, setMostrarBoasVindas] = useState(true);
 
   const {
     pontuacaoTotal,
     registrarTentativa,
-    calcularPontuacaoFinalComBonus,
-    resetar: resetarPontuacao
+    resetar: resetarPontuacao,
+    obterResumo
   } = usePontuacao();
 
   const {
@@ -229,12 +227,9 @@ const Montagem: React.FC = () => {
   const [showErro, setShowErro] = useState(false);
   const [mensagemErro, setMensagemErro] = useState("");
   
-  const [historiaIndex, setHistoriaIndex] = useState(0);
-  const [historiaAtualFluxo, setHistoriaAtualFluxo] = useState<DialogoHistoria | null>(HISTORIAS_FIXAS[0]);
-  const [showHistoria, setShowHistoria] = useState(true);
-  
   const [indicePecaAtual, setIndicePecaAtual] = useState(0);
   const [tentativasPeca, setTentativasPeca] = useState(0);
+  const [historiaAtual, setHistoriaAtual] = useState<DialogoHistoria | null>(HISTORIAS_FIXAS[0]);
 
   const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
 
@@ -243,34 +238,17 @@ const Montagem: React.FC = () => {
     console.log("Peça ativa inicial:", pecaAtivaId);
   }, []);
 
-  useEffect(() => {
-    if (!showHistoria && historiaAtualFluxo) {
-      setTentativasPeca(0);
-      const novoIndice = HISTORIAS_FIXAS.findIndex(h => h.pecaId === historiaAtualFluxo.pecaId);
-      if (novoIndice !== -1) {
-        setIndicePecaAtual(novoIndice);
-        console.log("Índice atualizado para:", novoIndice, "Peça:", historiaAtualFluxo.pecaId);
-      }
-    }
-  }, [showHistoria, historiaAtualFluxo]);
-
-  const handleContinuarHistoria = () => {
-    setShowHistoria(false);
-  };
-
   const handleContinuarBoasVindas = () => {
     setMostrarBoasVindas(false);
   };
 
-  const avancarHistoria = () => {
-    const proximoIndex = historiaIndex + 1;
+  const avancarParaProximaPeca = () => {
+    const proximoIndex = indicePecaAtual + 1;
 
-    if (proximoIndex < HISTORIAS_FIXAS.length) {
-      const proximaHistoria = HISTORIAS_FIXAS[proximoIndex];
-      setHistoriaIndex(proximoIndex);
-      setHistoriaAtualFluxo(proximaHistoria);
-      setShowHistoria(true);
+    if (proximoIndex < SEQUENCIA_PECAS.length) {
       setIndicePecaAtual(proximoIndex);
+      setHistoriaAtual(HISTORIAS_FIXAS[proximoIndex]);
+      setTentativasPeca(0);
     } else {
       finalizarMontagemExterna();
     }
@@ -367,35 +345,51 @@ const Montagem: React.FC = () => {
     setMostrarDica(false);
     setMensagemSucesso(obterMensagemAleatoria(nivel, 'sucesso'));
     
-    setShowSucesso(true);
-    
     try {
       api.salvarProgresso(apelido, codigoSala, false);
     } catch (err) {
       console.warn("Falha ao salvar progresso:", err);
     }
 
-    if (novasPecasColocadas.size === pecas.length) {
+    const ehUltimaPeca = novasPecasColocadas.size === pecas.length;
+    
+    if (ehUltimaPeca) {
+      console.log("🎯 Última peça da montagem externa! Avançando...");
       setTimeout(() => {
-        setShowSucesso(false);
         finalizarMontagemExterna();
-      }, 2000);
+      }, 1000);
     } else {
+      setShowSucesso(true);
       setTimeout(() => {
         setShowSucesso(false);
-        avancarHistoria();
+        avancarParaProximaPeca();
       }, 2000);
     }
   };
 
   function finalizarMontagemExterna() {
     pausarCronometro();
-    const pontuacaoExterna = calcularPontuacaoFinalComBonus(tempo);
     
+    // ✅ CORREÇÃO: Obter resumo da pontuação externa
+    const resumoExterno = obterResumo();
+    const pontuacaoExterna = resumoExterno.pontuacaoBase;
+    
+    console.log(`
+╔══════════════════════════════════════════════════════════════╗
+║           📦 MONTAGEM EXTERNA CONCLUÍDA                      ║
+╠══════════════════════════════════════════════════════════════╣
+║  Pontuação (sem bônus): ${String(pontuacaoExterna).padStart(32)} pts  ║
+║  Tempo: ${String(`${Math.floor(tempo/60)}:${String(tempo%60).padStart(2,'0')}`).padStart(48)} (${tempo}s)  ║
+║  Peças montadas: ${String(resumoExterno.totalPecas).padStart(41)}  ║
+║  Total de tentativas: ${String(resumoExterno.totalTentativas).padStart(38)}  ║
+╚══════════════════════════════════════════════════════════════╝
+    `);
+    
+    // ✅ CORREÇÃO: Salvar pontuação SEM bônus no localStorage
     localStorage.setItem("pontuacaoMontagem", pontuacaoExterna.toString());
     localStorage.setItem("tempoMontagem", tempo.toString());
     
-    console.log("Montagem externa concluída! Avançando para montagem interna...");
+    console.log("✅ Dados salvos no localStorage. Avançando para montagem interna...");
     
     navigate("/montagem-interna", {
       state: {
@@ -412,7 +406,14 @@ const Montagem: React.FC = () => {
   const handleVoltarFases = () => {
     resetarPontuacao();
     resetarCronometro();
-    window.location.href = "/fases";
+    
+    navigate('/fases', {
+      state: {
+        aluno: aluno,
+        nivel: nivelDificuldade
+      },
+      replace: true
+    });
   };
 
   const obterImagemPeca = (pecaId: string): string | undefined => {
@@ -458,7 +459,7 @@ const Montagem: React.FC = () => {
         </div>
       )}
 
-      {!showHistoria && (
+      {!mostrarBoasVindas && (
         <div className="montagem-alerta-selecao">
           <span className="montagem-alerta-icone">👆</span>
           <span>Arraste a peça <strong>{obterLabelPecaAtiva()}</strong> para o local correto!</span>
@@ -468,13 +469,6 @@ const Montagem: React.FC = () => {
       <div className="montagem-content">
         <div className="montagem-workspace">
           <div className="montagem-central-wrapper">
-            {historiaAtualFluxo && showHistoria && (
-              <div className="montagem-historia-balao">
-                <h3>{historiaAtualFluxo.titulo}</h3>
-                <p>{historiaAtualFluxo.texto}</p>
-              </div>
-            )}
-
             <div className="montagem-computador">
               <div className="montagem-computador-monitor">
                 <DropZone
@@ -543,21 +537,9 @@ const Montagem: React.FC = () => {
         </div>
       </div>
 
-      {historiaAtualFluxo && (
-        <HistoriaModal
-          isOpen={showHistoria && !mostrarBoasVindas}
-          historia={historiaAtualFluxo}
-          onContinuar={handleContinuarHistoria}
-        />
-      )}
-
       <HistoriaModal
-        isOpen={mostrarHistoria}
+        isOpen={!mostrarBoasVindas && historiaAtual !== null}
         historia={historiaAtual}
-        onContinuar={() => {
-          setMostrarHistoria(false);
-          setHistoriaAtual(null);
-        }}
       />
 
       <SucessoModal
