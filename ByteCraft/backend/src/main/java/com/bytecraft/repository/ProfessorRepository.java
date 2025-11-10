@@ -34,4 +34,15 @@ public class ProfessorRepository {
             return null; // caso não encontre
         }
     }
+
+    public Long buscarProfessorID(String nomeDeUsuario) {
+        try {
+            return em.createQuery(
+                            "SELECT p.id FROM Professor p WHERE p.nomeDeUsuario = :nome", Long.class)
+                    .setParameter("nome", nomeDeUsuario)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null; // caso não encontre
+        }
+    }
 }

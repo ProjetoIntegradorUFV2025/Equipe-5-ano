@@ -28,4 +28,7 @@ public interface SalaRepository extends JpaRepository<Sala, Long> {
     @Query("SELECT s.id FROM Sala s WHERE s.codigoUnico = :codigoUnico")
     Long buscarSalaID(@Param("codigoUnico") Byte codigoUnico);
 
+    @Query("SELECT p.sala FROM Professor p WHERE p.id = :id")
+    Sala buscarPorProfessor(@Param("id") Long id);
+
 }

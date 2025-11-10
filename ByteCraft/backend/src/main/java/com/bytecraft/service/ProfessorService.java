@@ -5,6 +5,8 @@ import com.bytecraft.model.Sala;
 import com.bytecraft.DTO.ProfessorDTO;
 import com.bytecraft.DTO.SalaDTO;
 import com.bytecraft.repository.ProfessorRepository;
+import com.bytecraft.repository.SalaRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class ProfessorService {
 
     private final ProfessorRepository professorRepository;
     private final SalaService salaService;
+    private final SalaRepository salaRepository;
     private final PasswordEncoder passwordEncoder;
 
     // Cadastra professor e cria sala se não existir
@@ -65,5 +68,11 @@ public class ProfessorService {
             return professor;
         }
         return null;
+    }
+
+    public Sala getSalaByNomeProfessor(String nomeDeUsuario) {
+        Long id = professorRepository.buscarProfessorID(nomeDeUsuario);
+        Sala sala = salaRepository.buscarPorProfessor(id);
+        return sala;
     }
 }

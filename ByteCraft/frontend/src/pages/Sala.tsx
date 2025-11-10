@@ -1,73 +1,167 @@
-import React, { useState } from 'react';
-import { api } from '../api/api';
-import { ApiAluno, ApiProfessor } from '../api/api';
+// src/pages/Sala.tsx
+import React, { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { api, ApiAluno, ApiProfessor, ApiSala } from "../api/api";
+import "./styles/Sala.css";
 
-interface ProfessorPageProps {
-  professor: ApiProfessor;
-}
+const safeUrl = (relPath: string) => {
+  try {
+    return new URL(relPath, import.meta.url).href;
+  } catch (err) {
+    console.error("Erro ao resolver asset:", relPath, err);
+    return "";
+  }
+};
 
-export const ProfessorPage: React.FC<ProfessorPageProps> = ({ professor }) => {
-  const [ranking, setRanking] = useState<ApiAluno[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState<string | null>(null);
+const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
 
-  const handleVisualizarRanking = async () => {
-    if (!professor.sala?.codigoUnico) {
-      setErro("Professor não possui sala associada.");
-      return;
-    }
+const Sala: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Professor vindo da navegação OU persistido
+  const professorFromState = location.state?.professor as ApiProfessor | undefined;
+  const professorFromStorage = useMemo(() => {
     try {
-      setLoading(true);
-      setErro(null);
-      const data = await api.getRankingTurma(professor.sala.codigoUnico);
-      setRanking(data);
-    } catch (error: any) {
-      setErro(error.message);
-    } finally {
-      setLoading(false);
+      const raw = localStorage.getItem("professor");
+      return raw ? (JSON.parse(raw) as ApiProfessor) : undefined;
+    } catch {
+      return undefined;
     }
+  }, []);
+
+  const [professor, setProfessor] = useState<ApiProfessor | undefined>(
+    professorFromState || professorFromStorage
+  );
+  const [sala, setSala] = useState<ApiSala | undefined>(professor?.sala);
+  const [ranking, setRanking] = useState<ApiAluno[]>([]);
+  const [carregando, setCarregando] = useState(false);
+
+  // Se não houver professor, volta ao login
+  useEffect(() => {
+    if (!professor) {
+      alert("Acesso não autorizado. É necessário fazer login como professor.");
+      navigate("/professor", { replace: true });
+    }
+  }, [professor, navigate]);
+
+  // Completa dados da sala se estiver faltando
+  useEffect(() => {
+    const preencherSalaSeNecessario = async () => {
+      if (!professor) return;
+
+      if (professor.sala?.codigoUnico) {
+        setSala(professor.sala);
+        return;
+      }
+
+      try {
+        setCarregando(true);
+        const nomeQuery =
+          (professor as any).nomeDeUsuario ||
+          (professor as any).nome ||
+          "";
+
+        if (!nomeQuery) {
+          throw new Error(
+            "Objeto de professor sem nomeDeUsuario/nome para buscar a sala."
+          );
+        }
+
+        const salaDoProfessor = await api.getSalaDoProfessor(nomeQuery);
+        setSala(salaDoProfessor);
+
+        const atualizado: ApiProfessor = { ...professor, sala: salaDoProfessor };
+        setProfessor(atualizado);
+        localStorage.setItem("professor", JSON.stringify(atualizado));
+      } catch (err: any) {
+        console.error("Erro ao carregar dados do professor/sala:", err);
+        alert(
+          "Erro ao carregar dados da sala do professor.\n" +
+            (err?.message || JSON.stringify(err))
+        );
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    preencherSalaSeNecessario();
+  }, [professor]);
+
+  // Carrega ranking quando tiver código da sala
+  useEffect(() => {
+    const carregarRanking = async () => {
+      if (!sala?.codigoUnico) return;
+      try {
+        setCarregando(true);
+        const dados = await api.getRankingTurma(sala.codigoUnico);
+        const ordenado = [...dados].sort(
+          (a, b) => (b.pontuacao || 0) - (a.pontuacao || 0)
+        );
+        setRanking(ordenado);
+      } catch (err: any) {
+        console.error("Erro ao carregar ranking:", err);
+        alert(
+          "Erro ao carregar ranking da turma.\n" +
+            (err?.message || JSON.stringify(err))
+        );
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    carregarRanking();
+  }, [sala?.codigoUnico]);
+
+  const handleVoltar = () => {
+    navigate("/professor");
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">
-        Bem-vindo, {professor.nomeDeUsuario}!
-      </h1>
-
-      <p className="mb-2">
-        Sala associada: <strong>{professor.sala?.nomeTurma}</strong>
-      </p>
-
-      <button
-        onClick={handleVisualizarRanking}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        disabled={loading}
-      >
-        {loading ? "Carregando..." : "Visualizar Ranking"}
+    <div className="sala-container">
+      <button className="sala-btn-voltar" onClick={handleVoltar}>
+        <img src={voltarIcon || undefined} alt="Voltar" />
       </button>
 
-      {erro && <p className="text-red-500 mt-3">{erro}</p>}
-
-      {ranking.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">Ranking da Turma</h2>
-          <ul className="space-y-2">
-            {ranking.map((aluno, index) => (
-              <li
-                key={index}
-                className="border p-2 rounded flex justify-between items-center"
-              >
-                <span>
-                  {index + 1}º — {aluno.apelido}
-                </span>
-                <span className="text-gray-600">
-                  {aluno.nivel ? `-Pontos: ${aluno.pontuacao}` : ""}
-                </span>
-              </li>
-            ))}
-          </ul>
+      <div className="sala-content">
+        <div className="sala-header">
+          <h1>Sala: {sala?.nomeTurma ?? "—"}</h1>
+          <p>
+            <strong>Código:</strong> {sala?.codigoUnico ?? "—"}
+          </p>
         </div>
-      )}
+
+        <div className="sala-ranking">
+          <h2>Ranking de Alunos</h2>
+          {!sala?.codigoUnico ? (
+            <p>Carregando dados da sala...</p>
+          ) : ranking.length > 0 ? (
+            <table className="sala-tabela">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Aluno</th>
+                  <th>Pontuação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ranking.map((aluno, index) => (
+                  <tr key={`${aluno.apelido}-${index}`}>
+                    <td>{index + 1}</td>
+                    <td>{aluno.apelido}</td>
+                    <td>{aluno.pontuacao ?? 0}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>Nenhum aluno registrado nesta turma.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
+
+export default Sala;
+export const ProfessorPage = Sala;

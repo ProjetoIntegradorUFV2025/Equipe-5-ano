@@ -62,5 +62,27 @@ public class SalaController {
 
         return ResponseEntity.ok(ranking);
     }
+
+    @GetMapping("/{codigoUnico}/detalhes")
+    public ResponseEntity<?> getDetalhes(@PathVariable Byte codigoUnico) {
+        try {
+            // Busca a sala pelo código único
+            Optional<Sala> salaOpt = salaService.getSalaByCodigo(codigoUnico);
+
+            if (salaOpt.isEmpty()) {
+                return ResponseEntity.status(404)
+                        .body(Map.of("erro", "Sala não encontrada."));
+            }
+
+            // Converte a sala para SalaDTO, incluindo nomes dos alunos
+            SalaDTO salaDTO = SalaDTO.fromEntity(salaOpt.get());
+
+            return ResponseEntity.ok(salaDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("erro", e.getMessage()));
+        }
+    }
+
    
 }    

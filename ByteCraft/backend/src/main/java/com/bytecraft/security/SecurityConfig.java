@@ -23,7 +23,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/alunos/**").permitAll()
                 .requestMatchers("/api/professores/**").permitAll()
-                .requestMatchers("/api/salas/**").permitAll() // libera endpoints do front
+                .requestMatchers("/api/salas/**").permitAll() 
+                .requestMatchers("/api/perguntas/**").permitAll() 
                 .anyRequest().authenticated()
             );
         return http.build();
