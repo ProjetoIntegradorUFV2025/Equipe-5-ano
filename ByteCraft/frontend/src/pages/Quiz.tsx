@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import type { Aluno, NivelDificuldade, Pergunta } from "../types";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Quiz.css";
 import ramonImage from "../assets/graphics/RAMon.png";
 
@@ -25,6 +26,11 @@ const Quiz: React.FC = () => {
 
   const aluno = state?.aluno;
   const nivel = state?.nivel;
+
+  const {playClick} = useSound();
+  const {playSuccess} = useSound();
+  const {playWinner} = useSound();
+  const {playError} = useSound();
 
   // ========== ESTADOS PRINCIPAIS ==========
   const [estadoAtual, setEstadoAtual] = useState<EstadoQuiz>(
@@ -132,6 +138,7 @@ const Quiz: React.FC = () => {
 
   // ========== CSU09 - PASSO 3: COMEÇAR QUIZ ==========
   const handleComecar = () => {
+    playClick();
     console.log("🎮 Iniciando Quiz...");
     setHoraInicio(new Date());
     setEstadoAtual(EstadoQuiz.JOGANDO);
@@ -155,9 +162,13 @@ const Quiz: React.FC = () => {
     setFeedback(correta ? "✅ Acertou!" : "❌ Errou!");
 
     if (correta) {
+      playSuccess();
       setAcertos((prev) => prev + 1);
     }
 
+    if (!correta) {
+      playError();
+    }
     setTimeout(() => {
       if (indiceAtual + 1 >= perguntas.length) {
         finalizarQuiz();
@@ -167,10 +178,13 @@ const Quiz: React.FC = () => {
         setFeedback(null);
       }
     }, 1500);
+
+  
   };
 
   // ========== CSU09 - PASSO 8: CALCULAR E EXIBIR NOTA FINAL ==========
   const finalizarQuiz = async () => {
+    playWinner();
     const fim = new Date();
     setHoraFim(fim);
     
@@ -187,23 +201,12 @@ const Quiz: React.FC = () => {
       horaFim: fim.toLocaleString(),
     });
 
-    try {
-      await api.registraPontuacao(
-        aluno.apelido,
-        aluno.codigoSala!,
-        pontuacao,
-        tempoTotal
-      );
-      console.log("✅ Pontuação salva no backend!");
-    } catch (err) {
-      console.error("⚠️ Erro ao salvar pontuação:", err);
-    }
-
     setEstadoAtual(EstadoQuiz.FINALIZADO);
   };
 
   // ========== CSU09 - PASSO 9: VOLTAR PARA FASES ==========
   const handleVoltarFases = () => {
+    playClick();
     console.log("🔄 Voltando para Fases com nível preservado:", nivel);
     
     navigate("/fases", { 

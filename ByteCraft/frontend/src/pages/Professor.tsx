@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, ApiProfessor } from "../api/api";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Professor.css";
 
 const safeUrl = (relPath: string) => {
@@ -20,6 +21,7 @@ const Professor: React.FC = () => {
   const [nome, setNome] = useState("");
   const [senha, setSenha] = useState("");
   const [isPortrait, setIsPortrait] = useState(false);
+  const { playClick } = useSound();
 
   // Detecta orientação da tela
   useEffect(() => {
@@ -41,6 +43,7 @@ const Professor: React.FC = () => {
   }, []);
 
   const handleLogin = async () => {
+    playClick();
     if (!nome || !senha) {
       alert("Preencha todos os campos!");
       return;
@@ -62,8 +65,15 @@ const Professor: React.FC = () => {
     }
   };
 
-  const handleVoltar = () => navigate("/");
-  const irParaCadastro = () => navigate("/professor/cadastro");
+  const handleVoltar = () => {
+    playClick();
+    navigate("/");
+  }
+
+  const irParaCadastro = () =>{ 
+    playClick();
+    navigate("/professor/cadastro");
+  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") handleLogin();

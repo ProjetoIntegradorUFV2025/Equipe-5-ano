@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import logo from "/src/assets/graphics/logo.svg";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Home.css";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isPortrait, setIsPortrait] = useState(false);
+  const { playClick } = useSound();
 
   useEffect(() => {
     const checkOrientation = () => {
@@ -26,10 +28,12 @@ const Home: React.FC = () => {
   }, []);
 
   const handleAluno = () => {
+    playClick();
     navigate("/aluno");
   };
 
   const handleProfessor = () => {
+    playClick();
     navigate("/professor");
   };
 

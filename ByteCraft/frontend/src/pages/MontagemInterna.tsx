@@ -10,6 +10,7 @@ import PainelPontuacao from "../components/PainelPontuacao";
 import Cronometro from "../components/Cronometro";
 import { useCronometro } from "../hooks/useCronometro";
 import { usePontuacao } from "../hooks/usePontuacao";
+import { useSound } from "../hooks/useSounds";
 import api from "../api/api";
 import type { 
   PecaItem, 
@@ -154,6 +155,11 @@ const MontagemInterna: React.FC = () => {
   const apelido = aluno?.apelido || localStorage.getItem("apelido") || "teste";
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
   const nivel = nivelDificuldade;
+
+  const { playClick } = useSound();
+  const { playSuccess } = useSound();
+  const { playError } = useSound();
+  const {playWinner} = useSound();
 
   const [mensagemSucesso, setMensagemSucesso] = useState("");
 
@@ -338,6 +344,7 @@ const MontagemInterna: React.FC = () => {
     console.log(`Validação de posição: Esperado=${dropZoneCorreta}, Recebido=${targetId}, Acertou=${acertouLocal}`);
     
     if (!acertouLocal) {
+      playError();
       console.log(`Erro: Local incorreto para ${itemId}`);
       const novasTentativas = tentativasPeca + 1;
       setTentativasPeca(novasTentativas);
@@ -348,6 +355,7 @@ const MontagemInterna: React.FC = () => {
       return;
     }
 
+    playSuccess();
     console.log(`Sucesso! ${itemId} encaixado em ${targetId}`);
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
     
@@ -384,6 +392,7 @@ const MontagemInterna: React.FC = () => {
 
   async function finalizarMontagem() {
     pausarCronometro();
+    playWinner();
     
     // ✅ CORREÇÃO: Recuperar dados da montagem externa
     const pontuacaoExterna = Number(localStorage.getItem("pontuacaoMontagem")) || 0;

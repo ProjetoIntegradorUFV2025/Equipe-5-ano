@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Aluno as AlunoType } from "../types";
+import { useSound } from "../hooks/useSounds"; // ✅ Hook que criamos antes
 import "./styles/Aluno.css";
 
 const API_BASE_URL = "http://localhost:8080/api";
@@ -28,6 +29,9 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
   const [loading, setLoading] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
 
+  // ✅ Som de clique
+  const { playClick } = useSound();
+
   // Detecta orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
@@ -47,9 +51,13 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
     };
   }, []);
 
-  const handleVoltar = () => navigate("/");
+  const handleVoltar = () => {
+    playClick(); // 🔊 toca som
+    navigate("/");
+  };
 
   const handleComecar = async () => {
+    playClick(); // 🔊 toca som
     if (!nome.trim()) return alert("Apelido é obrigatório");
     if (!nomeTurma.trim()) return alert("Código da sala é obrigatório");
 
@@ -97,7 +105,6 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Mensagem para modo retrato */}
       {isPortrait && (
         <div className="aluno-portrait-warning">
           <div className="aluno-portrait-message">
@@ -106,7 +113,12 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
         </div>
       )}
 
-      <button className="aluno-btn-voltar" onClick={handleVoltar} aria-label="Voltar">
+      {/* 🔙 Botão de voltar com som */}
+      <button
+        className="aluno-btn-voltar"
+        onClick={handleVoltar}
+        aria-label="Voltar"
+      >
         <img src={voltarIcon || undefined} alt="Voltar" />
       </button>
 
@@ -139,11 +151,12 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
           />
         </div>
 
+        {/* 🚀 Botão COMEÇAR com som */}
         <button
           className="aluno-btn-comecar"
           onClick={handleComecar}
           disabled={loading}
-          aria-label={loading ? 'Carregando...' : 'Começar'}
+          aria-label={loading ? "Carregando..." : "Começar"}
         >
           {loading ? "Carregando..." : "COMEÇAR"}
         </button>

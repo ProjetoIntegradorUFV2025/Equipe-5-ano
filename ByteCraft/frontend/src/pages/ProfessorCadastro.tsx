@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { api, ApiProfessor } from '../api/api';
 import { useNavigate } from "react-router-dom";
+import {useSound} from "../hooks/useSounds";
 import "./styles/ProfessorCadastro.css";
 
 const safeUrl = (relPath: string) => {
@@ -25,6 +26,7 @@ const ProfessorCadastro: React.FC = () => {
   const [nomeTurma, setNomeTurma] = useState('');
   const [loading, setLoading] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
+  const { playClick } = useSound();
 
   // Verificar orientação da tela
   useEffect(() => {
@@ -51,6 +53,7 @@ const ProfessorCadastro: React.FC = () => {
   console.log("voltarIcon =>", voltarIcon);
 
   const handleCadastro = async () => {
+    playClick();
     if (!nome || !senha || !nomeTurma) {
       alert('Preencha todos os campos!');
       return;
@@ -87,6 +90,7 @@ const ProfessorCadastro: React.FC = () => {
   };
 
   const handleVoltar = () => {
+    playClick();
     navigate("/professor");
   };
 

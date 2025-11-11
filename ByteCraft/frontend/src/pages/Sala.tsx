@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api, ApiAluno, ApiProfessor, ApiSala } from "../api/api";
+import { useSound } from "../hooks/useSounds";
 import "./styles/Sala.css";
 
 const safeUrl = (relPath: string) => {
@@ -18,6 +19,7 @@ const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
 const Sala: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { playClick } = useSound();
 
   // Professor vindo da navegação OU persistido
   const professorFromState = location.state?.professor as ApiProfessor | undefined;
@@ -114,6 +116,7 @@ const Sala: React.FC = () => {
   }, [sala?.codigoUnico]);
 
   const handleVoltar = () => {
+    playClick();
     navigate("/professor");
   };
 

@@ -17,6 +17,7 @@ import type {
   Aluno as AlunoType,
   DialogoHistoria
 } from "../types";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Montagem.css";
 
 import monitorCinza from "../assets/peças/monitor_cinza.png";
@@ -79,6 +80,10 @@ const imagensMap: Record<string, Record<string, string>> = {
     padrão: caixaSomD,
   },
 };
+
+const { playClick } = useSound();
+const { playSuccess } = useSound();
+const { playError } = useSound();
 
 const MENSAGENS_MODAIS = {
   facil: {
@@ -323,6 +328,7 @@ const Montagem: React.FC = () => {
     console.log(`Validação de posição: Esperado=${dropZoneCorreta}, Recebido=${targetId}, Acertou=${acertouLocal}`);
     
     if (!acertouLocal) {
+      playError();
       console.log(`Erro: Local incorreto para ${itemId}`);
       const novasTentativas = tentativasPeca + 1;
       setTentativasPeca(novasTentativas);
@@ -333,6 +339,7 @@ const Montagem: React.FC = () => {
       return;
     }
 
+    playSuccess();
     console.log(`Sucesso! ${itemId} encaixado em ${targetId}`);
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
     
@@ -404,6 +411,7 @@ const Montagem: React.FC = () => {
   };
 
   const handleVoltarFases = () => {
+    playClick();
     resetarPontuacao();
     resetarCronometro();
     
