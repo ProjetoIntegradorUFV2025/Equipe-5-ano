@@ -138,10 +138,10 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
         </div>
 
         <div className="aluno-input-group">
-          <label className="aluno-input-label">NOME DA TURMA</label>
+          <label className="aluno-input-label">CÓDIGO DA TURMA</label>
           <input
             type="text"
-            placeholder="Digite o nome da turma..."
+            placeholder="Digite o código da turma..."
             value={nomeTurma}
             onChange={(e) => setNomeTurma(e.target.value)}
             className="aluno-turma-input"
