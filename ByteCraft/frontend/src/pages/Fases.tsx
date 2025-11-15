@@ -324,7 +324,6 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
           <p className="fases-info-aluno">Aluno: <strong>{aluno.apelido}</strong></p>
           {modoHistoriaCompleto ? (
             <p className="fases-info-progresso" style={{ color: '#4caf50', fontWeight: 'bold' }}>
-              ✓ Modo História Concluído - Quiz Disponível!
             </p>
           ) : (
             <p className="fases-info-progresso" style={{ color: '#ff9800' }}>

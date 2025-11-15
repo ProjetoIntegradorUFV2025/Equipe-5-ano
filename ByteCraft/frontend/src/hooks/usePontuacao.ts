@@ -8,22 +8,20 @@ interface UsePontuacaoReturn {
   tentativasPorPeca: Record<string, number>;
   historicoTentativas: TentativaPeca[];
   registrarTentativa: (pecaId: string, acertou: boolean, nivel: NivelDificuldade) => number;
-  calcularPontuacaoFinalComBonus: (tempoEmSegundos: number) => number;
+  calcularPontuacaoFinalComBonus: (tempoEmSegundos: number, pontuacaoBase?: number) => number;
   resetar: () => void;
   obterResumo: () => { pontuacaoBase: number; totalPecas: number; totalTentativas: number };
+  setPontuacaoInicial: (pontuacao: number) => void; // ✅ NOVO
 }
 
 /**
- * ✅ CORREÇÃO: Hook de pontuação com tracking completo
+ * ✅ CORREÇÃO: Aceita pontuação inicial como parâmetro
  */
-export function usePontuacao(): UsePontuacaoReturn {
-  const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
+export function usePontuacao(pontuacaoInicial: number = 0): UsePontuacaoReturn {
+  const [pontuacaoTotal, setPontuacaoTotal] = useState(pontuacaoInicial);
   const [tentativasPorPeca, setTentativasPorPeca] = useState<Record<string, number>>({});
   const [historicoTentativas, setHistoricoTentativas] = useState<TentativaPeca[]>([]);
 
-  /**
-   * ✅ Registra uma tentativa de encaixe de peça
-   */
   const registrarTentativa = (
     pecaId: string,
     acertou: boolean,
@@ -36,8 +34,6 @@ export function usePontuacao(): UsePontuacaoReturn {
       ...prev,
       [pecaId]: tentativasAtuais,
     }));
-
-    console.log(`🎯 Tentativa registrada - Peça: ${pecaId}, Tentativa #${tentativasAtuais}, Acertou: ${acertou}`);
 
     if (acertou) {
       // Calcular pontuação da peça
@@ -67,24 +63,22 @@ export function usePontuacao(): UsePontuacaoReturn {
     return 0;
   };
 
-  /**
-   * ✅ CORREÇÃO: Calcula pontuação final com bônus de tempo (RN22)
-   * Esta função deve ser chamada APENAS uma vez ao final de TODO o jogo
-   */
-  const calcularPontuacaoFinalComBonus = (tempoEmSegundos: number): number => {
-    console.log(`⏱️ Calculando pontuação final com tempo: ${tempoEmSegundos}s`);
-    console.log(`📊 Pontuação base acumulada: ${pontuacaoTotal}`);
+  const calcularPontuacaoFinalComBonus = (
+    tempoEmSegundos: number, 
+    pontuacaoBase?: number
+  ): number => {
+    const pontuacaoParaCalculo = pontuacaoBase !== undefined ? pontuacaoBase : pontuacaoTotal;
     
-    const pontuacaoFinal = calcularPontuacaoFinal(pontuacaoTotal, tempoEmSegundos);
+    console.log(`Calculando pontuação final com tempo: ${tempoEmSegundos}s`);
+    console.log(`Pontuação base para cálculo: ${pontuacaoParaCalculo}`);
     
-    console.log(`🎯 Pontuação final com bônus: ${pontuacaoFinal}`);
+    const pontuacaoFinal = calcularPontuacaoFinal(pontuacaoParaCalculo, tempoEmSegundos);
+    
+    console.log(`Pontuação final com bônus: ${pontuacaoFinal}`);
     
     return pontuacaoFinal;
   };
 
-  /**
-   * ✅ NOVO: Obtém resumo da pontuação para debug
-   */
   const obterResumo = () => {
     const totalPecas = Object.keys(tentativasPorPeca).length;
     const totalTentativas = Object.values(tentativasPorPeca).reduce((sum, t) => sum + t, 0);
@@ -97,11 +91,16 @@ export function usePontuacao(): UsePontuacaoReturn {
   };
 
   /**
-   * ✅ Resetar o estado (usado quando volta às fases)
+   * ✅ NOVO: Define pontuação inicial (útil para continuar de onde parou)
    */
+  const setPontuacaoInicial = (pontuacao: number) => {
+    console.log(`🔄 Definindo pontuação inicial: ${pontuacao}`);
+    setPontuacaoTotal(pontuacao);
+  };
+
   const resetar = () => {
-    console.log('🔄 Resetando pontuação...');
-    setPontuacaoTotal(0);
+    console.log('Resetando pontuação...');
+    setPontuacaoTotal(pontuacaoInicial); // ✅ Volta para inicial, não zero
     setTentativasPorPeca({});
     setHistoricoTentativas([]);
   };
@@ -114,5 +113,6 @@ export function usePontuacao(): UsePontuacaoReturn {
     calcularPontuacaoFinalComBonus,
     resetar,
     obterResumo,
+    setPontuacaoInicial, // ✅ NOVO
   };
 }

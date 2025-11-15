@@ -15,6 +15,7 @@ interface DropZoneProps {
 /**
  * DropZone com controle de visibilidade por nível
  * ✅ CORREÇÃO PROBLEMA 3: Ícones visíveis apenas em Fácil e Médio
+ * ✅ Suporte para Placa-Mãe como peça base
  */
 const DropZone: React.FC<DropZoneProps> = ({
   id,
@@ -51,6 +52,8 @@ const DropZone: React.FC<DropZoneProps> = ({
 
   const getAreaInfo = () => {
     switch (id) {
+      case "dropzone_placa_mae":
+        return { tipo: "placa_mae", label: "Placa-Mãe", icone: "🔌" };
       case "dropzone_monitor":
         return { tipo: "monitor", label: "Monitor", icone: "🖥️" };
       case "dropzone_teclado":

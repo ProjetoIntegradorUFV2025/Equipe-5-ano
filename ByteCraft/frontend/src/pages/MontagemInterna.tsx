@@ -27,10 +27,17 @@ import placaVideo from "../assets/peças/placa_video (1).png";
 import fan from "../assets/peças/fan.png";
 import fanAzul from "../assets/peças/fan_azul.png";
 import gabinete from "../assets/peças/gabinete.png";
+import placaMae from "../assets/peças/placa_mae.png";
 
-const SEQUENCIA_PECAS = ["processador_1", "ram_1", "ssd_1", "placa_video_1", "fan_1"];
+const SEQUENCIA_PECAS = ["placa_mae_1", "processador_1", "ram_1", "ssd_1", "placa_video_1", "fan_1"];
 
 const HISTORIAS_FIXAS: DialogoHistoria[] = [
+  {
+    id: "0",
+    titulo: "A Placa-Mãe",
+    texto: "A placa-mãe é a base do computador. Todos os outros componentes se conectam a ela. Vamos começar posicionando-a no gabinete!",
+    pecaId: "placa_mae_1"
+  },
   {
     id: "1",
     titulo: "O Processador",
@@ -133,6 +140,7 @@ const obterMensagemAleatoria = (nivel: NivelDificuldade, tipo: 'sucesso' | 'erro
 };
 
 const MAPEAMENTO_CORRETO: Record<string, string> = {
+  "placa_mae_1": "dropzone_placa_mae",
   "processador_1": "dropzone_processador",
   "ram_1": "dropzone_ram",
   "ssd_1": "dropzone_ssd",
@@ -156,6 +164,19 @@ const MontagemInterna: React.FC = () => {
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
   const nivel = nivelDificuldade;
 
+  // ✅ CORREÇÃO: Recuperar pontuação externa ANTES de inicializar o hook
+  const pontuacaoExterna = Number(localStorage.getItem("pontuacaoMontagem")) || 0;
+  const tempoExterna = Number(localStorage.getItem("tempoMontagem")) || 0;
+
+  console.log(`
+╔═══════════════════════════════════════════════════════════╗
+║           🔥 CARREGANDO DADOS DA MONTAGEM EXTERNA            ║
+╠═══════════════════════════════════════════════════════════╣
+║  Pontuação Externa: ${String(pontuacaoExterna).padStart(39)} pts  ║
+║  Tempo Externo: ${String(`${Math.floor(tempoExterna/60)}:${String(tempoExterna%60).padStart(2,'0')}`).padStart(43)} (${tempoExterna}s)  ║
+╚═══════════════════════════════════════════════════════════╝
+  `);
+
   const { playClick } = useSound();
   const { playSuccess } = useSound();
   const { playError } = useSound();
@@ -163,13 +184,14 @@ const MontagemInterna: React.FC = () => {
 
   const [mensagemSucesso, setMensagemSucesso] = useState("");
 
+  // ✅ CORREÇÃO: Inicializar hook com pontuação externa
   const {
     pontuacaoTotal,
     registrarTentativa,
     calcularPontuacaoFinalComBonus,
     resetar: resetarPontuacao,
     obterResumo
-  } = usePontuacao();
+  } = usePontuacao(pontuacaoExterna);
 
   const {
     tempo,
@@ -200,6 +222,13 @@ const MontagemInterna: React.FC = () => {
   }, []);
 
   const [pecas, setPecas] = useState<PecaItem[]>([
+    { 
+      id: "placa_mae_1", 
+      label: "Placa-Mãe", 
+      imagem: placaMae, 
+      color: "padrao",
+      descricao: "Base do computador"
+    },
     { 
       id: "processador_1", 
       label: "Processador", 
@@ -255,6 +284,9 @@ const MontagemInterna: React.FC = () => {
 
   const [showConclusao, setShowConclusao] = useState(false);
   const [pontuacaoFinal, setPontuacaoFinal] = useState(0);
+
+  // ✅ NOVO: Estado para controlar se a placa-mãe foi montada
+  const [placaMaeMontada, setPlacaMaeMontada] = useState(false);
 
   const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
 
@@ -362,6 +394,12 @@ const MontagemInterna: React.FC = () => {
     const novasPecasColocadas = new Set([...pecasColocadas, itemId]);
     setPecasColocadas(novasPecasColocadas);
     
+    // ✅ NOVO: Ativar classe placa-mae-montada quando a placa-mãe for colocada
+    if (itemId === "placa_mae_1") {
+      console.log("🎯 Placa-mãe montada! Ativando dropzones internas...");
+      setPlacaMaeMontada(true);
+    }
+    
     setPontosGanhos(pontosObtidos);
     setPecaSelecionada(null);
     setDropZoneDestacada(null);
@@ -394,42 +432,38 @@ const MontagemInterna: React.FC = () => {
     pausarCronometro();
     playWinner();
     
-    // ✅ CORREÇÃO: Recuperar dados da montagem externa
-    const pontuacaoExterna = Number(localStorage.getItem("pontuacaoMontagem")) || 0;
-    const tempoExterna = Number(localStorage.getItem("tempoMontagem")) || 0;
-    
-    // ✅ CORREÇÃO: Obter resumo da pontuação interna
+    // ✅ CORREÇÃO: Obter resumo da pontuação interna (SEM pontuação externa)
     const resumoInterno = obterResumo();
-    const pontuacaoInterna = resumoInterno.pontuacaoBase;
+    const pontuacaoInternaReal = resumoInterno.pontuacaoBase - pontuacaoExterna;
     
-    // ✅ CORREÇÃO: Somar pontuações SEM bônus primeiro
-    const pontuacaoTotalSemBonus = pontuacaoExterna + pontuacaoInterna;
+    // ✅ CORREÇÃO: Somar pontuações SEM bônus
+    const pontuacaoTotalSemBonus = pontuacaoExterna + pontuacaoInternaReal;
     
     // ✅ CORREÇÃO: Somar tempos
     const tempoTotal = tempoExterna + tempo;
     
-    // ✅ CORREÇÃO: Aplicar bônus de tempo sobre o total
-    const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal);
+    // ✅ CORREÇÃO: Aplicar bônus sobre o total
+    const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal, pontuacaoTotalSemBonus);
     
     console.log(`
-╔══════════════════════════════════════════════════════════════╗
+╔═══════════════════════════════════════════════════════════╗
 ║           🎮 FINALIZAÇÃO DO MODO HISTÓRIA                    ║
-╠══════════════════════════════════════════════════════════════╣
+╠═══════════════════════════════════════════════════════════╣
 ║  📊 MONTAGEM EXTERNA:                                        ║
 ║     Pontuação: ${String(pontuacaoExterna).padStart(43)} pts  ║
 ║     Tempo: ${String(`${Math.floor(tempoExterna/60)}:${String(tempoExterna%60).padStart(2,'0')}`).padStart(47)} (${tempoExterna}s)  ║
 ║                                                              ║
 ║  📊 MONTAGEM INTERNA:                                        ║
-║     Pontuação: ${String(pontuacaoInterna).padStart(43)} pts  ║
+║     Pontuação: ${String(pontuacaoInternaReal).padStart(43)} pts  ║
 ║     Tempo: ${String(`${Math.floor(tempo/60)}:${String(tempo%60).padStart(2,'0')}`).padStart(47)} (${tempo}s)  ║
 ║     Peças montadas: ${String(resumoInterno.totalPecas).padStart(38)}  ║
 ║                                                              ║
-║  ═══════════════════════════════════════════════════════════ ║
+║  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ║
 ║  💰 PONTUAÇÃO TOTAL (sem bônus): ${String(pontuacaoTotalSemBonus).padStart(24)} pts  ║
 ║  ⏱️  TEMPO TOTAL: ${String(`${Math.floor(tempoTotal/60)}:${String(tempoTotal%60).padStart(2,'0')}`).padStart(40)} (${tempoTotal}s)  ║
-║  ═══════════════════════════════════════════════════════════ ║
+║  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ║
 ║  🎯 PONTUAÇÃO FINAL (com bônus RN22): ${String(pontuacaoFinalComBonus).padStart(18)} pts  ║
-╚══════════════════════════════════════════════════════════════╝
+╚═══════════════════════════════════════════════════════════╝
     `);
     
     setPontuacaoFinal(pontuacaoFinalComBonus);
@@ -475,7 +509,7 @@ const MontagemInterna: React.FC = () => {
 
   const obterLabelPecaAtiva = (): string => {
     const peca = pecas.find(p => p.id === pecaAtivaId);
-    return peca?.label || "Processador";
+    return peca?.label || "Placa-Mãe";
   };
 
   if (!aluno?.apelido) {
@@ -514,9 +548,22 @@ const MontagemInterna: React.FC = () => {
         <div className="montagem-interna-workspace">
           <div className="montagem-interna-central-wrapper">
             <div className="montagem-interna-gabinete-container">
-              <div className="montagem-interna-gabinete">
+              {/* ✅ CORREÇÃO: Adicionar classe condicional ao gabinete */}
+              <div className={`montagem-interna-gabinete ${placaMaeMontada ? 'placa-mae-montada' : ''}`}>
                 <img src={gabinete} alt="Gabinete" className="montagem-interna-gabinete-img" />
                 
+                {/* Dropzone da Placa-Mãe - Base para todos os componentes */}
+                <div className="montagem-interna-dropzone-placa-mae">
+                  <DropZone
+                    id="dropzone_placa_mae"
+                    onDrop={handleDrop}
+                    placed={pecasColocadas.has("placa_mae_1")}
+                    image={obterImagemPeca("placa_mae_1")}
+                    destacar={dropZoneDestacada === "dropzone_placa_mae"}
+                    nivel={nivelDificuldade}
+                  />
+                </div>
+
                 <div className="montagem-interna-dropzone-processador">
                   <DropZone
                     id="dropzone_processador"

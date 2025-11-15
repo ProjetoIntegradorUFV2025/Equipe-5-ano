@@ -164,11 +164,10 @@ const Quiz: React.FC = () => {
     if (correta) {
       playSuccess();
       setAcertos((prev) => prev + 1);
-    }
-
-    if (!correta) {
+    } else {
       playError();
     }
+
     setTimeout(() => {
       if (indiceAtual + 1 >= perguntas.length) {
         finalizarQuiz();
