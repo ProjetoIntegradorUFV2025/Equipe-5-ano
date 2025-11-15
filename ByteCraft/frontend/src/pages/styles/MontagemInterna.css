@@ -1,0 +1,771 @@
+/* =====================================================
+   🎨 MONTAGEM INTERNA - LAYOUT COM GABINETE
+   Peças na esquerda, Gabinete com dropzones no centro
+   ===================================================== */
+
+/* Remover margens padrão PRIMEIRO */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.montagem-interna-container {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Background como camada separada */
+.montagem-interna-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    url('../assets/backgrounds/background_montagem.png'),
+    url('../../assets/backgrounds/background_montagem.png'),
+    url('/assets/backgrounds/background_montagem.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+}
+
+/* Fallback se a imagem não carregar */
+.montagem-interna-container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  z-index: -2;
+}
+
+/* =====================================================
+   🛠️ PAINEL ESQUERDO - Peças verticais
+   ===================================================== */
+
+.montagem-interna-pecas-horizontal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  max-width: 120px;
+  background: transparent;
+  backdrop-filter: none;
+  border-right: none;
+  padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.montagem-interna-pecas-horizontal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.montagem-interna-pecas-horizontal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.montagem-interna-pecas-horizontal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.montagem-interna-pecas-horizontal::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.montagem-interna-pecas-horizontal h3 {
+  display: none;
+}
+
+.montagem-interna-pecas-lista-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+/* =====================================================
+   ✨ ELEMENTOS ARRASTAVEIS - Fundo branco para destaque
+   ===================================================== */
+
+.montagem-interna-pecas-lista-horizontal > div {
+  background-color: #ffffff;
+  background-clip: padding-box;
+  border-radius: 8px;
+  padding: 0.4rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 100px;
+}
+
+.montagem-interna-pecas-lista-horizontal > div:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.montagem-interna-pecas-lista-horizontal > div > * {
+  background-color: transparent;
+}
+
+/* =====================================================
+   🌈 AREA CENTRAL - Gabinete com Dropzones
+   ===================================================== */
+
+.montagem-interna-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  padding-left: 120px;
+  padding-right: 20px;
+  margin: 0;
+  z-index: 1;
+}
+
+.montagem-interna-workspace {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.montagem-interna-central-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 900px;
+  height: 100%;
+}
+
+/* Balão de história - Superior */
+.montagem-interna-historia-balao {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 90%;
+  z-index: 85;
+  border: 3px solid #e74c3c;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.montagem-interna-historia-balao::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid rgba(255, 255, 255, 0.95);
+}
+
+.montagem-interna-historia-balao h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.3rem;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.montagem-interna-historia-balao p {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Animação de saída */
+.montagem-interna-historia-balao.sair {
+  animation: slideUp 0.4s ease-in forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+}
+
+/* =====================================================
+   🖥️ GABINETE - Container com imagem de fundo
+   ===================================================== */
+
+.montagem-interna-gabinete {
+  position: relative;
+  width: min(70vw, 800px);
+  max-width: 800px;
+  height: 85vh;
+  max-height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.montagem-interna-gabinete-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* =====================================================
+   📌 DROPZONES - Posicionamento no gabinete
+   ===================================================== */
+
+/* Placa-Mãe - Base central (REDUZIDA AINDA MAIS - 50% do gabinete) */
+.montagem-interna-dropzone-placa-mae {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: 50%;
+  height: 50%;
+  pointer-events: auto;
+}
+
+.montagem-interna-dropzone-placa-mae > div {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 320px;
+  min-height: 320px;
+}
+
+/* ✅ CONTROLE DE VISIBILIDADE DAS DROPZONES INTERNAS */
+/* Inicialmente todas as dropzones internas ficam ocultas */
+.montagem-interna-dropzone-processador,
+.montagem-interna-dropzone-ram,
+.montagem-interna-dropzone-ssd,
+.montagem-interna-dropzone-placa-video,
+.montagem-interna-dropzone-fan {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: scale(0.8);
+}
+
+/* ✅ Quando a placa-mãe é montada, as dropzones internas aparecem */
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-processador,
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-ram,
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-ssd,
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-placa-video,
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-fan {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  animation: fadeInDropzone 0.6s ease-out;
+}
+
+@keyframes fadeInDropzone {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Processador - Centro (dentro da placa-mãe) */
+.montagem-interna-dropzone-processador {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.montagem-interna-dropzone-processador > div {
+  width: 85px;
+  height: 85px;
+}
+
+/* RAM - Direita superior (dentro da placa-mãe) - APROXIMADA DO CENTRO */
+.montagem-interna-dropzone-ram {
+  position: absolute;
+  top: 32%;
+  right: 28%;
+  z-index: 10;
+}
+
+.montagem-interna-dropzone-ram > div {
+  width: 70px;
+  height: 100px;
+}
+
+/* SSD - Esquerda inferior (dentro da placa-mãe) - APROXIMADA DO CENTRO */
+.montagem-interna-dropzone-ssd {
+  position: absolute;
+  bottom: 28%;
+  left: 28%;
+  z-index: 10;
+}
+
+.montagem-interna-dropzone-ssd > div {
+  width: 85px;
+  height: 60px;
+}
+
+/* Placa de Vídeo - Inferior centro (dentro da placa-mãe) - APROXIMADA DO CENTRO */
+.montagem-interna-dropzone-placa-video {
+  position: absolute;
+  bottom: 26%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.montagem-interna-dropzone-placa-video > div {
+  width: 125px;
+  height: 85px;
+}
+
+/* Cooler/Fan - Superior esquerda (dentro da placa-mãe) - APROXIMADA DO CENTRO */
+.montagem-interna-dropzone-fan {
+  position: absolute;
+  top: 28%;
+  left: 28%;
+  z-index: 10;
+}
+
+.montagem-interna-dropzone-fan > div {
+  width: 75px;
+  height: 75px;
+}
+
+/* ✅ Ajustar transform quando placa-mãe montada para evitar conflito */
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-processador {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-placa-video {
+  transform: translateX(-50%) scale(1);
+}
+
+/* =====================================================
+   🚫 Esconder elementos do header
+   ===================================================== */
+
+.montagem-interna-header,
+.montagem-interna-alerta-selecao,
+.montagem-interna-dica-banner {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Garantir que modais apareçam */
+.historia-modal,
+.erro-modal,
+.sucesso-modal,
+.conclusao-modal {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* =====================================================
+   📊 PAINEL DE PONTUAÇÃO - Inferior Direita
+   ===================================================== */
+
+.painel-pontuacao-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  border: 2px solid #e74c3c;
+  z-index: 90;
+}
+
+.painel-pontuacao-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.painel-pontuacao-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.painel-pontuacao-valor {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================================================
+   ⏱️ CRONÔMETRO - Inferior Centro
+   ===================================================== */
+
+.cronometro-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  border: 2px solid #e74c3c;
+  z-index: 90;
+}
+
+.cronometro-icone {
+  font-size: 1.2rem;
+}
+
+.cronometro-tempo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2c3e50;
+  font-family: 'Courier New', monospace;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* =====================================================
+   📱 Responsividade para Tablets
+   ===================================================== */
+
+@media (max-width: 1024px) {
+  .montagem-interna-content {
+    padding-left: 110px;
+    padding-right: 10px;
+  }
+
+  .montagem-interna-pecas-horizontal {
+    width: 110px;
+    max-width: 110px;
+    padding: 1rem 0.4rem;
+    gap: 0.7rem;
+  }
+
+  .montagem-interna-pecas-lista-horizontal {
+    gap: 0.7rem;
+  }
+
+  .montagem-interna-pecas-lista-horizontal > div {
+    max-width: 90px;
+    padding: 0.35rem;
+  }
+
+  .montagem-interna-gabinete {
+    width: min(75vw, 700px);
+    max-width: 700px;
+    height: 80vh;
+    max-height: 600px;
+  }
+
+  .montagem-interna-dropzone-placa-mae {
+    width: 50%;
+    height: 50%;
+  }
+
+  .montagem-interna-dropzone-placa-mae > div {
+    min-width: 280px;
+    min-height: 280px;
+  }
+
+  .montagem-interna-dropzone-processador > div {
+    width: 75px;
+    height: 75px;
+  }
+
+  .montagem-interna-dropzone-ram > div {
+    width: 60px;
+    height: 90px;
+  }
+
+  .montagem-interna-dropzone-ssd > div {
+    width: 75px;
+    height: 50px;
+  }
+
+  .montagem-interna-dropzone-placa-video > div {
+    width: 110px;
+    height: 75px;
+  }
+
+  .montagem-interna-dropzone-fan > div {
+    width: 65px;
+    height: 65px;
+  }
+}
+
+/* =====================================================
+   📱 Responsividade para Mobile
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .montagem-interna-container {
+    flex-direction: column;
+  }
+
+  .montagem-interna-content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 140px;
+  }
+
+  .montagem-interna-pecas-horizontal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    max-height: 140px;
+    padding: 0.8rem 0.5rem;
+    flex-direction: row;
+    border-left: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0.6rem;
+  }
+
+  .montagem-interna-pecas-horizontal::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .montagem-interna-pecas-lista-horizontal {
+    gap: 0.6rem;
+    flex-direction: row;
+  }
+
+  .montagem-interna-pecas-lista-horizontal > div {
+    max-width: 85px;
+    padding: 0.3rem;
+  }
+
+  .montagem-interna-workspace {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .montagem-interna-gabinete {
+    width: min(90vw, 500px);
+    max-width: 500px;
+    height: 70vh;
+    max-height: 500px;
+  }
+
+  .montagem-interna-dropzone-placa-mae {
+    width: 50%;
+    height: 50%;
+  }
+
+  .montagem-interna-dropzone-placa-mae > div {
+    min-width: 240px;
+    min-height: 240px;
+  }
+
+  .montagem-interna-dropzone-processador > div {
+    width: 60px;
+    height: 60px;
+  }
+
+  .montagem-interna-dropzone-ram > div {
+    width: 48px;
+    height: 70px;
+  }
+
+  .montagem-interna-dropzone-ssd > div {
+    width: 60px;
+    height: 40px;
+  }
+
+  .montagem-interna-dropzone-placa-video > div {
+    width: 90px;
+    height: 60px;
+  }
+
+  .montagem-interna-dropzone-fan > div {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+/* =====================================================
+   📱 Responsividade para Mobile Pequeno
+   ===================================================== */
+
+@media (max-width: 480px) {
+  .montagem-interna-content {
+    padding-bottom: 130px;
+  }
+
+  .montagem-interna-pecas-horizontal {
+    max-height: 130px;
+    padding: 0.6rem 0.4rem;
+    gap: 0.5rem;
+  }
+
+  .montagem-interna-pecas-lista-horizontal {
+    gap: 0.5rem;
+  }
+
+  .montagem-interna-pecas-lista-horizontal > div {
+    max-width: 75px;
+    padding: 0.25rem;
+  }
+
+  .montagem-interna-gabinete {
+    width: min(95vw, 380px);
+    max-width: 380px;
+    height: 65vh;
+    max-height: 400px;
+  }
+
+  .montagem-interna-dropzone-placa-mae {
+    width: 50%;
+    height: 50%;
+  }
+
+  .montagem-interna-dropzone-placa-mae > div {
+    min-width: 190px;
+    min-height: 190px;
+  }
+
+  .montagem-interna-dropzone-processador > div {
+    width: 48px;
+    height: 48px;
+  }
+
+  .montagem-interna-dropzone-ram > div {
+    width: 40px;
+    height: 60px;
+  }
+
+  .montagem-interna-dropzone-ssd > div {
+    width: 48px;
+    height: 32px;
+  }
+
+  .montagem-interna-dropzone-placa-video > div {
+    width: 72px;
+    height: 48px;
+  }
+
+  .montagem-interna-dropzone-fan > div {
+    width: 45px;
+    height: 45px;
+  }
+
+  .montagem-interna-historia-balao {
+    top: 1rem;
+    padding: 1rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .montagem-interna-historia-balao h3 {
+    font-size: 1.1rem;
+  }
+
+  .montagem-interna-historia-balao p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Remover margens padrão (reforço) */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}

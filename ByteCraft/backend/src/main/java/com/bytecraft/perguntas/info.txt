@@ -1,0 +1,6 @@
+Para adciionar as perguntas, insira o endereço, localhost:3030/importar, selecione o csv perguntas e clique em importar.
+
+
+
+As imagens devem ser inseridas manualmente no banco, no campo imagem. Copie e cole o codígo de cada peça no txt referente a ela.
+Se não tiver uma interface como o phpmyadm, faça por comandos, atenção a alternativa correta.

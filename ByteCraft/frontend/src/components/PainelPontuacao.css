@@ -1,0 +1,30 @@
+.painel-pontuacao-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.25);
+  border: 3px solid #16a34a;
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+}
+
+.painel-pontuacao-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.painel-pontuacao-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #14532d;
+}
+
+.painel-pontuacao-valor {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #16a34a;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}

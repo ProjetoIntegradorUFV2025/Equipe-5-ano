@@ -1,0 +1,383 @@
+.draggable-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: auto;
+  position: relative;
+  padding: 0.3rem;
+  border-radius: 8px;
+  background: transparent;
+  overflow: visible;
+  margin: 0.2rem 0;
+}
+
+.draggable-item-wrapper-selected {
+  background: transparent;
+  transform: translateY(0);
+}
+
+.draggable-item {
+  width: 70px;
+  height: 70px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible; 
+  position: relative;
+  box-shadow: none;
+}
+
+.draggable-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: transparent; 
+  pointer-events: none;
+}
+
+.draggable-item:hover:not(.draggable-item-placed):not(.draggable-item-disabled) {
+  border-color: transparent;
+  background: transparent;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(59, 130, 246, 0.25);
+}
+
+.draggable-item:active:not(.draggable-item-placed):not(.draggable-item-disabled) {
+  cursor: grabbing;
+  transform: translateY(-2px) scale(1.0);
+  transition: all 0.1s ease;
+}
+
+.draggable-item-dragging {
+  opacity: 0.8;
+  cursor: grabbing;
+  transform: rotate(0deg) scale(1.0); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.draggable-item-placed {
+  opacity: 0.35;
+  border: none;
+  background: transparent; 
+  cursor: not-allowed;
+  transform: scale(0.92);
+  filter: grayscale(0.3);
+  box-shadow: none;
+}
+
+.draggable-item-active {
+  border: none;
+  background: transparent;
+  transform: scale(1.03);
+  box-shadow: 
+    0 0 15px rgba(59, 130, 246, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.draggable-item-disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.draggable-item-imagem {
+  width: 90%; 
+  height: 90%; 
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+}
+
+.draggable-item:hover .draggable-item-imagem:not(.draggable-item-placed) {
+  transform: scale(1.0); 
+}
+
+.draggable-item-checkmark {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+  border: 2px solid white;
+  z-index: 10;
+  animation: checkmarkAppear 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.draggable-item-badge {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
+  border: 1.5px solid white;
+  z-index: 10;
+  animation: badgeSlide 0.3s ease-out;
+}
+
+@keyframes badgeSlide {
+  0% {
+    transform: translateX(-50%) translateY(6px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.draggable-item-disabled-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  pointer-events: none;
+  border-radius: 10px;
+}
+
+.draggable-item-label {
+  display: none;
+}
+
+.draggable-item-cores {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+  padding: 0.4rem;
+  background: transparent;
+  backdrop-filter: none;
+  border-radius: 8px;
+  border: none;
+  box-shadow: none;
+  animation: coresSlide 0.3s ease-out;
+  position: relative;
+  z-index: 1000;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+@keyframes coresSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.draggable-item-cor-opcao {
+  width: 36px;
+  height: 36px;
+  padding: 2px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.draggable-item-cor-opcao:hover {
+  border-color: transparent;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+  background: transparent;
+}
+
+.draggable-item-cor-opcao:active {
+  transform: translateY(0) scale(1.02);
+}
+
+.draggable-item-cor-opcao img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Responsividade Desktop Grande */
+@media (min-width: 1400px) {
+  .draggable-item {
+    width: 80px;
+    height: 80px;
+  }
+
+  .draggable-item-cor-opcao {
+    width: 40px;
+    height: 40px;
+  }
+
+  .draggable-item-checkmark {
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .draggable-item {
+    width: 65px;
+    height: 65px;
+  }
+
+  .draggable-item-cor-opcao {
+    width: 34px;
+    height: 34px;
+  }
+
+  .draggable-item-checkmark {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .draggable-item-badge {
+    font-size: 0.55rem;
+    padding: 0.15rem 0.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .draggable-item {
+    width: 60px;
+    height: 60px;
+  }
+
+  .draggable-item-cor-opcao {
+    width: 32px;
+    height: 32px;
+  }
+
+  .draggable-item-wrapper {
+    padding: 0.25rem;
+    margin: 0.15rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .draggable-item {
+    width: 65px;
+    height: 65px;
+  }
+
+  .draggable-item-cor-opcao {
+    width: 34px;
+    height: 34px;
+  }
+
+  .draggable-item-checkmark {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .draggable-item-badge {
+    font-size: 0.55rem;
+    padding: 0.15rem 0.5rem;
+  }
+  
+  .draggable-item-cores {
+    gap: 0.25rem;
+    padding: 0.3rem;
+  }
+
+  .draggable-item-wrapper {
+    padding: 0.2rem;
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .draggable-item {
+    width: 60px;
+    height: 60px;
+  }
+
+  .draggable-item-cor-opcao {
+    width: 30px;
+    height: 30px;
+  }
+
+  .draggable-item-checkmark {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    top: -3px;
+    right: -3px;
+  }
+
+  .draggable-item-badge {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.45rem;
+    bottom: -6px;
+  }
+
+  .draggable-item-disabled-overlay {
+    font-size: 1.3rem;
+  }
+  
+  .draggable-item-cores {
+    gap: 0.2rem;
+    padding: 0.25rem;
+  }
+
+  .draggable-item-wrapper {
+    padding: 0.15rem;
+    margin: 0;
+  }
+}
