@@ -28,7 +28,7 @@ const BoasVindasModal: React.FC<BoasVindasModalProps> = ({ isOpen, onContinuar }
         </div>
 
         <button className="boas-vindas-btn" onClick={onContinuar}>
-          Bora lá
+          BORA LÁ
         </button>
       </div>
     </div>

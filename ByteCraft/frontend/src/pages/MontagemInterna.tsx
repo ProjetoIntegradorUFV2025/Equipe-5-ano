@@ -164,18 +164,8 @@ const MontagemInterna: React.FC = () => {
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
   const nivel = nivelDificuldade;
 
-  // ✅ CORREÇÃO: Recuperar pontuação externa ANTES de inicializar o hook
   const pontuacaoExterna = Number(localStorage.getItem("pontuacaoMontagem")) || 0;
   const tempoExterna = Number(localStorage.getItem("tempoMontagem")) || 0;
-
-  console.log(`
-╔═══════════════════════════════════════════════════════════╗
-║           🔥 CARREGANDO DADOS DA MONTAGEM EXTERNA            ║
-╠═══════════════════════════════════════════════════════════╣
-║  Pontuação Externa: ${String(pontuacaoExterna).padStart(39)} pts  ║
-║  Tempo Externo: ${String(`${Math.floor(tempoExterna/60)}:${String(tempoExterna%60).padStart(2,'0')}`).padStart(43)} (${tempoExterna}s)  ║
-╚═══════════════════════════════════════════════════════════╝
-  `);
 
   const { playClick } = useSound();
   const { playSuccess } = useSound();
@@ -184,7 +174,6 @@ const MontagemInterna: React.FC = () => {
 
   const [mensagemSucesso, setMensagemSucesso] = useState("");
 
-  // ✅ CORREÇÃO: Inicializar hook com pontuação externa
   const {
     pontuacaoTotal,
     registrarTentativa,
@@ -285,15 +274,9 @@ const MontagemInterna: React.FC = () => {
   const [showConclusao, setShowConclusao] = useState(false);
   const [pontuacaoFinal, setPontuacaoFinal] = useState(0);
 
-  // ✅ NOVO: Estado para controlar se a placa-mãe foi montada
   const [placaMaeMontada, setPlacaMaeMontada] = useState(false);
 
   const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
-
-  useEffect(() => {
-    console.log("Inicializando montagem interna...");
-    console.log("Peça ativa inicial:", pecaAtivaId);
-  }, []);
 
   const avancarParaProximaPeca = () => {
     const proximoIndex = indicePecaAtual + 1;
@@ -359,11 +342,8 @@ const MontagemInterna: React.FC = () => {
   };
 
   const handleDrop = (itemId: string, targetId: string) => {
-    console.log("Tentativa de drop:", { itemId, pecaAtivaId, targetId, ehPecaAtiva: itemId === pecaAtivaId });
-
     const ehPecaAtiva = itemId === pecaAtivaId;
     if (!ehPecaAtiva) {
-      console.log(`Erro: Peça ${itemId} não está ativa. Ativa: ${pecaAtivaId}`);
       registrarTentativa(itemId, false, nivelDificuldade || "medio");
       setMensagemErro(obterMensagemAleatoria(nivel, 'erro'));
       setShowErro(true);
@@ -373,11 +353,8 @@ const MontagemInterna: React.FC = () => {
     const dropZoneCorreta = MAPEAMENTO_CORRETO[pecaAtivaId];
     const acertouLocal = targetId === dropZoneCorreta;
     
-    console.log(`Validação de posição: Esperado=${dropZoneCorreta}, Recebido=${targetId}, Acertou=${acertouLocal}`);
-    
     if (!acertouLocal) {
       playError();
-      console.log(`Erro: Local incorreto para ${itemId}`);
       const novasTentativas = tentativasPeca + 1;
       setTentativasPeca(novasTentativas);
       registrarTentativa(itemId, false, nivelDificuldade || "medio");
@@ -388,15 +365,12 @@ const MontagemInterna: React.FC = () => {
     }
 
     playSuccess();
-    console.log(`Sucesso! ${itemId} encaixado em ${targetId}`);
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
     
     const novasPecasColocadas = new Set([...pecasColocadas, itemId]);
     setPecasColocadas(novasPecasColocadas);
     
-    // ✅ NOVO: Ativar classe placa-mae-montada quando a placa-mãe for colocada
     if (itemId === "placa_mae_1") {
-      console.log("🎯 Placa-mãe montada! Ativando dropzones internas...");
       setPlacaMaeMontada(true);
     }
     
@@ -408,17 +382,16 @@ const MontagemInterna: React.FC = () => {
     
     try {
       api.salvarProgresso(apelido, codigoSala, false);
-    } catch (err) {
-      console.warn("Falha ao salvar progresso:", err);
-    }
+    } catch (err) {}
 
     const ehUltimaPeca = novasPecasColocadas.size === pecas.length;
     
     if (ehUltimaPeca) {
-      console.log("🎯 Última peça encaixada! Finalizando montagem...");
+      setShowSucesso(true);
       setTimeout(() => {
+        setShowSucesso(false);
         finalizarMontagem();
-      }, 1000);
+      }, 2000);
     } else {
       setShowSucesso(true);
       setTimeout(() => {
@@ -432,56 +405,25 @@ const MontagemInterna: React.FC = () => {
     pausarCronometro();
     playWinner();
     
-    // ✅ CORREÇÃO: Obter resumo da pontuação interna (SEM pontuação externa)
     const resumoInterno = obterResumo();
     const pontuacaoInternaReal = resumoInterno.pontuacaoBase - pontuacaoExterna;
     
-    // ✅ CORREÇÃO: Somar pontuações SEM bônus
     const pontuacaoTotalSemBonus = pontuacaoExterna + pontuacaoInternaReal;
     
-    // ✅ CORREÇÃO: Somar tempos
     const tempoTotal = tempoExterna + tempo;
     
-    // ✅ CORREÇÃO: Aplicar bônus sobre o total
     const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal, pontuacaoTotalSemBonus);
-    
-    console.log(`
-╔═══════════════════════════════════════════════════════════╗
-║           🎮 FINALIZAÇÃO DO MODO HISTÓRIA                    ║
-╠═══════════════════════════════════════════════════════════╣
-║  📊 MONTAGEM EXTERNA:                                        ║
-║     Pontuação: ${String(pontuacaoExterna).padStart(43)} pts  ║
-║     Tempo: ${String(`${Math.floor(tempoExterna/60)}:${String(tempoExterna%60).padStart(2,'0')}`).padStart(47)} (${tempoExterna}s)  ║
-║                                                              ║
-║  📊 MONTAGEM INTERNA:                                        ║
-║     Pontuação: ${String(pontuacaoInternaReal).padStart(43)} pts  ║
-║     Tempo: ${String(`${Math.floor(tempo/60)}:${String(tempo%60).padStart(2,'0')}`).padStart(47)} (${tempo}s)  ║
-║     Peças montadas: ${String(resumoInterno.totalPecas).padStart(38)}  ║
-║                                                              ║
-║  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ║
-║  💰 PONTUAÇÃO TOTAL (sem bônus): ${String(pontuacaoTotalSemBonus).padStart(24)} pts  ║
-║  ⏱️  TEMPO TOTAL: ${String(`${Math.floor(tempoTotal/60)}:${String(tempoTotal%60).padStart(2,'0')}`).padStart(40)} (${tempoTotal}s)  ║
-║  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ ║
-║  🎯 PONTUAÇÃO FINAL (com bônus RN22): ${String(pontuacaoFinalComBonus).padStart(18)} pts  ║
-╚═══════════════════════════════════════════════════════════╝
-    `);
     
     setPontuacaoFinal(pontuacaoFinalComBonus);
     
     try {
-      // ✅ CORREÇÃO: Enviar pontuação final com bônus para o backend
       await api.registraPontuacao(apelido, codigoSala, pontuacaoFinalComBonus, tempoTotal);
-      console.log("✅ Pontuação final salva no backend!");
       
       await api.salvarProgresso(apelido, codigoSala, true);
-      console.log("✅ Modo História marcado como concluído!");
       
-      // Limpar localStorage
       localStorage.removeItem("pontuacaoMontagem");
       localStorage.removeItem("tempoMontagem");
-    } catch (err) {
-      console.error("❌ Erro ao salvar progresso:", err);
-    }
+    } catch (err) {}
     
     setShowConclusao(true);
   }
@@ -548,11 +490,9 @@ const MontagemInterna: React.FC = () => {
         <div className="montagem-interna-workspace">
           <div className="montagem-interna-central-wrapper">
             <div className="montagem-interna-gabinete-container">
-              {/* ✅ CORREÇÃO: Adicionar classe condicional ao gabinete */}
               <div className={`montagem-interna-gabinete ${placaMaeMontada ? 'placa-mae-montada' : ''}`}>
                 <img src={gabinete} alt="Gabinete" className="montagem-interna-gabinete-img" />
                 
-                {/* Dropzone da Placa-Mãe - Base para todos os componentes */}
                 <div className="montagem-interna-dropzone-placa-mae">
                   <DropZone
                     id="dropzone_placa_mae"

@@ -80,7 +80,7 @@
   transition: all 0.2s ease-in-out;
   box-shadow: 0 5px 0 #14532d;
   letter-spacing: 0.8px;
-  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
   position: relative;
   margin-bottom: 0.5rem;
 }
@@ -268,7 +268,7 @@
     font-weight: bold;
     z-index: 2001;
     max-width: 80%;
-    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+    font-family: "Fredoka", sans-serif;
     text-shadow: 0.0625rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.5);
   }
 }
