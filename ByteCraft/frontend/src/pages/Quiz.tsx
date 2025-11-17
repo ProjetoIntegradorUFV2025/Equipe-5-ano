@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/api";
 import type { Aluno, NivelDificuldade, Pergunta } from "../types";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Quiz.css";
+import "./styles/QuizModal.css";
 import ramonImage from "../assets/graphics/RAMon.png";
 
 interface LocationState {
@@ -10,7 +12,6 @@ interface LocationState {
   nivel: NivelDificuldade;
 }
 
-// ========== ENUMS DE ESTADO ==========
 enum EstadoQuiz {
   VERIFICANDO_PROGRESSO = "verificando",
   TELA_INICIAL = "inicial",
@@ -26,7 +27,11 @@ const Quiz: React.FC = () => {
   const aluno = state?.aluno;
   const nivel = state?.nivel;
 
-  // ========== ESTADOS PRINCIPAIS ==========
+  const {playClick} = useSound();
+  const {playSuccess} = useSound();
+  const {playWinner} = useSound();
+  const {playError} = useSound();
+
   const [estadoAtual, setEstadoAtual] = useState<EstadoQuiz>(
     EstadoQuiz.VERIFICANDO_PROGRESSO
   );
@@ -37,14 +42,11 @@ const Quiz: React.FC = () => {
   const [acertos, setAcertos] = useState(0);
   const [imagemRedimensionada, setImagemRedimensionada] = useState<string | null>(null);
 
-  // ========== ESTADOS DE TEMPO (RN17) ==========
   const [horaInicio, setHoraInicio] = useState<Date | null>(null);
   const [horaFim, setHoraFim] = useState<Date | null>(null);
 
-  // ========== ESTADOS DE ERRO ==========
   const [erroCarregamento, setErroCarregamento] = useState<string | null>(null);
 
-  // ========== CSU09 - PRECONDIÇÃO 3: VERIFICAR MODO HISTÓRIA ==========
   useEffect(() => {
     const verificarPrecondicoes = async () => {
       if (!nivel || !aluno || !aluno.apelido || !aluno.codigoSala) {
@@ -54,17 +56,13 @@ const Quiz: React.FC = () => {
       }
 
       try {
-        console.log("🔍 Verificando se Modo História foi concluído...");
-        
         const progresso = await api.obterProgresso(aluno.apelido, aluno.codigoSala);
 
         if (!progresso.modoHistoriaCompleto) {
-          alert("⚠️ Você precisa completar o Modo História antes de acessar o Quiz!");
+          alert("Você precisa completar o Modo História antes de acessar o Quiz!");
           navigate("/fases");
           return;
         }
-
-        console.log("✅ Modo História concluído! Carregando perguntas...");
 
         const apiPerguntas = await api.getPerguntasPorNivel(10, nivel.toUpperCase());
         
@@ -72,12 +70,10 @@ const Quiz: React.FC = () => {
           throw new Error("Nenhuma pergunta disponível para este nível.");
         }
 
-        console.log("✅ Perguntas carregadas:", apiPerguntas.length);
         setPerguntas(apiPerguntas);
         setEstadoAtual(EstadoQuiz.TELA_INICIAL);
 
       } catch (err) {
-        console.error("❌ Erro ao verificar precondições:", err);
         setErroCarregamento(
           err instanceof Error ? err.message : "Erro ao carregar o quiz."
         );
@@ -87,7 +83,6 @@ const Quiz: React.FC = () => {
     verificarPrecondicoes();
   }, [nivel, aluno, navigate]);
 
-  // ========== REDIMENSIONAR IMAGEM ==========
   const resizeBase64Image = (base64: string, maxWidth: number, maxHeight: number) => {
     return new Promise<string>((resolve) => {
       const img = new Image();
@@ -130,14 +125,12 @@ const Quiz: React.FC = () => {
     }
   }, [perguntas, indiceAtual, estadoAtual]);
 
-  // ========== CSU09 - PASSO 3: COMEÇAR QUIZ ==========
   const handleComecar = () => {
-    console.log("🎮 Iniciando Quiz...");
+    playClick();
     setHoraInicio(new Date());
     setEstadoAtual(EstadoQuiz.JOGANDO);
   };
 
-  // ========== CSU09 - PASSO 5 E 6: SELECIONAR E AVANÇAR ==========
   const handleSelecionarResposta = (texto: string) => {
     if (feedback) return;
     setRespostaSelecionada(texto);
@@ -145,17 +138,20 @@ const Quiz: React.FC = () => {
 
   const handleAvancar = () => {
     if (!respostaSelecionada) {
-      alert("⚠️ Por favor, selecione uma alternativa antes de avançar!");
+      alert("Por favor, selecione uma alternativa antes de avançar!");
       return;
     }
 
     const perguntaAtual = perguntas[indiceAtual];
     const correta = respostaSelecionada === perguntaAtual.alternativaCorreta;
     
-    setFeedback(correta ? "✅ Acertou!" : "❌ Errou!");
+    setFeedback(correta ? "Acertou!" : "Errou!");
 
     if (correta) {
+      playSuccess();
       setAcertos((prev) => prev + 1);
+    } else {
+      playError();
     }
 
     setTimeout(() => {
@@ -169,42 +165,16 @@ const Quiz: React.FC = () => {
     }, 1500);
   };
 
-  // ========== CSU09 - PASSO 8: CALCULAR E EXIBIR NOTA FINAL ==========
   const finalizarQuiz = async () => {
+    playWinner();
     const fim = new Date();
     setHoraFim(fim);
     
-    const tempoTotal = horaInicio ? Math.floor((fim.getTime() - horaInicio.getTime()) / 1000) : 0;
-    const pontuacao = acertos * 10;
-    
-    console.log("🏁 Quiz Finalizado!");
-    console.log("📊 Estatísticas:", {
-      acertos,
-      total: perguntas.length,
-      pontuacao,
-      tempoTotal: `${tempoTotal}s`,
-      horaInicio: horaInicio?.toLocaleString(),
-      horaFim: fim.toLocaleString(),
-    });
-
-    try {
-      await api.registraPontuacao(
-        aluno.apelido,
-        aluno.codigoSala!,
-        pontuacao,
-        tempoTotal
-      );
-      console.log("✅ Pontuação salva no backend!");
-    } catch (err) {
-      console.error("⚠️ Erro ao salvar pontuação:", err);
-    }
-
     setEstadoAtual(EstadoQuiz.FINALIZADO);
   };
 
-  // ========== CSU09 - PASSO 9: VOLTAR PARA FASES ==========
   const handleVoltarFases = () => {
-    console.log("🔄 Voltando para Fases com nível preservado:", nivel);
+    playClick();
     
     navigate("/fases", { 
       state: { 
@@ -215,14 +185,11 @@ const Quiz: React.FC = () => {
     });
   };
 
-  // ========== RENDERIZAÇÃO CONDICIONAL ==========
-
-  // ERRO DE CARREGAMENTO
   if (erroCarregamento) {
     return (
       <div className="quiz-container">
         <div className="quiz-content">
-          <h2 className="quiz-title-error">❌ Erro ao Carregar Quiz</h2>
+          <h2 className="quiz-title-error">Erro ao Carregar Quiz</h2>
           <p className="quiz-error-text">{erroCarregamento}</p>
           <button className="quiz-btn quiz-btn-voltar" onClick={handleVoltarFases}>
             Voltar para Fases
@@ -232,7 +199,6 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // VERIFICANDO PROGRESSO
   if (estadoAtual === EstadoQuiz.VERIFICANDO_PROGRESSO) {
     return (
       <div className="quiz-container">
@@ -244,7 +210,6 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // TELA INICIAL - INSPIRADA NO BOASVINDASMODAL
   if (estadoAtual === EstadoQuiz.TELA_INICIAL) {
     return (
       <div className="quiz-container">
@@ -255,14 +220,14 @@ const Quiz: React.FC = () => {
             </div>
 
             <div className="quiz-welcome-texto">
-              <h1 className="quiz-welcome-title">🎯 Modo Quiz</h1>
+              <h1 className="quiz-welcome-title">Modo Quiz</h1>
               <p>
                 Olá de novo, <strong>{aluno.apelido}</strong>! 👋
                 <br /><br />
-                Agora você vai jogar o <strong>Modo Quiz</strong> no nível <strong>{nivel.toUpperCase()}</strong>! 🎯
+                Agora você vai jogar o <strong>Modo Quiz</strong> no nível <strong>{nivel.toUpperCase()}</strong>!
                 <br /><br />
                 São <strong>{perguntas.length} perguntas</strong> para testar tudo que você aprendeu no Modo História. 
-                Mostre seu conhecimento e boa sorte! 🚀
+                Mostre seu conhecimento e boa sorte!
               </p>
             </div>
 
@@ -275,7 +240,6 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // TELA DE NOTA FINAL - INSPIRADA NO BOASVINDASMODAL
   if (estadoAtual === EstadoQuiz.FINALIZADO) {
     const notaFinal = (acertos / perguntas.length) * 100;
     const tempoTotal = horaInicio && horaFim 
@@ -291,7 +255,7 @@ const Quiz: React.FC = () => {
             </div>
 
             <div className="quiz-resultado-texto">
-              <h1 className="quiz-resultado-title">🎉 Quiz Finalizado!</h1>
+              <h1 className="quiz-resultado-title">Quiz Finalizado!</h1>
               
               <div className="quiz-nota-display">
                 <span className="quiz-nota-label">Nota Final</span>
@@ -299,15 +263,15 @@ const Quiz: React.FC = () => {
               </div>
 
               <div className="quiz-stats-grid">
-                <p>✅ Acertos: <strong>{acertos}</strong> de {perguntas.length}</p>
-                <p>⏱️ Tempo: <strong>{Math.floor(tempoTotal / 60)}:{(tempoTotal % 60).toString().padStart(2, '0')}</strong></p>
-                <p>📅 <strong>{horaFim?.toLocaleString()}</strong></p>
+                <p>Acertos: <strong>{acertos}</strong> de {perguntas.length}</p>
+                <p>Tempo: <strong>{Math.floor(tempoTotal / 60)}:{(tempoTotal % 60).toString().padStart(2, '0')}</strong></p>
+                <p><strong>{horaFim?.toLocaleString()}</strong></p>
               </div>
 
               <div className="quiz-mensagem-final">
-                {notaFinal >= 80 && <p>🌟 Excelente! Você domina o conteúdo!</p>}
-                {notaFinal >= 60 && notaFinal < 80 && <p>👍 Muito bem! Continue praticando!</p>}
-                {notaFinal < 60 && <p>💪 Não desista! Revise o conteúdo!</p>}
+                {notaFinal >= 80 && <p>Excelente! Você domina o conteúdo!</p>}
+                {notaFinal >= 60 && notaFinal < 80 && <p>Muito bem! Continue praticando!</p>}
+                {notaFinal < 60 && <p>Não desista! Revise o conteúdo!</p>}
               </div>
             </div>
 
@@ -320,7 +284,6 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // TELA DE PERGUNTAS
   if (estadoAtual === EstadoQuiz.JOGANDO && perguntas.length > 0) {
     const perguntaAtual = perguntas[indiceAtual];
     const alternativas = [
@@ -335,7 +298,6 @@ const Quiz: React.FC = () => {
     return (
       <div className="quiz-container">
         <div className="quiz-content">
-          {/* Header com progresso */}
           <div className="quiz-header">
             <h2 className="quiz-pergunta-numero">
               Pergunta {indiceAtual + 1} de {perguntas.length}
@@ -348,14 +310,11 @@ const Quiz: React.FC = () => {
             </div>
           </div>
 
-          {/* Container com mesma largura para enunciado e alternativas */}
           <div className="quiz-perguntas-wrapper">
-            {/* Enunciado */}
             <div className="quiz-enunciado-box">
               <p className="quiz-enunciado">{perguntaAtual.enunciado}</p>
             </div>
 
-            {/* Imagem (se existir) */}
             {imagemRedimensionada && (
               <img
                 src={`data:image/png;base64,${imagemRedimensionada}`}
@@ -364,7 +323,6 @@ const Quiz: React.FC = () => {
               />
             )}
 
-            {/* Alternativas */}
             <div className="quiz-alternativas">
               {alternativas.map((texto, idx) => {
                 const isSelected = respostaSelecionada === texto;
@@ -392,17 +350,15 @@ const Quiz: React.FC = () => {
             </div>
           </div>
 
-          {/* Feedback */}
           {feedback && <p className="quiz-feedback">{feedback}</p>}
 
-          {/* Botão Avançar */}
           {!feedback && (
             <button 
               className="quiz-btn quiz-btn-avancar" 
               onClick={handleAvancar}
               disabled={!!feedback}
             >
-              {isUltimaPergunta ? "VER NOTA FINAL" : "AVANÇAR ➡️"}
+              {isUltimaPergunta ? "VER NOTA FINAL" : "AVANÇAR"}
             </button>
           )}
         </div>
@@ -410,7 +366,6 @@ const Quiz: React.FC = () => {
     );
   }
 
-  // Fallback
   return (
     <div className="quiz-container">
       <div className="quiz-content">

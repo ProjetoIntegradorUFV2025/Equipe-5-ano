@@ -10,6 +10,7 @@ import PainelPontuacao from "../components/PainelPontuacao";
 import Cronometro from "../components/Cronometro";
 import { useCronometro } from "../hooks/useCronometro";
 import { usePontuacao } from "../hooks/usePontuacao";
+import { useSound } from "../hooks/useSounds";
 import api from "../api/api";
 import type { 
   PecaItem, 
@@ -26,10 +27,17 @@ import placaVideo from "../assets/peças/placa_video (1).png";
 import fan from "../assets/peças/fan.png";
 import fanAzul from "../assets/peças/fan_azul.png";
 import gabinete from "../assets/peças/gabinete.png";
+import placaMae from "../assets/peças/placa_mae.png";
 
-const SEQUENCIA_PECAS = ["processador_1", "ram_1", "ssd_1", "placa_video_1", "fan_1"];
+const SEQUENCIA_PECAS = ["placa_mae_1", "processador_1", "ram_1", "ssd_1", "placa_video_1", "fan_1"];
 
 const HISTORIAS_FIXAS: DialogoHistoria[] = [
+  {
+    id: "0",
+    titulo: "A Placa-Mãe",
+    texto: "A placa-mãe é a base do computador. Todos os outros componentes se conectam a ela. Vamos começar posicionando-a no gabinete!",
+    pecaId: "placa_mae_1"
+  },
   {
     id: "1",
     titulo: "O Processador",
@@ -132,6 +140,7 @@ const obterMensagemAleatoria = (nivel: NivelDificuldade, tipo: 'sucesso' | 'erro
 };
 
 const MAPEAMENTO_CORRETO: Record<string, string> = {
+  "placa_mae_1": "dropzone_placa_mae",
   "processador_1": "dropzone_processador",
   "ram_1": "dropzone_ram",
   "ssd_1": "dropzone_ssd",
@@ -155,6 +164,14 @@ const MontagemInterna: React.FC = () => {
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
   const nivel = nivelDificuldade;
 
+  const pontuacaoExterna = Number(localStorage.getItem("pontuacaoMontagem")) || 0;
+  const tempoExterna = Number(localStorage.getItem("tempoMontagem")) || 0;
+
+  const { playClick } = useSound();
+  const { playSuccess } = useSound();
+  const { playError } = useSound();
+  const {playWinner} = useSound();
+
   const [mensagemSucesso, setMensagemSucesso] = useState("");
 
   const {
@@ -163,7 +180,7 @@ const MontagemInterna: React.FC = () => {
     calcularPontuacaoFinalComBonus,
     resetar: resetarPontuacao,
     obterResumo
-  } = usePontuacao();
+  } = usePontuacao(pontuacaoExterna);
 
   const {
     tempo,
@@ -194,6 +211,13 @@ const MontagemInterna: React.FC = () => {
   }, []);
 
   const [pecas, setPecas] = useState<PecaItem[]>([
+    { 
+      id: "placa_mae_1", 
+      label: "Placa-Mãe", 
+      imagem: placaMae, 
+      color: "padrao",
+      descricao: "Base do computador"
+    },
     { 
       id: "processador_1", 
       label: "Processador", 
@@ -250,12 +274,9 @@ const MontagemInterna: React.FC = () => {
   const [showConclusao, setShowConclusao] = useState(false);
   const [pontuacaoFinal, setPontuacaoFinal] = useState(0);
 
-  const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
+  const [placaMaeMontada, setPlacaMaeMontada] = useState(false);
 
-  useEffect(() => {
-    console.log("Inicializando montagem interna...");
-    console.log("Peça ativa inicial:", pecaAtivaId);
-  }, []);
+  const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
 
   const avancarParaProximaPeca = () => {
     const proximoIndex = indicePecaAtual + 1;
@@ -321,11 +342,8 @@ const MontagemInterna: React.FC = () => {
   };
 
   const handleDrop = (itemId: string, targetId: string) => {
-    console.log("Tentativa de drop:", { itemId, pecaAtivaId, targetId, ehPecaAtiva: itemId === pecaAtivaId });
-
     const ehPecaAtiva = itemId === pecaAtivaId;
     if (!ehPecaAtiva) {
-      console.log(`Erro: Peça ${itemId} não está ativa. Ativa: ${pecaAtivaId}`);
       registrarTentativa(itemId, false, nivelDificuldade || "medio");
       setMensagemErro(obterMensagemAleatoria(nivel, 'erro'));
       setShowErro(true);
@@ -335,10 +353,8 @@ const MontagemInterna: React.FC = () => {
     const dropZoneCorreta = MAPEAMENTO_CORRETO[pecaAtivaId];
     const acertouLocal = targetId === dropZoneCorreta;
     
-    console.log(`Validação de posição: Esperado=${dropZoneCorreta}, Recebido=${targetId}, Acertou=${acertouLocal}`);
-    
     if (!acertouLocal) {
-      console.log(`Erro: Local incorreto para ${itemId}`);
+      playError();
       const novasTentativas = tentativasPeca + 1;
       setTentativasPeca(novasTentativas);
       registrarTentativa(itemId, false, nivelDificuldade || "medio");
@@ -348,11 +364,15 @@ const MontagemInterna: React.FC = () => {
       return;
     }
 
-    console.log(`Sucesso! ${itemId} encaixado em ${targetId}`);
+    playSuccess();
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
     
     const novasPecasColocadas = new Set([...pecasColocadas, itemId]);
     setPecasColocadas(novasPecasColocadas);
+    
+    if (itemId === "placa_mae_1") {
+      setPlacaMaeMontada(true);
+    }
     
     setPontosGanhos(pontosObtidos);
     setPecaSelecionada(null);
@@ -362,17 +382,16 @@ const MontagemInterna: React.FC = () => {
     
     try {
       api.salvarProgresso(apelido, codigoSala, false);
-    } catch (err) {
-      console.warn("Falha ao salvar progresso:", err);
-    }
+    } catch (err) {}
 
     const ehUltimaPeca = novasPecasColocadas.size === pecas.length;
     
     if (ehUltimaPeca) {
-      console.log("🎯 Última peça encaixada! Finalizando montagem...");
+      setShowSucesso(true);
       setTimeout(() => {
+        setShowSucesso(false);
         finalizarMontagem();
-      }, 1000);
+      }, 2000);
     } else {
       setShowSucesso(true);
       setTimeout(() => {
@@ -384,61 +403,27 @@ const MontagemInterna: React.FC = () => {
 
   async function finalizarMontagem() {
     pausarCronometro();
+    playWinner();
     
-    // ✅ CORREÇÃO: Recuperar dados da montagem externa
-    const pontuacaoExterna = Number(localStorage.getItem("pontuacaoMontagem")) || 0;
-    const tempoExterna = Number(localStorage.getItem("tempoMontagem")) || 0;
-    
-    // ✅ CORREÇÃO: Obter resumo da pontuação interna
     const resumoInterno = obterResumo();
-    const pontuacaoInterna = resumoInterno.pontuacaoBase;
+    const pontuacaoInternaReal = resumoInterno.pontuacaoBase - pontuacaoExterna;
     
-    // ✅ CORREÇÃO: Somar pontuações SEM bônus primeiro
-    const pontuacaoTotalSemBonus = pontuacaoExterna + pontuacaoInterna;
+    const pontuacaoTotalSemBonus = pontuacaoExterna + pontuacaoInternaReal;
     
-    // ✅ CORREÇÃO: Somar tempos
     const tempoTotal = tempoExterna + tempo;
     
-    // ✅ CORREÇÃO: Aplicar bônus de tempo sobre o total
-    const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal);
-    
-    console.log(`
-╔══════════════════════════════════════════════════════════════╗
-║           🎮 FINALIZAÇÃO DO MODO HISTÓRIA                    ║
-╠══════════════════════════════════════════════════════════════╣
-║  📊 MONTAGEM EXTERNA:                                        ║
-║     Pontuação: ${String(pontuacaoExterna).padStart(43)} pts  ║
-║     Tempo: ${String(`${Math.floor(tempoExterna/60)}:${String(tempoExterna%60).padStart(2,'0')}`).padStart(47)} (${tempoExterna}s)  ║
-║                                                              ║
-║  📊 MONTAGEM INTERNA:                                        ║
-║     Pontuação: ${String(pontuacaoInterna).padStart(43)} pts  ║
-║     Tempo: ${String(`${Math.floor(tempo/60)}:${String(tempo%60).padStart(2,'0')}`).padStart(47)} (${tempo}s)  ║
-║     Peças montadas: ${String(resumoInterno.totalPecas).padStart(38)}  ║
-║                                                              ║
-║  ═══════════════════════════════════════════════════════════ ║
-║  💰 PONTUAÇÃO TOTAL (sem bônus): ${String(pontuacaoTotalSemBonus).padStart(24)} pts  ║
-║  ⏱️  TEMPO TOTAL: ${String(`${Math.floor(tempoTotal/60)}:${String(tempoTotal%60).padStart(2,'0')}`).padStart(40)} (${tempoTotal}s)  ║
-║  ═══════════════════════════════════════════════════════════ ║
-║  🎯 PONTUAÇÃO FINAL (com bônus RN22): ${String(pontuacaoFinalComBonus).padStart(18)} pts  ║
-╚══════════════════════════════════════════════════════════════╝
-    `);
+    const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal, pontuacaoTotalSemBonus);
     
     setPontuacaoFinal(pontuacaoFinalComBonus);
     
     try {
-      // ✅ CORREÇÃO: Enviar pontuação final com bônus para o backend
       await api.registraPontuacao(apelido, codigoSala, pontuacaoFinalComBonus, tempoTotal);
-      console.log("✅ Pontuação final salva no backend!");
       
       await api.salvarProgresso(apelido, codigoSala, true);
-      console.log("✅ Modo História marcado como concluído!");
       
-      // Limpar localStorage
       localStorage.removeItem("pontuacaoMontagem");
       localStorage.removeItem("tempoMontagem");
-    } catch (err) {
-      console.error("❌ Erro ao salvar progresso:", err);
-    }
+    } catch (err) {}
     
     setShowConclusao(true);
   }
@@ -466,7 +451,7 @@ const MontagemInterna: React.FC = () => {
 
   const obterLabelPecaAtiva = (): string => {
     const peca = pecas.find(p => p.id === pecaAtivaId);
-    return peca?.label || "Processador";
+    return peca?.label || "Placa-Mãe";
   };
 
   if (!aluno?.apelido) {
@@ -505,9 +490,20 @@ const MontagemInterna: React.FC = () => {
         <div className="montagem-interna-workspace">
           <div className="montagem-interna-central-wrapper">
             <div className="montagem-interna-gabinete-container">
-              <div className="montagem-interna-gabinete">
+              <div className={`montagem-interna-gabinete ${placaMaeMontada ? 'placa-mae-montada' : ''}`}>
                 <img src={gabinete} alt="Gabinete" className="montagem-interna-gabinete-img" />
                 
+                <div className="montagem-interna-dropzone-placa-mae">
+                  <DropZone
+                    id="dropzone_placa_mae"
+                    onDrop={handleDrop}
+                    placed={pecasColocadas.has("placa_mae_1")}
+                    image={obterImagemPeca("placa_mae_1")}
+                    destacar={dropZoneDestacada === "dropzone_placa_mae"}
+                    nivel={nivelDificuldade}
+                  />
+                </div>
+
                 <div className="montagem-interna-dropzone-processador">
                   <DropZone
                     id="dropzone_processador"

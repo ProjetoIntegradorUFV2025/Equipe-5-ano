@@ -36,7 +36,7 @@
   font-size: 2rem;
   font-weight: 900;
   margin: 0 0 0.5rem 0;
-  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
   color: #1e40af;
 }
 
@@ -44,7 +44,7 @@
   font-size: 1rem;
   color: #64748b;
   margin-bottom: 1.5rem;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
 }
 
 .conclusao-stats {
@@ -73,7 +73,7 @@
   color: rgba(255, 255, 255, 0.95);
   font-size: 0.9rem;
   font-weight: 600;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   margin-bottom: 0.3rem;
 }
@@ -105,7 +105,7 @@
   margin: 0.3rem 0;
   font-size: 1rem;
   color: #1e40af;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
 }
 
 /* Loading da Pontuação */
@@ -121,7 +121,7 @@
 .conclusao-carregando-pontuacao p {
   font-size: 1rem;
   color: #64748b;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;;
 }
 
 .spinner {
@@ -174,7 +174,7 @@
   transition: all 0.2s ease-in-out;
   box-shadow: 0 3px 0 #14532d;
   letter-spacing: 0.5px;
-  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
   position: relative;
   margin-bottom: 0.3rem;
   flex: 1;
@@ -224,7 +224,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0 0 1rem 0;
-  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
   text-align: center;
   letter-spacing: 1px;
 }
@@ -256,7 +256,7 @@
 .conclusao-modal-tabela td {
   padding: 0.8rem;
   text-align: left;
-  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
   font-size: 0.9rem;
 }
 
@@ -411,6 +411,6 @@
     font-weight: bold;
     z-index: 2001;
     max-width: 85%;
-    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+    font-family: "Fredoka", sans-serif;
   }
 }

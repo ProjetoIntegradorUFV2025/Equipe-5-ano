@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getNiveis, registrarNivel } from "../api/api";
 import type { Aluno as AlunoType } from "../types";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Niveis.css";
 
 const safeUrl = (relPath: string) => {
@@ -26,6 +27,7 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPortrait, setIsPortrait] = useState(false);
+  const { playClick } = useSound();
 
   // Detecta orientação da tela
   useEffect(() => {
@@ -65,10 +67,12 @@ const Niveis: React.FC<NiveisProps> = ({ aluno }) => {
   }, []);
 
   const handleVoltar = () => {
+    playClick();
     navigate("/aluno");
   };
 
   const selecionarNivel = async (nivel: string) => {
+    playClick();
     try {
       if (!aluno?.apelido || !aluno?.codigoSala) {
         alert("Aluno ou código da sala não identificado. Faça login novamente.");

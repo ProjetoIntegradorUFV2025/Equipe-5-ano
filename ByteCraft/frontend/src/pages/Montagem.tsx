@@ -17,6 +17,7 @@ import type {
   Aluno as AlunoType,
   DialogoHistoria
 } from "../types";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Montagem.css";
 
 import monitorCinza from "../assets/peças/monitor_cinza.png";
@@ -160,6 +161,10 @@ const Montagem: React.FC = () => {
   const codigoSala = aluno?.codigoSala || Number(localStorage.getItem("codigoSala")) || 999;
   const nivel = (localStorage.getItem("nivelSelecionado") as NivelDificuldade) || "medio";
 
+  const { playClick } = useSound();
+  const { playSuccess } = useSound();
+  const { playError } = useSound();
+
   const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [mostrarBoasVindas, setMostrarBoasVindas] = useState(true);
 
@@ -233,11 +238,6 @@ const Montagem: React.FC = () => {
 
   const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
 
-  useEffect(() => {
-    console.log("Inicializando montagem...");
-    console.log("Peça ativa inicial:", pecaAtivaId);
-  }, []);
-
   const handleContinuarBoasVindas = () => {
     setMostrarBoasVindas(false);
   };
@@ -306,11 +306,8 @@ const Montagem: React.FC = () => {
   };
 
   const handleDrop = (itemId: string, targetId: string) => {
-    console.log("Tentativa de drop:", { itemId, pecaAtivaId, targetId, ehPecaAtiva: itemId === pecaAtivaId });
-
     const ehPecaAtiva = itemId === pecaAtivaId;
     if (!ehPecaAtiva) {
-      console.log(`Erro: Peça ${itemId} não está ativa. Ativa: ${pecaAtivaId}`);
       registrarTentativa(itemId, false, nivelDificuldade || "medio");
       setMensagemErro(obterMensagemAleatoria(nivel, 'erro'));
       setShowErro(true);
@@ -320,10 +317,8 @@ const Montagem: React.FC = () => {
     const dropZoneCorreta = MAPEAMENTO_CORRETO[pecaAtivaId];
     const acertouLocal = targetId === dropZoneCorreta;
     
-    console.log(`Validação de posição: Esperado=${dropZoneCorreta}, Recebido=${targetId}, Acertou=${acertouLocal}`);
-    
     if (!acertouLocal) {
-      console.log(`Erro: Local incorreto para ${itemId}`);
+      playError();
       const novasTentativas = tentativasPeca + 1;
       setTentativasPeca(novasTentativas);
       registrarTentativa(itemId, false, nivelDificuldade || "medio");
@@ -333,7 +328,7 @@ const Montagem: React.FC = () => {
       return;
     }
 
-    console.log(`Sucesso! ${itemId} encaixado em ${targetId}`);
+    playSuccess();
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
     
     const novasPecasColocadas = new Set([...pecasColocadas, itemId]);
@@ -347,17 +342,16 @@ const Montagem: React.FC = () => {
     
     try {
       api.salvarProgresso(apelido, codigoSala, false);
-    } catch (err) {
-      console.warn("Falha ao salvar progresso:", err);
-    }
+    } catch (err) {}
 
     const ehUltimaPeca = novasPecasColocadas.size === pecas.length;
     
     if (ehUltimaPeca) {
-      console.log("🎯 Última peça da montagem externa! Avançando...");
+      setShowSucesso(true);
       setTimeout(() => {
+        setShowSucesso(false);
         finalizarMontagemExterna();
-      }, 1000);
+      }, 2000);
     } else {
       setShowSucesso(true);
       setTimeout(() => {
@@ -370,26 +364,11 @@ const Montagem: React.FC = () => {
   function finalizarMontagemExterna() {
     pausarCronometro();
     
-    // ✅ CORREÇÃO: Obter resumo da pontuação externa
     const resumoExterno = obterResumo();
     const pontuacaoExterna = resumoExterno.pontuacaoBase;
     
-    console.log(`
-╔══════════════════════════════════════════════════════════════╗
-║           📦 MONTAGEM EXTERNA CONCLUÍDA                      ║
-╠══════════════════════════════════════════════════════════════╣
-║  Pontuação (sem bônus): ${String(pontuacaoExterna).padStart(32)} pts  ║
-║  Tempo: ${String(`${Math.floor(tempo/60)}:${String(tempo%60).padStart(2,'0')}`).padStart(48)} (${tempo}s)  ║
-║  Peças montadas: ${String(resumoExterno.totalPecas).padStart(41)}  ║
-║  Total de tentativas: ${String(resumoExterno.totalTentativas).padStart(38)}  ║
-╚══════════════════════════════════════════════════════════════╝
-    `);
-    
-    // ✅ CORREÇÃO: Salvar pontuação SEM bônus no localStorage
     localStorage.setItem("pontuacaoMontagem", pontuacaoExterna.toString());
     localStorage.setItem("tempoMontagem", tempo.toString());
-    
-    console.log("✅ Dados salvos no localStorage. Avançando para montagem interna...");
     
     navigate("/montagem-interna", {
       state: {
@@ -404,6 +383,7 @@ const Montagem: React.FC = () => {
   };
 
   const handleVoltarFases = () => {
+    playClick();
     resetarPontuacao();
     resetarCronometro();
     

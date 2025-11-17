@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import api from "../api/api";
+import {useSound} from "../hooks/useSounds";
 import "./styles/Fases.css";
 
 const safeUrl = (relPath: string) => {
@@ -24,6 +25,7 @@ interface FasesProps {
 const Fases: React.FC<FasesProps> = ({ aluno }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { playClick } = useSound();
 
   // ✅ CORREÇÃO: Recuperar nível do state com múltiplos fallbacks
   const getNivel = (): string | null => {
@@ -140,11 +142,15 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
   }, []);
 
   const handleVoltar = () => {
+    playClick();
     navigate("/niveis");
   };
 
   // ✅ CORREÇÃO: iniciarModoHistoria - Validar e enviar nível
   const iniciarModoHistoria = () => {
+
+    playClick();
+    
     if (!nivel) {
       setMensagemErro("Nível não foi selecionado corretamente. Retorne e tente novamente.");
       setShowErroModal(true);
@@ -175,6 +181,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
 
   // ✅ CORREÇÃO: iniciarModoQuiz - Validar e enviar nível
   const iniciarModoQuiz = () => {
+    playClick();
     console.log("🎯 Tentando iniciar Modo Quiz...");
     console.log("📊 Estado atual:", {
       modoHistoriaCompleto,
@@ -219,6 +226,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
   };
 
   const tentarNovamente = () => {
+    playClick();
     console.log("🔄 Tentando novamente...");
     executarCarregarProgresso();
   };
@@ -316,7 +324,6 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
           <p className="fases-info-aluno">Aluno: <strong>{aluno.apelido}</strong></p>
           {modoHistoriaCompleto ? (
             <p className="fases-info-progresso" style={{ color: '#4caf50', fontWeight: 'bold' }}>
-              ✓ Modo História Concluído - Quiz Disponível!
             </p>
           ) : (
             <p className="fases-info-progresso" style={{ color: '#ff9800' }}>

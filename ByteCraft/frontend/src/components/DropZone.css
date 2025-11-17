@@ -16,9 +16,7 @@
   transform: translate(-50%, -50%);
 }
 
-/* ==========================================================
-   ÁREAS DE ENCAIXE - Apenas bordas visíveis
-   ========================================================== */
+/* AREAS DE ENCAIXE - Apenas bordas visiveis */
 
 .dropzone-area {
   position: relative;
@@ -31,35 +29,106 @@
   justify-content: center;
 }
 
-/* Tamanhos específicos para cada área */
+/* Tamanhos especificos para cada area - REDUZIDOS PROPORCIONALMENTE */
+
+/* Placa-Mãe - Base do computador (grande, cobre a área de montagem) */
+.dropzone-area.placa_mae {
+  width: 100%;
+  height: 100%;
+  border-width: 5px;
+  border-style: dashed;
+  border-color: rgba(139, 92, 246, 0.8);
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.dropzone-area.placa_mae:hover {
+  border-color: rgba(139, 92, 246, 0.9);
+  background: rgba(139, 92, 246, 0.12);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+}
+
+.dropzone-area.placa_mae.dropzone-hover {
+  border-color: rgba(139, 92, 246, 0.9);
+  border-width: 5px;
+  background: rgba(139, 92, 246, 0.12);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+  transform: scale(1.02);
+}
+
+.dropzone-area.placa_mae.dropzone-iluminado {
+  border-color: rgba(139, 92, 246, 0.9);
+  background: rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 35px rgba(139, 92, 246, 0.5);
+  animation: pulsarPlacaMae 1.5s ease-in-out infinite;
+}
+
+@keyframes pulsarPlacaMae {
+  0%, 100% {
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(139, 92, 246, 0.7);
+    transform: scale(1.03);
+  }
+}
+
+.dropzone-area.placa_mae.dropzone-placed {
+  border-color: rgba(34, 197, 94, 0.6);
+  border-style: solid;
+  background: transparent;
+}
+
+/* COMPONENTES INTERNOS - Inicialmente ocultos */
+.dropzone-area.processador,
+.dropzone-area.ram,
+.dropzone-area.ssd,
+.dropzone-area.placa_video,
+.dropzone-area.fan {
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease, opacity 0.5s ease-in-out;
+}
+
+/* Quando a placa-mãe está montada, os componentes internos aparecem */
+.placa-mae-montada .dropzone-area.processador,
+.placa-mae-montada .dropzone-area.ram,
+.placa-mae-montada .dropzone-area.ssd,
+.placa-mae-montada .dropzone-area.placa_video,
+.placa-mae-montada .dropzone-area.fan {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Periféricos externos */
 .dropzone-area.monitor {
-  width: clamp(20rem, 35vw, 25rem);
-  height: clamp(12.5rem, 22vh, 15.6rem);
+  width: clamp(17.5rem, 30vw, 21.9rem);
+  height: clamp(11rem, 19vh, 13.7rem);
 }
 
 .dropzone-area.teclado {
-  width: clamp(18rem, 30vw, 22rem);
-  height: clamp(6rem, 10vh, 8rem);
+  width: clamp(15.8rem, 26vw, 19.3rem);
+  height: clamp(5.3rem, 9vh, 7rem);
 }
 
 .dropzone-area.mouse {
-  width: clamp(6.5rem, 11vw, 8.1rem);
-  height: clamp(6.5rem, 11vw, 8.1rem);
+  width: clamp(5.7rem, 9.5vw, 7.1rem);
+  height: clamp(5.7rem, 9.5vw, 7.1rem);
 }
 
 .dropzone-area.som {
-  width: clamp(7rem, 12vw, 8.75rem);
-  height: clamp(7rem, 12vw, 8.75rem);
+  width: clamp(6.1rem, 10.5vw, 7.7rem);
+  height: clamp(6.1rem, 10.5vw, 7.7rem);
 }
 
-/* Hover */
+/* Hover genérico */
 .dropzone-area:hover {
   border-color: rgba(59, 130, 246, 0.6);
   background: rgba(59, 130, 246, 0.05);
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
 }
 
-/* Estado quando item está sendo arrastado sobre */
+/* Estado quando item esta sendo arrastado sobre */
 .dropzone-area.dropzone-hover {
   border-color: rgba(34, 197, 94, 0.8);
   border-width: 4px;
@@ -88,16 +157,14 @@
   }
 }
 
-/* Após encaixar peça */
+/* Apos encaixar peca */
 .dropzone-area.dropzone-placed {
   border-color: rgba(34, 197, 94, 0.5);
   border-style: solid;
   background: rgba(34, 197, 94, 0.08);
 }
 
-/* ==========================================================
-   LAYOUT DOS PERIFÉRICOS
-   ========================================================== */
+/* LAYOUT DOS PERIFERICOS */
 
 .dropzone-perifericos {
   display: flex;
@@ -108,9 +175,7 @@
   flex-wrap: wrap;
 }
 
-/* ==========================================================
-   Imagem da peça encaixada
-   ========================================================== */
+/* Imagem da peca encaixada */
 
 .dropzone-imagem {
   width: 100%;
@@ -121,7 +186,7 @@
   pointer-events: none;
 }
 
-/* Classe específica para o teclado - Aumentar padding interno */
+/* Classe especifica para o teclado - Aumentar padding interno */
 .dropzone-area.teclado {
   padding: 10px !important;
 }
@@ -132,9 +197,15 @@
   height: 100%;
 }
 
-/* ==========================================================
-   Placeholder e brilho de ajuda
-   ========================================================== */
+/* Placa-mãe - imagem ocupa toda área */
+.dropzone-area.placa_mae .dropzone-imagem {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  opacity: 0.95;
+}
+
+/* Placeholder e brilho de ajuda */
 
 .dropzone-placeholder {
   position: absolute;
@@ -178,37 +249,13 @@
   white-space: nowrap;
 }
 
-/* ==========================================================
-   Label indicativa (hover)
-   ========================================================== */
+/* Label indicativa (hover) - REMOVIDO */
 
 .dropzone-area::after {
-  content: attr(data-label);
-  position: absolute;
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: white;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 0.4rem 1rem;
-  border-radius: 8px;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  display: none;
 }
 
-.dropzone-area:hover::after {
-  opacity: 1;
-}
-
-/* ==========================================================
-   ✅ CORREÇÃO PROBLEMA 3: Ícone de ajuda visual
-   Agora com controle mais visível e melhor posicionamento
-   ========================================================== */
+/* Icone de ajuda visual */
 
 .dropzone-icone {
   position: absolute;
@@ -220,19 +267,34 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
+/* Ícone maior para placa-mãe */
+.dropzone-area.placa_mae .dropzone-icone {
+  font-size: 5rem;
+  opacity: 0.2;
+}
+
 .dropzone-area:hover .dropzone-icone {
   opacity: 0.4;
   transform: scale(1.1);
+}
+
+.dropzone-area.placa_mae:hover .dropzone-icone {
+  opacity: 0.3;
+  transform: scale(1.05);
 }
 
 .dropzone-area.dropzone-placed .dropzone-icone {
   display: none;
 }
 
-/* Ícone fica mais visível quando a zona está destacada */
+/* Icone fica mais visivel quando a zona esta destacada */
 .dropzone-area.dropzone-iluminado .dropzone-icone {
   opacity: 0.35;
   animation: pulsarIcone 1.5s ease-in-out infinite;
+}
+
+.dropzone-area.placa_mae.dropzone-iluminado .dropzone-icone {
+  opacity: 0.3;
 }
 
 @keyframes pulsarIcone {
@@ -246,9 +308,7 @@
   }
 }
 
-/* ==========================================================
-   Responsividade
-   ========================================================== */
+/* Responsividade */
 
 @media (max-width: 1024px) {
   .dropzone-container {
@@ -257,6 +317,10 @@
 
   .dropzone-icone {
     font-size: 3rem;
+  }
+
+  .dropzone-area.placa_mae .dropzone-icone {
+    font-size: 4.5rem;
   }
 }
 
@@ -269,13 +333,12 @@
     font-size: 0.9rem;
   }
 
-  .dropzone-area::after {
-    font-size: 0.85rem;
-    top: -30px;
-  }
-
   .dropzone-icone {
     font-size: 2.5rem;
+  }
+
+  .dropzone-area.placa_mae .dropzone-icone {
+    font-size: 4rem;
   }
 }
 
@@ -286,6 +349,10 @@
 
   .dropzone-area {
     border-width: 2px;
+  }
+
+  .dropzone-area.placa_mae {
+    border-width: 3px;
   }
 
   .dropzone-perifericos {
@@ -300,5 +367,9 @@
 
   .dropzone-icone {
     font-size: 2rem;
+  }
+
+  .dropzone-area.placa_mae .dropzone-icone {
+    font-size: 3.5rem;
   }
 }

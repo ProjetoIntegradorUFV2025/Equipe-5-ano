@@ -75,7 +75,13 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     monitor: ["cinza", "azul", "rosa"],
     mouse: ["cinza", "azul", "rosa"],
     teclado: ["cinza", "azul", "rosa"],
-    caixa_som: []
+    caixa_som: [],
+    placa_mae: [], // Placa-mãe não tem cores alternativas
+    processador: [],
+    ram: [],
+    ssd: [],
+    placa_video: [],
+    fan: []
   };
 
   const pecaId = item.id.split("_")[0];
