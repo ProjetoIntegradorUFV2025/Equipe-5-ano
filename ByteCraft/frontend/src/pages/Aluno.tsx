@@ -1,7 +1,8 @@
+// Aluno.tsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Aluno as AlunoType } from "../types";
-import { useSound } from "../hooks/useSounds"; // ✅ Hook que criamos antes
+import { useSound } from "../hooks/useSounds";
 import "./styles/Aluno.css";
 
 const API_BASE_URL = "http://localhost:8080/api";
@@ -10,7 +11,6 @@ const safeUrl = (relPath: string) => {
   try {
     return new URL(relPath, import.meta.url).href;
   } catch (err) {
-    console.error("Erro ao resolver asset:", relPath, err);
     return "";
   }
 };
@@ -29,10 +29,8 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
   const [loading, setLoading] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
 
-  // ✅ Som de clique
   const { playClick } = useSound();
 
-  // Detecta orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -52,14 +50,19 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
   }, []);
 
   const handleVoltar = () => {
-    playClick(); // 🔊 toca som
+    playClick();
     navigate("/");
   };
 
   const handleComecar = async () => {
-    playClick(); // 🔊 toca som
+    playClick();
     if (!nome.trim()) return alert("Apelido é obrigatório");
     if (!nomeTurma.trim()) return alert("Código da sala é obrigatório");
+
+    const codigoSala = parseInt(nomeTurma.trim(), 10);
+    if (isNaN(codigoSala) || codigoSala < 0 || codigoSala > 127) {
+      return alert("Sala não encontrada");
+    }
 
     try {
       setLoading(true);
@@ -72,8 +75,7 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        const msg = data?.erro || JSON.stringify(data) || `Erro no login: ${response.status}`;
-        throw new Error(msg);
+        throw new Error("Sala não encontrada");
       }
 
       setAluno({
@@ -85,7 +87,7 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
 
       navigate("/niveis");
     } catch (err) {
-      alert("Erro no login ou vinculação: " + (err as Error).message);
+      alert("Sala não encontrada");
     } finally {
       setLoading(false);
     }
@@ -113,7 +115,6 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
         </div>
       )}
 
-      {/* 🔙 Botão de voltar com som */}
       <button
         className="aluno-btn-voltar"
         onClick={handleVoltar}
@@ -151,7 +152,6 @@ const Aluno: React.FC<AlunoProps> = ({ setAluno }) => {
           />
         </div>
 
-        {/* 🚀 Botão COMEÇAR com som */}
         <button
           className="aluno-btn-comecar"
           onClick={handleComecar}

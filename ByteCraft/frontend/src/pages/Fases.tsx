@@ -1,3 +1,4 @@
+// Fases.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import api from "../api/api";
@@ -8,7 +9,6 @@ const safeUrl = (relPath: string) => {
   try {
     return new URL(relPath, import.meta.url).href;
   } catch (err) {
-    console.error("Erro ao resolver asset:", relPath, err);
     return "";
   }
 };
@@ -27,87 +27,62 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
   const location = useLocation();
   const { playClick } = useSound();
 
-  // ✅ CORREÇÃO: Recuperar nível do state com múltiplos fallbacks
   const getNivel = (): string | null => {
-    // 1. Tentar pegar do location.state
     const nivelFromState = location.state?.nivel;
     if (nivelFromState) {
-      console.log("✅ Nível recuperado do state:", nivelFromState);
-      localStorage.setItem("nivelSelecionado", nivelFromState); // Salvar backup
+      localStorage.setItem("nivelSelecionado", nivelFromState);
       return String(nivelFromState).toLowerCase();
     }
     
-    // 2. Tentar pegar do aluno
     const nivelFromAluno = aluno?.nivel;
     if (nivelFromAluno) {
-      console.log("✅ Nível recuperado do aluno:", nivelFromAluno);
       localStorage.setItem("nivelSelecionado", nivelFromAluno);
       return String(nivelFromAluno).toLowerCase();
     }
     
-    // 3. Tentar pegar do localStorage
     const nivelFromStorage = localStorage.getItem("nivelSelecionado");
     if (nivelFromStorage) {
-      console.log("✅ Nível recuperado do localStorage:", nivelFromStorage);
       return nivelFromStorage.toLowerCase();
     }
     
-    console.warn("⚠️ Nível não foi encontrado em nenhuma fonte!");
     return null;
   };
 
   const nivel = getNivel();
 
-  // Estados de progresso (CSU07 - RN09)
   const [modoHistoriaCompleto, setModoHistoriaCompleto] = useState(false);
   const [carregandoProgresso, setCarregandoProgresso] = useState(true);
   const [erroProgresso, setErroProgresso] = useState(false);
 
-  // Estados de modais/mensagens (CSU07 - RN10, RN11)
   const [showErroModal, setShowErroModal] = useState(false);
   const [mensagemErro, setMensagemErro] = useState("");
 
-  // Detecta orientação da tela
   const [isPortrait, setIsPortrait] = useState(false);
 
-  // Função auxiliar para carregar progresso
   const executarCarregarProgresso = async () => {
     try {
       setCarregandoProgresso(true);
       setErroProgresso(false);
 
-      // Validar dados do aluno
       const apelido = aluno?.apelido || localStorage.getItem("apelido");
       const codigoSalaStr = aluno?.codigoSala || localStorage.getItem("codigoSala");
       const codigoSala = codigoSalaStr ? Number(codigoSalaStr) : null;
 
-      console.log("🔍 DEBUG - Dados do aluno:", { apelido, codigoSala });
-
-      // Validação defensiva de dados
       if (!apelido || !codigoSala || isNaN(codigoSala)) {
-        console.warn("❌ Dados do aluno inválidos ou ausentes:", { apelido, codigoSala });
         setModoHistoriaCompleto(false);
         setErroProgresso(true);
         setCarregandoProgresso(false);
         return;
       }
-
-      console.log("🔥 Carregando progresso do aluno:", { apelido, codigoSala });
       
       const progresso = await api.obterProgresso(apelido, codigoSala);
-
-      console.log("✅ Progresso carregado:", progresso);
-      console.log("🔍 Modo História Completo?", progresso.modoHistoriaCompleto);
       
-      // ✅ Garantir que seja booleano
       const historiaCompleta = Boolean(progresso.modoHistoriaCompleto);
-      console.log("🔍 Convertido para booleano:", historiaCompleta);
       
       setModoHistoriaCompleto(historiaCompleta);
       setErroProgresso(false);
 
     } catch (error) {
-      console.error("❌ Erro ao carregar progresso:", error);
       setErroProgresso(true);
       setModoHistoriaCompleto(false);
     } finally {
@@ -115,14 +90,10 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
     }
   };
 
-  // ✅ CORREÇÃO CRÍTICA: Usar location.key para detectar navegação
   useEffect(() => {
-    console.log("🔄 [EFFECT] Componente Fases montado/atualizado");
-    console.log("🔄 Location key:", location.key);
     executarCarregarProgresso();
-  }, [location.key]); // Dispara toda vez que a location mudar
+  }, [location.key]);
 
-  // Detectar orientação
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -146,9 +117,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
     navigate("/niveis");
   };
 
-  // ✅ CORREÇÃO: iniciarModoHistoria - Validar e enviar nível
   const iniciarModoHistoria = () => {
-
     playClick();
     
     if (!nivel) {
@@ -162,10 +131,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
       setShowErroModal(true);
       return;
     }
-
-    console.log("🎮 Iniciando Modo História com nível:", nivel);
     
-    // ✅ CORREÇÃO: Salvar nível antes de navegar
     localStorage.setItem("nivelSelecionado", nivel);
     
     navigate("/montagem", {
@@ -173,25 +139,16 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
         nivel: nivel,
         aluno: {
           ...aluno,
-          nivel: nivel // ✅ Incluir nível no objeto aluno
+          nivel: nivel
         }
       }
     });
   };
 
-  // ✅ CORREÇÃO: iniciarModoQuiz - Validar e enviar nível
   const iniciarModoQuiz = () => {
     playClick();
-    console.log("🎯 Tentando iniciar Modo Quiz...");
-    console.log("📊 Estado atual:", {
-      modoHistoriaCompleto,
-      carregandoProgresso,
-      nivel,
-      aluno: aluno?.apelido
-    });
 
     if (!modoHistoriaCompleto) {
-      console.warn("⚠️ Quiz bloqueado: Modo História não concluído");
       setMensagemErro("Você precisa concluir o Modo História antes de acessar o Modo Quiz.");
       setShowErroModal(true);
       return;
@@ -208,10 +165,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
       setShowErroModal(true);
       return;
     }
-
-    console.log("✅ Iniciando Modo Quiz com nível:", nivel);
     
-    // ✅ CORREÇÃO: Salvar nível antes de navegar
     localStorage.setItem("nivelSelecionado", nivel);
     
     navigate("/quiz", {
@@ -219,7 +173,7 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
         nivel, 
         aluno: {
           ...aluno,
-          nivel: nivel // ✅ Incluir nível no objeto aluno
+          nivel: nivel
         }
       }
     });
@@ -227,7 +181,6 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
 
   const tentarNovamente = () => {
     playClick();
-    console.log("🔄 Tentando novamente...");
     executarCarregarProgresso();
   };
 
@@ -244,7 +197,6 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Mensagem para modo retrato */}
       {isPortrait && (
         <div className="fases-portrait-warning">
           <div className="fases-portrait-message">
@@ -322,13 +274,6 @@ const Fases: React.FC<FasesProps> = ({ aluno }) => {
         <div className="fases-info-nivel">
           <p>Nível: <strong>{nivel?.charAt(0).toUpperCase()}{nivel?.slice(1)}</strong></p>
           <p className="fases-info-aluno">Aluno: <strong>{aluno.apelido}</strong></p>
-          {modoHistoriaCompleto ? (
-            <p className="fases-info-progresso" style={{ color: '#4caf50', fontWeight: 'bold' }}>
-            </p>
-          ) : (
-            <p className="fases-info-progresso" style={{ color: '#ff9800' }}>
-            </p>
-          )}
         </div>
       )}
     </div>

@@ -255,7 +255,6 @@ const Quiz: React.FC = () => {
             </div>
 
             <div className="quiz-resultado-texto">
-              <h1 className="quiz-resultado-title">Quiz Finalizado!</h1>
               
               <div className="quiz-nota-display">
                 <span className="quiz-nota-label">Nota Final</span>
@@ -265,7 +264,6 @@ const Quiz: React.FC = () => {
               <div className="quiz-stats-grid">
                 <p>Acertos: <strong>{acertos}</strong> de {perguntas.length}</p>
                 <p>Tempo: <strong>{Math.floor(tempoTotal / 60)}:{(tempoTotal % 60).toString().padStart(2, '0')}</strong></p>
-                <p><strong>{horaFim?.toLocaleString()}</strong></p>
               </div>
 
               <div className="quiz-mensagem-final">

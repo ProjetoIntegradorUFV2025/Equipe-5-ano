@@ -1,4 +1,3 @@
-// src/pages/ProfessorCadastro.tsx
 import React, { useState, useEffect } from 'react';
 import { api, ApiProfessor } from '../api/api';
 import { useNavigate } from "react-router-dom";
@@ -9,13 +8,10 @@ const safeUrl = (relPath: string) => {
   try {
     return new URL(relPath, import.meta.url).href;
   } catch (err) {
-    console.error("Erro ao resolver asset:", relPath, err);
     return "";
   }
 };
 
-// Ajuste os caminhos relativos conforme a posição deste arquivo.
-// Se este arquivo está em src/pages, então ../assets/... normalmente é correto.
 const backgroundCadastro = safeUrl("../assets/backgrounds/background_cadastro.png");
 const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
 
@@ -28,7 +24,6 @@ const ProfessorCadastro: React.FC = () => {
   const [isPortrait, setIsPortrait] = useState(false);
   const { playClick } = useSound();
 
-  // Verificar orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -38,7 +33,6 @@ const ProfessorCadastro: React.FC = () => {
     checkOrientation();
     window.addEventListener('resize', checkOrientation);
     window.addEventListener('orientationchange', () => {
-      // Pequeno delay para aguardar a mudança completa da orientação
       setTimeout(checkOrientation, 100);
     });
     
@@ -47,10 +41,6 @@ const ProfessorCadastro: React.FC = () => {
       window.removeEventListener('orientationchange', checkOrientation);
     };
   }, []);
-
-  // DEBUG: veja no console a URL resolvida
-  console.log("backgroundCadastro =>", backgroundCadastro);
-  console.log("voltarIcon =>", voltarIcon);
 
   const handleCadastro = async () => {
     playClick();
@@ -61,7 +51,6 @@ const ProfessorCadastro: React.FC = () => {
     
     try {
       setLoading(true);
-      // Cadastro do professor (a sala será criada automaticamente no backend)
       const professor: ApiProfessor = await api.cadastrarProfessor(
         nome,
         senha,
@@ -74,15 +63,12 @@ const ProfessorCadastro: React.FC = () => {
         `Turma: ${sala?.nomeTurma}\nCódigo: ${sala?.codigoUnico}`
       );
       
-      // Limpa campos
       setNome('');
       setSenha('');
       setNomeTurma('');
       
-      // Redireciona para a página de login após cadastro bem-sucedido
       navigate("/professor");
     } catch (error: any) {
-      console.error(error);
       alert('Erro ao cadastrar: ' + (error.message || error));
     } finally {
       setLoading(false);
@@ -110,7 +96,6 @@ const ProfessorCadastro: React.FC = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Mensagem para orientação vertical */}
       {isPortrait && (
         <div className="professor-cadastro-portrait-warning">
           <div className="professor-cadastro-portrait-message">

@@ -417,7 +417,7 @@ const MontagemInterna: React.FC = () => {
     setPontuacaoFinal(pontuacaoFinalComBonus);
     
     try {
-      await api.registraPontuacao(apelido, codigoSala, pontuacaoFinalComBonus, tempoTotal);
+      await api.registraPontuacao(apelido, codigoSala, pontuacaoTotalSemBonus, tempoTotal);
       
       await api.salvarProgresso(apelido, codigoSala, true);
       

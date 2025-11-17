@@ -6,7 +6,7 @@ import "./ConclusaoModal.css";
 
 interface ConclusaoModalProps {
   isOpen: boolean;
-  pontuacaoFinal: number; // Mantém para fallback
+  pontuacaoFinal: number;
   tempo: number;
   codigoSala: number;
   alunoApelido: string;
@@ -28,11 +28,9 @@ const ConclusaoModal: React.FC<ConclusaoModalProps> = ({
   const [ranking, setRanking] = useState<ApiAluno[]>([]);
   const [carregandoRanking, setCarregandoRanking] = useState(false);
   
-  // ✅ NOVO: Estado para pontuação real do backend
   const [pontuacaoReal, setPontuacaoReal] = useState<number | null>(null);
   const [carregandoPontuacao, setCarregandoPontuacao] = useState(true);
 
-  // ✅ NOVO: Buscar pontuação real ao abrir o modal
   useEffect(() => {
     if (isOpen && alunoApelido && codigoSala) {
       buscarPontuacaoReal();
@@ -42,21 +40,17 @@ const ConclusaoModal: React.FC<ConclusaoModalProps> = ({
   const buscarPontuacaoReal = async () => {
     try {
       setCarregandoPontuacao(true);
-      console.log("🔍 Buscando pontuação real do backend...");
       
       const dados = await getRankingTurma(codigoSala);
       const alunoAtual = dados.find(a => a.apelido === alunoApelido);
       
       if (alunoAtual && alunoAtual.pontuacao !== undefined) {
         setPontuacaoReal(alunoAtual.pontuacao);
-        console.log(`✅ Pontuação real encontrada: ${alunoAtual.pontuacao}`);
       } else {
-        console.warn("⚠️ Aluno não encontrado no ranking, usando pontuação local");
         setPontuacaoReal(pontuacaoFinal);
       }
     } catch (error) {
-      console.error("❌ Erro ao buscar pontuação real:", error);
-      setPontuacaoReal(pontuacaoFinal); // Fallback para pontuação local
+      setPontuacaoReal(pontuacaoFinal);
     } finally {
       setCarregandoPontuacao(false);
     }
@@ -71,9 +65,6 @@ const ConclusaoModal: React.FC<ConclusaoModalProps> = ({
   };
 
   const handleVoltarFases = () => {
-    console.log("🔄 Retornando para Fases...");
-    console.log("📊 Dados:", { alunoApelido, codigoSala, nivel });
-    
     navigate("/fases", {
       state: {
         aluno: {
@@ -95,14 +86,12 @@ const ConclusaoModal: React.FC<ConclusaoModalProps> = ({
       setRanking(dados);
       setMostrarRanking(true);
     } catch (error) {
-      console.error("Erro ao carregar ranking:", error);
       alert("Erro ao carregar ranking da turma");
     } finally {
       setCarregandoRanking(false);
     }
   };
 
-  // ✅ Usar pontuação real do backend ou fallback
   const pontuacaoExibir = pontuacaoReal !== null ? pontuacaoReal : pontuacaoFinal;
 
   return (
