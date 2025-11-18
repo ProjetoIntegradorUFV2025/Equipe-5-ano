@@ -4,10 +4,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 0;
+  padding: 2rem 0;
   isolation: isolate;
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
@@ -56,25 +56,28 @@
 .sala-content {
   background: white;
   border-radius: 25px;
-  padding: 3rem;
+  padding: 2rem 3rem;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
   text-align: center;
   max-width: 800px;
   width: 90%;
-  margin-top: 15vh;
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .sala-header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   border-bottom: 3px solid #f0f0f0;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .sala-header h1 {
   color: #333;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
   font-size: 2.2rem;
-  font-family: "Impact", "Arial Black", sans-serif;
+  font-family: "Fredoka", sans-serif;
 }
 
 .sala-header p {
@@ -88,17 +91,33 @@
   color: #22c55e;
 }
 
+.sala-ranking {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
 .sala-ranking h2 {
   color: #333;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1rem 0;
   font-size: 1.8rem;
-  font-family: "Impact", "Arial Black", sans-serif;
+  font-family: "Fredoka", sans-serif;
+  flex-shrink: 0;
+}
+
+/* Container com scroll para a tabela */
+.sala-ranking > div {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
 .sala-tabela {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -114,7 +133,10 @@
   color: white;
   font-weight: bold;
   font-size: 1.1rem;
-  font-family: "Impact", "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  font-family: "Fredoka", sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 .sala-tabela tr:hover {
@@ -127,11 +149,80 @@
 
 .sala-tabela td:first-child {
   font-weight: bold;
-  color: #22c55e;
+  color: #333;
+}
+
+/* Cores para os 3 primeiros lugares */
+.sala-tabela tbody tr:nth-child(1) {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffeaa7 50%, #fff9e6 100%);
+  font-weight: bold;
+}
+
+.sala-tabela tbody tr:nth-child(1):hover {
+  background: linear-gradient(135deg, #ffeaa7 0%, #ffd93d 50%, #ffeaa7 100%);
+}
+
+.sala-tabela tbody tr:nth-child(1) td:first-child {
+  color: white;
+  background: linear-gradient(135deg, #f9ca24 0%, #f0932b 100%);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.sala-tabela tbody tr:nth-child(2) {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 50%, #f5f5f5 100%);
+  font-weight: bold;
+}
+
+.sala-tabela tbody tr:nth-child(2):hover {
+  background: linear-gradient(135deg, #e8e8e8 0%, #d1d1d1 50%, #e8e8e8 100%);
+}
+
+.sala-tabela tbody tr:nth-child(2) td:first-child {
+  color: white;
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.sala-tabela tbody tr:nth-child(3) {
+  background: linear-gradient(135deg, #fef5e7 0%, #f5cba7 50%, #fef5e7 100%);
+  font-weight: bold;
+}
+
+.sala-tabela tbody tr:nth-child(3):hover {
+  background: linear-gradient(135deg, #f5cba7 0%, #e59866 50%, #f5cba7 100%);
+}
+
+.sala-tabela tbody tr:nth-child(3) td:first-child {
+  color: white;
+  background: linear-gradient(135deg, #d68910 0%, #ba6b0f 100%);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilização da barra de scroll */
+.sala-ranking > div::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sala-ranking > div::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.sala-ranking > div::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 10px;
+}
+
+.sala-ranking > div::-webkit-scrollbar-thumb:hover {
+  background: #16a34a;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
+  .sala-container {
+    padding: 1.5rem 0;
+  }
+
   .sala-btn-voltar {
     top: 2vh;
     left: 2%;
@@ -143,9 +234,9 @@
   }
   
   .sala-content {
-    margin-top: 12vh;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     max-width: 85%;
+    height: 72vh;
   }
   
   .sala-header h1 {
@@ -167,6 +258,10 @@
 }
 
 @media (max-width: 480px) {
+  .sala-container {
+    padding: 1rem 0;
+  }
+
   .sala-btn-voltar {
     top: 1.5vh;
     left: 2%;
@@ -178,14 +273,20 @@
   }
   
   .sala-content {
-    margin-top: 10vh;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     max-width: 90%;
     border-radius: 20px;
+    height: 70vh;
   }
   
+  .sala-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+
   .sala-header h1 {
     font-size: 1.5rem;
+    margin-bottom: 0.3rem;
   }
   
   .sala-header p {
@@ -194,22 +295,27 @@
   
   .sala-ranking h2 {
     font-size: 1.3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   
   .sala-tabela th, .sala-tabela td {
     padding: 0.6rem;
     font-size: 0.8rem;
   }
+  
+  .sala-ranking > div::-webkit-scrollbar {
+    width: 6px;
+  }
 }
 
 /* Mobile Landscape */
 @media (max-width: 1200px) and (orientation: landscape) {
   .sala-container {
-    padding: 0;
+    padding: 1rem 0;
     position: relative;
     height: 100vh;
-    overflow: auto;
+    overflow: hidden;
+    justify-content: center;
   }
   
   .sala-btn-voltar {
@@ -225,9 +331,18 @@
   }
   
   .sala-content {
-    margin-top: 8vh;
     max-width: 75%;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
+    height: 82vh;
+  }
+
+  .sala-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .sala-ranking h2 {
+    margin-bottom: 0.75rem;
   }
 }
 
@@ -239,9 +354,9 @@
   }
   
   .sala-content {
-    margin-top: 6vh;
     max-width: 70%;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
+    height: 85vh;
   }
   
   .sala-header h1 {
@@ -263,5 +378,9 @@
   .sala-btn-voltar img {
     width: 4.5rem;
     height: 4.5rem;
+  }
+
+  .sala-content {
+    height: 70vh;
   }
 }
