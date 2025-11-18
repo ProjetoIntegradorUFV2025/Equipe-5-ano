@@ -31,20 +31,25 @@
 
 /* Tamanhos especificos para cada area - REDUZIDOS PROPORCIONALMENTE */
 
-/* Placa-Mãe - Base do computador (grande, cobre a área de montagem) */
+/* Placa-Mãe - Base do computador (reduzida, movida para direita e para cima) */
 .dropzone-area.placa_mae {
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  height: 70%;
   border-width: 5px;
   border-style: dashed;
   border-color: rgba(139, 92, 246, 0.8);
   background: rgba(139, 92, 246, 0.05);
+  position: absolute;
+  right: 12%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
 }
 
 .dropzone-area.placa_mae:hover {
   border-color: rgba(139, 92, 246, 0.9);
   background: rgba(139, 92, 246, 0.12);
   box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+  transform: translateY(-50%) rotate(-90deg) scale(1.02);
 }
 
 .dropzone-area.placa_mae.dropzone-hover {
@@ -52,7 +57,7 @@
   border-width: 5px;
   background: rgba(139, 92, 246, 0.12);
   box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
-  transform: scale(1.02);
+  transform: translateY(-50%) scale(1.02);
 }
 
 .dropzone-area.placa_mae.dropzone-iluminado {
@@ -65,11 +70,11 @@
 @keyframes pulsarPlacaMae {
   0%, 100% {
     box-shadow: 0 0 35px rgba(139, 92, 246, 0.5);
-    transform: scale(1);
+    transform: translateY(-50%) rotate(-90deg) scale(1);
   }
   50% {
     box-shadow: 0 0 45px rgba(139, 92, 246, 0.7);
-    transform: scale(1.03);
+    transform: translateY(-50%) rotate(-90deg) scale(1.03);
   }
 }
 
@@ -322,6 +327,13 @@
   .dropzone-area.placa_mae .dropzone-icone {
     font-size: 4.5rem;
   }
+  
+  .dropzone-area.placa_mae {
+    width: 88%;
+    height: 88%;
+    right: -6%;
+    top: 38%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -340,6 +352,13 @@
   .dropzone-area.placa_mae .dropzone-icone {
     font-size: 4rem;
   }
+  
+  .dropzone-area.placa_mae {
+    width: 90%;
+    height: 90%;
+    right: -5%;
+    top: 40%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -353,6 +372,10 @@
 
   .dropzone-area.placa_mae {
     border-width: 3px;
+    width: 92%;
+    height: 92%;
+    right: -4%;
+    top: 42%;
   }
 
   .dropzone-perifericos {

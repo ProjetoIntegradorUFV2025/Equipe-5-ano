@@ -1,15 +1,15 @@
-/* =====================================================
-   🎨 MONTAGEM INTERNA - LAYOUT COM GABINETE
-   Peças na esquerda, Gabinete com dropzones no centro
-   ===================================================== */
-
-/* Remover margens padrão PRIMEIRO */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
 }
 
 .montagem-interna-container {
@@ -26,7 +26,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Background como camada separada */
 .montagem-interna-container::before {
   content: '';
   position: fixed;
@@ -45,7 +44,6 @@ html, body {
   z-index: -1;
 }
 
-/* Fallback se a imagem não carregar */
 .montagem-interna-container::after {
   content: '';
   position: fixed;
@@ -57,9 +55,7 @@ html, body {
   z-index: -2;
 }
 
-/* =====================================================
-   🛠️ PAINEL ESQUERDO - Peças verticais
-   ===================================================== */
+/* ===== BARRA LATERAL DE PEÇAS ===== */
 
 .montagem-interna-pecas-horizontal {
   position: fixed;
@@ -114,10 +110,6 @@ html, body {
   padding: 0.5rem 0;
 }
 
-/* =====================================================
-   ✨ ELEMENTOS ARRASTAVEIS - Fundo branco para destaque
-   ===================================================== */
-
 .montagem-interna-pecas-lista-horizontal > div {
   background-color: #ffffff;
   background-clip: padding-box;
@@ -140,9 +132,7 @@ html, body {
   background-color: transparent;
 }
 
-/* =====================================================
-   🌈 AREA CENTRAL - Gabinete com Dropzones
-   ===================================================== */
+/* ===== ÁREA DE TRABALHO PRINCIPAL ===== */
 
 .montagem-interna-content {
   flex: 1;
@@ -177,7 +167,8 @@ html, body {
   height: 100%;
 }
 
-/* Balão de história - Superior */
+/* ===== HISTÓRIA (MODAL) ===== */
+
 .montagem-interna-historia-balao {
   position: fixed;
   top: 2rem;
@@ -233,7 +224,6 @@ html, body {
   line-height: 1.5;
 }
 
-/* Animação de saída */
 .montagem-interna-historia-balao.sair {
   animation: slideUp 0.4s ease-in forwards;
 }
@@ -249,20 +239,27 @@ html, body {
   }
 }
 
-/* =====================================================
-   🖥️ GABINETE - Container com imagem de fundo
-   ===================================================== */
+/* ===== GABINETE E CONTAINER ===== */
+
+.montagem-interna-gabinete-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .montagem-interna-gabinete {
   position: relative;
-  width: min(70vw, 800px);
-  max-width: 800px;
-  height: 85vh;
-  max-height: 700px;
+  width: min(50vw, 600px);
+  aspect-ratio: 8 / 7;
+  max-width: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  left: -5%;
 }
 
 .montagem-interna-gabinete-img {
@@ -274,19 +271,16 @@ html, body {
   pointer-events: none;
 }
 
-/* =====================================================
-   📌 DROPZONES - Posicionamento no gabinete
-   ===================================================== */
+/* ===== DROPZONES - Sistema de Posicionamento Relativo ===== */
 
-/* Placa-Mãe - Base central (REDUZIDA AINDA MAIS - 50% do gabinete) */
 .montagem-interna-dropzone-placa-mae {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 57%;
+  left: 48%;
   transform: translate(-50%, -50%);
   z-index: 5;
-  width: 50%;
-  height: 50%;
+  width: 45%;
+  height: 45%;
   pointer-events: auto;
 }
 
@@ -295,12 +289,98 @@ html, body {
   height: 100% !important;
   max-width: none !important;
   max-height: none !important;
-  min-width: 320px;
-  min-height: 320px;
 }
 
-/* ✅ CONTROLE DE VISIBILIDADE DAS DROPZONES INTERNAS */
-/* Inicialmente todas as dropzones internas ficam ocultas */
+/* Filtro escuro na placa-mãe quando montada */
+.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-placa-mae img {
+  filter: brightness(0.6) contrast(0.9);
+  transition: filter 0.5s ease-in-out;
+}
+
+/* Componentes internos - posições relativas ao gabinete */
+
+/* Processador - tamanho original restaurado */
+.montagem-interna-dropzone-processador {
+  position: absolute;
+  top: 49%;
+  left: 36%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 11.9%;
+  height: 13.6%;
+}
+
+.montagem-interna-dropzone-processador > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* RAM - retângulo horizontal (mais largo que alto) */
+.montagem-interna-dropzone-ram {
+  position: absolute;
+  bottom: 21%;
+  left: 25.5%;
+  z-index: 10;
+  width: 18%;
+  height: 10%;
+}
+
+.montagem-interna-dropzone-ram > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* SSD - retângulo vertical (mais alto que largo) */
+.montagem-interna-dropzone-ssd {
+  position: absolute;
+  top: 64%;
+  right: 45%;
+  z-index: 10;
+  width: 8%;
+  height: 16%;
+}
+
+.montagem-interna-dropzone-ssd > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* Placa de vídeo - retângulo vertical com rotação de 90 graus */
+.montagem-interna-dropzone-placa-video {
+  position: absolute;
+  top: 40%;
+  right: 43%;
+  z-index: 10;
+  width: 12%;
+  height: 20%;
+}
+
+.montagem-interna-dropzone-placa-video > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* Rotação da imagem da placa de vídeo */
+.montagem-interna-dropzone-placa-video img {
+  transform: rotate(90deg);
+}
+
+/* Cooler (fan) - mantido como estava */
+.montagem-interna-dropzone-fan {
+  position: absolute;
+  top: 25%;
+  right: 28%;
+  z-index: 10;
+  width: 14%;
+  height: 16%;
+}
+
+.montagem-interna-dropzone-fan > div {
+  width: 100%;
+  height: 100%;
+}
+
+/* Estados de visibilidade dos componentes internos */
 .montagem-interna-dropzone-processador,
 .montagem-interna-dropzone-ram,
 .montagem-interna-dropzone-ssd,
@@ -308,11 +388,9 @@ html, body {
 .montagem-interna-dropzone-fan {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-  transform: scale(0.8);
+  transition: opacity 0.5s ease-in-out;
 }
 
-/* ✅ Quando a placa-mãe é montada, as dropzones internas aparecem */
 .montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-processador,
 .montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-ram,
 .montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-ssd,
@@ -320,100 +398,19 @@ html, body {
 .montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-fan {
   opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
   animation: fadeInDropzone 0.6s ease-out;
 }
 
 @keyframes fadeInDropzone {
   0% {
     opacity: 0;
-    transform: scale(0.8);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
-/* Processador - Centro (dentro da placa-mãe) */
-.montagem-interna-dropzone-processador {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-}
-
-.montagem-interna-dropzone-processador > div {
-  width: 85px;
-  height: 85px;
-}
-
-/* RAM - Direita superior (dentro da placa-mãe) - APROXIMADA DO CENTRO */
-.montagem-interna-dropzone-ram {
-  position: absolute;
-  top: 32%;
-  right: 28%;
-  z-index: 10;
-}
-
-.montagem-interna-dropzone-ram > div {
-  width: 70px;
-  height: 100px;
-}
-
-/* SSD - Esquerda inferior (dentro da placa-mãe) - APROXIMADA DO CENTRO */
-.montagem-interna-dropzone-ssd {
-  position: absolute;
-  bottom: 28%;
-  left: 28%;
-  z-index: 10;
-}
-
-.montagem-interna-dropzone-ssd > div {
-  width: 85px;
-  height: 60px;
-}
-
-/* Placa de Vídeo - Inferior centro (dentro da placa-mãe) - APROXIMADA DO CENTRO */
-.montagem-interna-dropzone-placa-video {
-  position: absolute;
-  bottom: 26%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.montagem-interna-dropzone-placa-video > div {
-  width: 125px;
-  height: 85px;
-}
-
-/* Cooler/Fan - Superior esquerda (dentro da placa-mãe) - APROXIMADA DO CENTRO */
-.montagem-interna-dropzone-fan {
-  position: absolute;
-  top: 28%;
-  left: 28%;
-  z-index: 10;
-}
-
-.montagem-interna-dropzone-fan > div {
-  width: 75px;
-  height: 75px;
-}
-
-/* ✅ Ajustar transform quando placa-mãe montada para evitar conflito */
-.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-processador {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.montagem-interna-gabinete.placa-mae-montada .montagem-interna-dropzone-placa-video {
-  transform: translateX(-50%) scale(1);
-}
-
-/* =====================================================
-   🚫 Esconder elementos do header
-   ===================================================== */
+/* ===== ELEMENTOS DE UI (OCULTOS) ===== */
 
 .montagem-interna-header,
 .montagem-interna-alerta-selecao,
@@ -424,7 +421,6 @@ html, body {
   pointer-events: none !important;
 }
 
-/* Garantir que modais apareçam */
 .historia-modal,
 .erro-modal,
 .sucesso-modal,
@@ -435,9 +431,7 @@ html, body {
   pointer-events: auto !important;
 }
 
-/* =====================================================
-   📊 PAINEL DE PONTUAÇÃO - Inferior Direita
-   ===================================================== */
+/* ===== PAINEL DE PONTUAÇÃO ===== */
 
 .painel-pontuacao-container {
   position: fixed;
@@ -477,9 +471,7 @@ html, body {
   background-clip: text;
 }
 
-/* =====================================================
-   ⏱️ CRONÔMETRO - Inferior Centro
-   ===================================================== */
+/* ===== CRONÔMETRO ===== */
 
 .cronometro-container {
   position: fixed;
@@ -510,9 +502,7 @@ html, body {
   text-align: center;
 }
 
-/* =====================================================
-   📱 Responsividade para Tablets
-   ===================================================== */
+/* ===== RESPONSIVIDADE ===== */
 
 @media (max-width: 1024px) {
   .montagem-interna-content {
@@ -537,51 +527,10 @@ html, body {
   }
 
   .montagem-interna-gabinete {
-    width: min(75vw, 700px);
-    max-width: 700px;
-    height: 80vh;
-    max-height: 600px;
-  }
-
-  .montagem-interna-dropzone-placa-mae {
-    width: 50%;
-    height: 50%;
-  }
-
-  .montagem-interna-dropzone-placa-mae > div {
-    min-width: 280px;
-    min-height: 280px;
-  }
-
-  .montagem-interna-dropzone-processador > div {
-    width: 75px;
-    height: 75px;
-  }
-
-  .montagem-interna-dropzone-ram > div {
-    width: 60px;
-    height: 90px;
-  }
-
-  .montagem-interna-dropzone-ssd > div {
-    width: 75px;
-    height: 50px;
-  }
-
-  .montagem-interna-dropzone-placa-video > div {
-    width: 110px;
-    height: 75px;
-  }
-
-  .montagem-interna-dropzone-fan > div {
-    width: 65px;
-    height: 65px;
+    width: min(55vw, 550px);
+    max-width: 550px;
   }
 }
-
-/* =====================================================
-   📱 Responsividade para Mobile
-   ===================================================== */
 
 @media (max-width: 768px) {
   .montagem-interna-container {
@@ -634,51 +583,10 @@ html, body {
   }
 
   .montagem-interna-gabinete {
-    width: min(90vw, 500px);
-    max-width: 500px;
-    height: 70vh;
-    max-height: 500px;
-  }
-
-  .montagem-interna-dropzone-placa-mae {
-    width: 50%;
-    height: 50%;
-  }
-
-  .montagem-interna-dropzone-placa-mae > div {
-    min-width: 240px;
-    min-height: 240px;
-  }
-
-  .montagem-interna-dropzone-processador > div {
-    width: 60px;
-    height: 60px;
-  }
-
-  .montagem-interna-dropzone-ram > div {
-    width: 48px;
-    height: 70px;
-  }
-
-  .montagem-interna-dropzone-ssd > div {
-    width: 60px;
-    height: 40px;
-  }
-
-  .montagem-interna-dropzone-placa-video > div {
-    width: 90px;
-    height: 60px;
-  }
-
-  .montagem-interna-dropzone-fan > div {
-    width: 55px;
-    height: 55px;
+    width: min(70vw, 450px);
+    max-width: 450px;
   }
 }
-
-/* =====================================================
-   📱 Responsividade para Mobile Pequeno
-   ===================================================== */
 
 @media (max-width: 480px) {
   .montagem-interna-content {
@@ -701,45 +609,8 @@ html, body {
   }
 
   .montagem-interna-gabinete {
-    width: min(95vw, 380px);
-    max-width: 380px;
-    height: 65vh;
-    max-height: 400px;
-  }
-
-  .montagem-interna-dropzone-placa-mae {
-    width: 50%;
-    height: 50%;
-  }
-
-  .montagem-interna-dropzone-placa-mae > div {
-    min-width: 190px;
-    min-height: 190px;
-  }
-
-  .montagem-interna-dropzone-processador > div {
-    width: 48px;
-    height: 48px;
-  }
-
-  .montagem-interna-dropzone-ram > div {
-    width: 40px;
-    height: 60px;
-  }
-
-  .montagem-interna-dropzone-ssd > div {
-    width: 48px;
-    height: 32px;
-  }
-
-  .montagem-interna-dropzone-placa-video > div {
-    width: 72px;
-    height: 48px;
-  }
-
-  .montagem-interna-dropzone-fan > div {
-    width: 45px;
-    height: 45px;
+    width: min(80vw, 350px);
+    max-width: 350px;
   }
 
   .montagem-interna-historia-balao {
@@ -755,17 +626,4 @@ html, body {
   .montagem-interna-historia-balao p {
     font-size: 0.9rem;
   }
-}
-
-/* Remover margens padrão (reforço) */
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
 }

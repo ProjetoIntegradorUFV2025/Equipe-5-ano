@@ -26,12 +26,14 @@
   text-align: center;
   animation: slideIn 0.3s ease-out;
   margin-top: 80px;
+  border: 4px solid #ef4444;
 }
 
 .erro-ramon-container {
   position: absolute;
   top: -80px;
-  left: -30px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 160px;
   height: 160px;
   display: flex;
@@ -66,22 +68,34 @@
   font-size: 1.2rem;
   line-height: 1.6;
   color: #333;
-  margin: 0;
+  margin: 0 0 1rem 0;
   font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
 }
 
+.erro-resposta-correta {
+  font-size: 1.5rem !important;
+  font-weight: bold;
+  color: #22c55e !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: 1rem !important;
+  padding: 0.5rem 1rem;
+  background-color: rgba(34, 197, 94, 0.1);
+  border-radius: 10px;
+  border: 2px solid #22c55e;
+}
+
 .erro-modal-btn {
-  background-color: #22c55e;
+  background-color: #ef4444;
   color: white;
-  border: 3px solid #16a34a;
-  border-bottom-color: #14532d;
+  border: 3px solid #dc2626;
+  border-bottom-color: #991b1b;
   border-radius: 15px;
   padding: 1rem 3rem;
   font-size: 1.3rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 5px 0 #14532d;
+  box-shadow: 0 5px 0 #991b1b;
   letter-spacing: 0.8px;
   font-family: "Fredoka", sans-serif;
   position: relative;
@@ -89,15 +103,15 @@
 }
 
 .erro-modal-btn:hover {
-  background-color: #16a34a;
+  background-color: #dc2626;
   transform: translateY(2px);
-  box-shadow: 0 3px 0 #14532d;
+  box-shadow: 0 3px 0 #991b1b;
   margin-bottom: 0.25rem;
 }
 
 .erro-modal-btn:active {
   transform: translateY(4px);
-  box-shadow: 0 0 0 #14532d;
+  box-shadow: 0 0 0 #991b1b;
   margin-bottom: 0.75rem;
 }
 
@@ -127,7 +141,8 @@
 
   .erro-ramon-container {
     top: -60px;
-    left: -20px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 120px;
     height: 120px;
   }
@@ -146,6 +161,10 @@
 
   .erro-modal-texto p {
     font-size: 1.1rem;
+  }
+
+  .erro-resposta-correta {
+    font-size: 1.3rem !important;
   }
 
   .erro-modal-btn {

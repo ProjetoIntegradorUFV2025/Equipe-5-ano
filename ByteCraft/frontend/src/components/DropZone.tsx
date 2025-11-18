@@ -12,11 +12,6 @@ interface DropZoneProps {
   nivel?: NivelDificuldade;
 }
 
-/**
- * DropZone com controle de visibilidade por nível
- * ✅ CORREÇÃO PROBLEMA 3: Ícones visíveis apenas em Fácil e Médio
- * ✅ Suporte para Placa-Mãe como peça base
- */
 const DropZone: React.FC<DropZoneProps> = ({
   id,
   image,
@@ -31,10 +26,6 @@ const DropZone: React.FC<DropZoneProps> = ({
     () => ({
       accept: "COMPONENT",
       drop: (item: { id: string; image: string }) => {
-        console.log("DropZone.tsx: Drop recebido -", {
-          itemId: item.id,
-          dropZoneId: id,
-        });
         onDrop(item.id, id);
         return { success: true };
       },
@@ -84,23 +75,22 @@ const DropZone: React.FC<DropZoneProps> = ({
     if (placed) classes.push("dropzone-placed");
     else if (destacar) classes.push("dropzone-iluminado");
     else if (isOver && canDrop) classes.push("dropzone-hover");
+    
+    classes.push(`nivel-${nivel}`);
+    
     return classes.join(" ");
   };
 
-  // ✅ CORREÇÃO PROBLEMA 3: Ícone aparece em Fácil e Médio, mas NÃO no Difícil
-  const mostrarIcone = (nivel === 'facil' || nivel === 'medio') && !placed;
+  const mostrarIcone = !placed;
 
   return (
     <div ref={ref} className={getClassName()} data-label={label}>
-      {/* ✅ Ícone de fundo APENAS nos níveis Fácil e Médio */}
       {mostrarIcone && <span className="dropzone-icone">{icone}</span>}
 
-      {/* Se a peça foi colocada, mostra a imagem */}
       {placed && image && (
         <img src={image} alt={label} className="dropzone-imagem" />
       )}
 
-      {/* Brilho temporário de destaque (ajuda visual) */}
       {!placed && destacar && (
         <div className="dropzone-placeholder">
           <div className="dropzone-brilho-container">

@@ -8,7 +8,6 @@ const safeUrl = (relPath: string) => {
   try {
     return new URL(relPath, import.meta.url).href;
   } catch (err) {
-    console.error("Erro ao resolver asset:", relPath, err);
     return "";
   }
 };
@@ -23,7 +22,6 @@ const Professor: React.FC = () => {
   const [isPortrait, setIsPortrait] = useState(false);
   const { playClick } = useSound();
 
-  // Detecta orientação da tela
   useEffect(() => {
     const checkOrientation = () => {
       const isMobile = window.innerWidth <= 768;
@@ -50,15 +48,12 @@ const Professor: React.FC = () => {
     }
 
     try {
-      // Faz o login e obtém os dados do professor
       const professorLogado: ApiProfessor = await api.loginProfessor(nome, senha);
 
-      // Armazena no localStorage (para persistência após refresh)
       localStorage.setItem("professor", JSON.stringify(professorLogado));
 
       alert("Login bem-sucedido!");
 
-      // Redireciona para a página da sala, enviando o professor logado
       navigate("/sala", { state: { professor: professorLogado } });
     } catch (error: any) {
       alert("Erro no login: " + (error.response?.data || error.message));
@@ -91,7 +86,6 @@ const Professor: React.FC = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Mensagem para modo retrato */}
       {isPortrait && (
         <div className="professor-portrait-warning">
           <div className="professor-portrait-message">

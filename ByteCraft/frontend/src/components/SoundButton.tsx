@@ -1,4 +1,3 @@
-// src/components/SoundButton.tsx
 import { useSoundContext } from "../context/SoundContext";
 import "./SoundButton.css";
 

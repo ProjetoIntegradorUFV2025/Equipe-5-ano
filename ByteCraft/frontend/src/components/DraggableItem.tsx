@@ -76,7 +76,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     mouse: ["cinza", "azul", "rosa"],
     teclado: ["cinza", "azul", "rosa"],
     caixa_som: [],
-    placa_mae: [], // Placa-mãe não tem cores alternativas
+    placa_mae: [],
     processador: [],
     ram: [],
     ssd: [],
