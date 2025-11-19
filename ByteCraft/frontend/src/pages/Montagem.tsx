@@ -250,7 +250,7 @@ const Montagem: React.FC = () => {
       setHistoriaAtual(HISTORIAS_FIXAS[proximoIndex]);
       setTentativasPeca(0);
     } else {
-      finalizarMontagemExterna();
+      finalizarMontagemExterna(pontuacaoTotal);
     }
   };
 
@@ -330,7 +330,7 @@ const Montagem: React.FC = () => {
 
     playSuccess();
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
-    
+    const novaPontuacaoTotal = pontuacaoTotal + pontosObtidos;
     const novasPecasColocadas = new Set([...pecasColocadas, itemId]);
     setPecasColocadas(novasPecasColocadas);
     
@@ -350,7 +350,7 @@ const Montagem: React.FC = () => {
       setShowSucesso(true);
       setTimeout(() => {
         setShowSucesso(false);
-        finalizarMontagemExterna();
+        finalizarMontagemExterna(novaPontuacaoTotal);
       }, 2000);
     } else {
       setShowSucesso(true);
@@ -361,11 +361,10 @@ const Montagem: React.FC = () => {
     }
   };
 
-  function finalizarMontagemExterna() {
+  function finalizarMontagemExterna(pontuacaoAtualizada: number) {
     pausarCronometro();
     
-    const resumoExterno = obterResumo();
-    const pontuacaoExterna = resumoExterno.pontuacaoBase;
+    const pontuacaoExterna = pontuacaoAtualizada;
     
     localStorage.setItem("pontuacaoMontagem", pontuacaoExterna.toString());
     localStorage.setItem("tempoMontagem", tempo.toString());

@@ -32,6 +32,7 @@
   overflow: visible; 
   position: relative;
   box-shadow: none;
+  touch-action: none;
 }
 
 .draggable-item::before {

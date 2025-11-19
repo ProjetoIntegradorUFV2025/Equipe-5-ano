@@ -106,10 +106,12 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   };
 
   return (
-    <div className={`draggable-item-wrapper ${isSelected ? "draggable-item-wrapper-selected" : ""} ${disabled ? "draggable-item-disabled" : ""}`}>
+    <div 
+      onClick={handleItemClick} 
+      className={`draggable-item-wrapper ${isSelected ? "draggable-item-wrapper-selected" : ""} ${disabled ? "draggable-item-disabled" : ""}`}
+    >
       <div
-        ref={ref}
-        onClick={handleItemClick}
+        ref={ref} 
         className={`draggable-item ${
           placed ? "draggable-item-placed" : ""
         } ${isDragging ? "draggable-item-dragging" : ""} ${

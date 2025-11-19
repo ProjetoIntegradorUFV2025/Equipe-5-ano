@@ -106,7 +106,7 @@
 
 /* Texto - legível mas não muito espaçado */
 .historia-modal-texto {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.45;
   color: #2c3e50;
   margin: 0;
@@ -151,7 +151,7 @@
   }
 
   .historia-modal-texto {
-    font-size: 0.95rem;
+    font-size: 1.14rem;
   }
 }
 
@@ -206,7 +206,7 @@
   }
 
   .historia-modal-texto {
-    font-size: 0.9rem;
+    font-size: 1.08rem;
   }
 }
 
@@ -234,7 +234,7 @@
   }
 
   .historia-modal-texto {
-    font-size: 0.85rem;
+    font-size: 1.02rem;
     line-height: 1.35;
   }
 

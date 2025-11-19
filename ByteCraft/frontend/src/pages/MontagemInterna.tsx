@@ -273,7 +273,8 @@ const MontagemInterna: React.FC = () => {
 
   const [showConclusao, setShowConclusao] = useState(false);
   const [pontuacaoFinal, setPontuacaoFinal] = useState(0);
-
+  const [tempoFinalTotal, setTempoFinalTotal] = useState(0);
+  
   const [placaMaeMontada, setPlacaMaeMontada] = useState(false);
 
   const pecaAtivaId = SEQUENCIA_PECAS[indicePecaAtual];
@@ -366,7 +367,7 @@ const MontagemInterna: React.FC = () => {
 
     playSuccess();
     const pontosObtidos = registrarTentativa(itemId, true, nivelDificuldade || "medio");
-    
+    const novaPontuacaoTotal = pontuacaoTotal + pontosObtidos;
     const novasPecasColocadas = new Set([...pecasColocadas, itemId]);
     setPecasColocadas(novasPecasColocadas);
     
@@ -390,7 +391,7 @@ const MontagemInterna: React.FC = () => {
       setShowSucesso(true);
       setTimeout(() => {
         setShowSucesso(false);
-        finalizarMontagem();
+        finalizarMontagem(novaPontuacaoTotal);
       }, 2000);
     } else {
       setShowSucesso(true);
@@ -401,23 +402,23 @@ const MontagemInterna: React.FC = () => {
     }
   };
 
-  async function finalizarMontagem() {
+  async function finalizarMontagem(pontuacaoTotalAtualizada?: number) {
     pausarCronometro();
     playWinner();
     
-    const resumoInterno = obterResumo();
-    const pontuacaoInternaReal = resumoInterno.pontuacaoBase - pontuacaoExterna;
-    
-    const pontuacaoTotalSemBonus = pontuacaoExterna + pontuacaoInternaReal;
-    
+    const pontuacaoBaseParaCalculo = pontuacaoTotalAtualizada !== undefined 
+        ? pontuacaoTotalAtualizada 
+        : obterResumo().pontuacaoBase;
+
     const tempoTotal = tempoExterna + tempo;
     
-    const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal, pontuacaoTotalSemBonus);
+    const pontuacaoFinalComBonus = calcularPontuacaoFinalComBonus(tempoTotal, pontuacaoBaseParaCalculo);
     
     setPontuacaoFinal(pontuacaoFinalComBonus);
-    
+    setTempoFinalTotal(tempoTotal);
+
     try {
-      await api.registraPontuacao(apelido, codigoSala, pontuacaoTotalSemBonus, tempoTotal);
+      await api.registraPontuacao(apelido, codigoSala, pontuacaoBaseParaCalculo, tempoTotal);
       
       await api.salvarProgresso(apelido, codigoSala, true);
       
@@ -602,7 +603,7 @@ const MontagemInterna: React.FC = () => {
       <ConclusaoModal
         isOpen={showConclusao}
         pontuacaoFinal={pontuacaoFinal}
-        tempo={tempo}
+        tempo={tempoFinalTotal}
         codigoSala={aluno?.codigoSala ?? codigoSala}
         alunoApelido={aluno?.apelido ?? apelido}
         nivel={nivelDificuldade}
