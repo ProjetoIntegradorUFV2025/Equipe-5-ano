@@ -1,4 +1,3 @@
-// Sala.tsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api, ApiAluno, ApiProfessor, ApiSala } from "../api/api";
@@ -132,24 +131,26 @@ const Sala: React.FC = () => {
           {!sala?.codigoUnico ? (
             <p>Carregando dados da sala...</p>
           ) : ranking.length > 0 ? (
-            <table className="sala-tabela">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Aluno</th>
-                  <th>Pontuação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ranking.map((aluno, index) => (
-                  <tr key={`${aluno.apelido}-${index}`}>
-                    <td>{index + 1}</td>
-                    <td>{aluno.apelido}</td>
-                    <td>{aluno.pontuacao ?? 0}</td>
+            <div>
+              <table className="sala-tabela">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Aluno</th>
+                    <th>Pontuação</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {ranking.map((aluno, index) => (
+                    <tr key={`${aluno.apelido}-${index}`}>
+                      <td>{index + 1}</td>
+                      <td>{aluno.apelido}</td>
+                      <td>{aluno.pontuacao ?? 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <p>Nenhum aluno registrado nesta turma.</p>
           )}
