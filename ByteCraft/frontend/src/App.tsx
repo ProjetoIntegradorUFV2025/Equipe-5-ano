@@ -15,7 +15,7 @@ import Niveis from "./pages/Niveis";
 import Fases from "./pages/Fases";
 import Montagem from "./pages/Montagem";
 import MontagemInterna from "./pages/MontagemInterna";
-import Importar from "./pages/Importar";
+//import Importar from "./pages/Importar";
 import Quiz from "./pages/Quiz";
 import { ProfessorPage } from "./pages/Sala";
 
@@ -46,7 +46,7 @@ function App() {
             />
             <Route path="/montagem" element={<Montagem />} />
             <Route path="/montagem-interna" element={<MontagemInterna />} />
-            <Route path="/importar" element={<Importar />} />
+            {/*<Route path="/importar" element={<Importar />} />*/}
             <Route path="/quiz" element={<Quiz />} />
           </Routes>
         </Router>

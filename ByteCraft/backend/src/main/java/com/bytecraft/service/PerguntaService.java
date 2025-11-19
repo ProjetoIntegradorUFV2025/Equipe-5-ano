@@ -1,8 +1,8 @@
 package com.bytecraft.service;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+//import java.io.IOException;
+//import java.io.InputStreamReader;
+//import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,11 +10,11 @@ import java.util.List;
 import com.bytecraft.enums.NivelDificuldadeEnum;
 import com.bytecraft.model.Pergunta;
 import com.bytecraft.repository.PerguntaRepository;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
+//import com.opencsv.CSVReader;
+//import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+//import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PerguntaService {
@@ -44,7 +44,8 @@ public class PerguntaService {
      * Estrutura esperada:
      * ENUNCIADO | IMAGEM | ALT_A | ALT_B | ALT_C | ALT_D | ALT_CORRETA | NIVEL
      */
-    public void importarCSV(MultipartFile arquivo) throws IOException, CsvValidationException {
+    
+    /*public void importarCSV(MultipartFile arquivo) throws IOException, CsvValidationException {
         try (CSVReader csvReader = new CSVReader(
                 new InputStreamReader(arquivo.getInputStream(), StandardCharsets.UTF_8))) {
 
@@ -80,5 +81,5 @@ public class PerguntaService {
                 perguntaRepository.save(pergunta);
             }
         }
-    }
+    }*/
 }

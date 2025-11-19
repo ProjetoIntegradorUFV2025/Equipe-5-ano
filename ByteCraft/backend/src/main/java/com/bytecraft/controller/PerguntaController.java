@@ -2,7 +2,7 @@ package com.bytecraft.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+//import org.springframework.web.multipart.MultipartFile;
 
 import com.bytecraft.enums.NivelDificuldadeEnum;
 import com.bytecraft.model.Pergunta;
@@ -41,6 +41,7 @@ public class PerguntaController {
     }
 
     // Novo endpoint para importar CSV
+    /* 
     @PostMapping("/import")
     public ResponseEntity<String> importarCsv(@RequestParam("arquivos") List<MultipartFile> arquivos) {
         try {
@@ -51,5 +52,5 @@ public class PerguntaController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro ao importar CSV: " + e.getMessage());
         }
-    }
+    }*/
 }
