@@ -7,16 +7,8 @@ import "./styles/Aluno.css";
 
 const API_BASE_URL = "http://localhost:8080/api";
 
-const safeUrl = (relPath: string) => {
-  try {
-    return new URL(relPath, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
-
-const backgroundAluno = safeUrl("../assets/backgrounds/background_aluno.png");
-const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
+import backgroundAluno from "../assets/backgrounds/background_aluno.png";
+import voltarIcon from "../assets/bottons/botao_voltar.png";
 
 interface AlunoProps {
   setAluno: (aluno: AlunoType) => void;

@@ -6,16 +6,8 @@ import type { Aluno as AlunoType } from "../types";
 import {useSound} from "../hooks/useSounds";
 import "./styles/Niveis.css";
 
-const safeUrl = (relPath: string) => {
-  try {
-    return new URL(relPath, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
-
-const backgroundNiveis = safeUrl("../assets/backgrounds/background_niveis.png");
-const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
+import backgroundNiveis from "../assets/backgrounds/background_niveis.png";
+import voltarIcon from "../assets/bottons/botao_voltar.png";
 
 interface NiveisProps {
   aluno: AlunoType | null;

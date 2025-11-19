@@ -4,16 +4,8 @@ import { useNavigate } from "react-router-dom";
 import {useSound} from "../hooks/useSounds";
 import "./styles/ProfessorCadastro.css";
 
-const safeUrl = (relPath: string) => {
-  try {
-    return new URL(relPath, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
-
-const backgroundCadastro = safeUrl("../assets/backgrounds/background_cadastro.png");
-const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
+import backgroundCadastro from "../assets/backgrounds/background_cadastro.png";
+import voltarIcon from "../assets/bottons/botao_voltar.png";
 
 const ProfessorCadastro: React.FC = () => {
   const navigate = useNavigate();

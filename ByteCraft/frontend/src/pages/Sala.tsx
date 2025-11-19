@@ -4,15 +4,8 @@ import { api, ApiAluno, ApiProfessor, ApiSala } from "../api/api";
 import { useSound } from "../hooks/useSounds";
 import "./styles/Sala.css";
 
-const safeUrl = (relPath: string) => {
-  try {
-    return new URL(relPath, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
 
-const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
+import voltarIcon from "../assets/bottons/botao_voltar.png";
 
 const Sala: React.FC = () => {
   const location = useLocation();

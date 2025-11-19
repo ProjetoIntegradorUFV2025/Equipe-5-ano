@@ -4,16 +4,8 @@ import { api, ApiProfessor } from "../api/api";
 import {useSound} from "../hooks/useSounds";
 import "./styles/Professor.css";
 
-const safeUrl = (relPath: string) => {
-  try {
-    return new URL(relPath, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
-
-const backgroundProfessor = safeUrl("../assets/backgrounds/background_professor.png");
-const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
+import backgroundProfessor from "../assets/backgrounds/background_professor.png";
+import voltarIcon from "../assets/bottons/botao_voltar.png";
 
 const Professor: React.FC = () => {
   const navigate = useNavigate();

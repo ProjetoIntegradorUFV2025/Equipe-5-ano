@@ -5,18 +5,10 @@ import api from "../api/api";
 import {useSound} from "../hooks/useSounds";
 import "./styles/Fases.css";
 
-const safeUrl = (relPath: string) => {
-  try {
-    return new URL(relPath, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
-
-const backgroundFases = safeUrl("../assets/backgrounds/background_fases.png");
-const voltarIcon = safeUrl("../assets/bottons/botao_voltar.png");
-const historiaIcon = safeUrl("../assets/bottons/botao_historia.png");
-const quizIcon = safeUrl("../assets/bottons/botao_quiz.png");
+import backgroundFases from "../assets/backgrounds/background_fases.png";
+import voltarIcon from "../assets/bottons/botao_voltar.png";
+import historiaIcon from "../assets/bottons/botao_historia.png";
+import quizIcon from "../assets/bottons/botao_quiz.png";
 
 interface FasesProps {
   aluno: any;
