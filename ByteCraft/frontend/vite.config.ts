@@ -4,25 +4,30 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: './',
+
+  // IMPORTANTE: barra NO COMEÇO e barra NO FINAL
+  base: '/bytecraft/',
+
   server: {
-    port: 3030, // Mantém na 8081 (conforme configurado no Spring Security)
+    port: 3030,
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Backend Spring Boot na 8080
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
       }
     }
   },
+
   test: {
     globals: true,
     environment: 'node',
     include: ['src/tests/**/*.test.ts', 'tests/**/*.test.ts'],
   },
+
   build: {
-    outDir: '../backend/src/main/resources/static', 
-    emptyOutDir: true, 
+    outDir: '../backend/src/main/resources/static',
+    emptyOutDir: true,
   },
 })

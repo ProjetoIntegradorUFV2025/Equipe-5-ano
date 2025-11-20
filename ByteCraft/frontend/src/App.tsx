@@ -15,7 +15,6 @@ import Niveis from "./pages/Niveis";
 import Fases from "./pages/Fases";
 import Montagem from "./pages/Montagem";
 import MontagemInterna from "./pages/MontagemInterna";
-//import Importar from "./pages/Importar";
 import Quiz from "./pages/Quiz";
 import { ProfessorPage } from "./pages/Sala";
 
@@ -25,17 +24,18 @@ function App() {
   return (
     <SoundProvider>
       <DndProvider options={HTML5toTouch}>
-        <Router>
-          {/* 🔊 Botão de áudio global (fica fixo no canto inferior direito) */}
+        {/* BASENAME DEVE TER "/" NO FINAL */}
+        <Router basename="/bytecraft/">
+
           <SoundButton />
 
-          {/* 🚏 Rotas principais */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aluno" element={<AlunoPage setAluno={setAluno} />} />
             <Route path="/professor" element={<Professor />} />
             <Route path="/professor/cadastro" element={<ProfessorCadastro />} />
             <Route path="/sala" element={<ProfessorPage />} />
+
             <Route
               path="/niveis"
               element={aluno ? <Niveis aluno={aluno} /> : <Home />}
@@ -44,11 +44,12 @@ function App() {
               path="/fases"
               element={aluno ? <Fases aluno={aluno} /> : <Home />}
             />
+
             <Route path="/montagem" element={<Montagem />} />
             <Route path="/montagem-interna" element={<MontagemInterna />} />
-            {/*<Route path="/importar" element={<Importar />} />*/}
             <Route path="/quiz" element={<Quiz />} />
           </Routes>
+
         </Router>
       </DndProvider>
     </SoundProvider>
